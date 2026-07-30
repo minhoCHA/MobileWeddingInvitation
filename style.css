@@ -72,6 +72,34 @@ html, body {
 
 body { position: relative; min-height: 100vh; overflow-x: hidden; }
 
+.language-switch {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 4;
+}
+.language-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(58, 46, 42, 0.12);
+  background: rgba(251, 247, 243, 0.92);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
+}
+.language-switch a:hover {
+  transform: translateY(-1px);
+  background: rgba(242, 234, 226, 0.96);
+  box-shadow: 0 10px 30px rgba(58, 46, 42, 0.06);
+}
+
 img { max-width: 100%; display: block; }
 
 button {
