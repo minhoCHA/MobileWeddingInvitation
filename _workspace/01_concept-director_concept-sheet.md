@@ -1,21 +1,21 @@
 ---
 couple:
-  groom: "김민준"
-  bride: "박서연"
+  groom: "차민호"
+  bride: "조성경"
 ceremony:
-  date: "2026-10-17 14:00"
+  date: "2026-10-17 16:00"
   day_of_week: "토요일"
-  venue: "그랜드 인터컨티넨탈 서울 파르나스 5층 그랜드볼룸"
-  venue_short: "그랜드 인터컨티넨탈 서울 파르나스"
-  hall: "5층 그랜드볼룸"
+  venue: "삼청각 일화당"
+  venue_short: "삼청각 일화당"
+  hall: "삼청각"
   address: "서울특별시 강남구 테헤란로 521"
   formality: "호텔 정통 예식 (격식)"
 parents:
-  groom_father: "김재현"
-  groom_mother: "이수진"
-  bride_father: "박정훈"
-  bride_mother: "최은영"
-  groom_birth_order: "장남"
+  groom_father: "차재동"
+  groom_mother: "지미숙"
+  bride_father: "조권탁"
+  bride_mother: "왕금희"
+  groom_birth_order: "차남"
   bride_birth_order: "장녀"
 gallery:
   count: 5
@@ -100,7 +100,7 @@ defaults_applied:
 ## 카피라이터에게 가이드
 
 - mood_keywords의 첫 번째 키워드 **"modern romantic"** 을 카피 톤의 중심에 둘 것. 너무 옛스러운 정중체("일가 친지를 모시고...")는 피하고, 동시에 너무 캐주얼한 반말체도 금지. **차분한 경어체 + 짧고 시적인 호흡**.
-- 호텔 정통 예식이므로 부모님 함자는 풀네임으로 정중히 표기하되 "장남 김민준 / 장녀 박서연" 호칭을 명확히.
+- 호텔 정통 예식이므로 부모님 함자는 풀네임으로 정중히 표기하되 "차남 차민호 / 장녀 조성경" 호칭을 명확히.
 - 인사말은 4~6문장 내외로 짧게. "두 사람이 사랑으로 만나..." 같은 클리셰 대신 가을·약속·시작의 모티프를 한두 번 살짝 사용.
 - 영문 한 줄(예: "We're getting married" / "Save the Date 10.17.2026")을 포인트로 삽입.
 - "마음 전하실 곳" 안내문은 상투적인 부담 멘트 대신 짧고 담백하게.

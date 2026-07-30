@@ -1,4 +1,4 @@
-# Frontend Developer Summary — 김민준 ♡ 박서연 청첩장
+# Frontend Developer Summary — 차민호 ♡ 조성경 청첩장
 
 > 산출 일자: 2026-04-29
 > 산출물: `index.html`, `style.css`, `script.js`
