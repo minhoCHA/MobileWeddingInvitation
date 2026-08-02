@@ -64,16 +64,18 @@
              fetchpriority="high"
              width="1024" height="1280">
         <div class="hero-content">
-          <p class="hero-eyebrow script" data-hero-step="1">We&rsquo;re getting married</p>
-          <h1 class="hero-names">
-            <span class="hero-name-ko" data-hero-step="3">Minho Cha</span>
-            <span class="hero-amp script" data-hero-step="4">&amp;</span>
-            <span class="hero-name-ko" data-hero-step="5">Claire Cho</span>
-          </h1>
-          <p class="hero-info" data-hero-step="6">
-            Saturday, October 17, 2026 4 PM<br>
-            Samcheonggak, Ilhwa-dang
-          </p>
+          <div class="hero-card">
+            <p class="hero-eyebrow script" data-hero-step="1">We&rsquo;re getting married</p>
+            <h1 class="hero-names">
+              <span class="hero-name-ko" data-hero-step="3">Minho Cha</span>
+              <span class="hero-amp script" data-hero-step="4">&amp;</span>
+              <span class="hero-name-ko" data-hero-step="5">Claire Cho</span>
+            </h1>
+            <p class="hero-info" data-hero-step="6">
+              Saturday, October 17, 2026 4 PM<br>
+              Samcheonggak, Ilhwa-dang
+            </p>
+          </div>
         </div>
       </div>
       <div class="scroll-indicator" data-hero-step="7" aria-hidden="true">
@@ -157,73 +159,83 @@
         we want to share with you.
       </p>
 
-      <div class="gallery-stage" role="region" aria-label="Photo gallery" aria-roledescription="carousel">
-        <ul class="gallery-track" id="gallery-track">
-          <li class="gallery-slide" aria-label="Photo 1 / 5">
+      <div class="gallery-stage" role="region" aria-label="Photo gallery">
+        <div class="gallery-grid">
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="0">
             <img src="/images/111.jpg" alt="Gallery 1" loading="eager" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 2 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="1">
             <img src="/images/112.jpg" alt="Gallery 2" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 3 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="2">
             <img src="/images/113.jpg" alt="Gallery 3" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 4 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="3">
             <img src="/images/114.jpg" alt="Gallery 4" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="4">
             <img src="/images/115.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/116.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/117.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/118.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/119.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/120.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/121.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/122.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/123.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/124.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/125.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/126.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/127.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="Photo 5 / 5">
-            <img src="/images/128.jpg" alt="Gallery 5" loading="lazy" width="1024" height="1280">
-          </li>
-        </ul>
-        <button class="gallery-nav gallery-prev" type="button" aria-label="Previous photo">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="gallery-nav gallery-next" type="button" aria-label="Next photo">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="5">
+            <img src="/images/116.jpg" alt="Gallery 6" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="6">
+            <img src="/images/117.jpg" alt="Gallery 7" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="7">
+            <img src="/images/118.jpg" alt="Gallery 8" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="8">
+            <img src="/images/119.jpg" alt="Gallery 9" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="9">
+            <img src="/images/120.jpg" alt="Gallery 10" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="10">
+            <img src="/images/121.jpg" alt="Gallery 11" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="11">
+            <img src="/images/122.jpg" alt="Gallery 12" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="12">
+            <img src="/images/123.jpg" alt="Gallery 13" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="13">
+            <img src="/images/124.jpg" alt="Gallery 14" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="14">
+            <img src="/images/125.jpg" alt="Gallery 15" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="15">
+            <img src="/images/126.jpg" alt="Gallery 16" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="16">
+            <img src="/images/127.jpg" alt="Gallery 17" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="17">
+            <img src="/images/128.jpg" alt="Gallery 18" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+        </div>
+        <button id="gallery-load-more" class="btn btn-secondary" style="margin-top: 24px; width: 100%;">View More</button>
       </div>
-      <ol class="gallery-dots" id="gallery-dots" aria-hidden="true">
-        <li class="active"></li><li></li><li></li><li></li><li></li>
-      </ol>
       <p class="gallery-hint">Tap the photo to enlarge</p>
     </section>
 
@@ -237,6 +249,8 @@
 
       <!-- 지도: Kakao Map SDK가 없으면 정적 placeholder -->
       <!-- placeholder: KAKAO_JS_KEY 가 설정되면 Kakao Map SDK가 활성화됩니다. (script.js 의 KAKAO_JS_KEY 상수 확인) -->
+      https://www.google.com/maps/place/Samcheong-Gag/@37.5972914,126.981571,17z/data=!3m1!4b1!4m6!3m5!1s0x357cbd3184998183:0xd19574c9bb643b4d!8m2!3d37.5972872!4d126.9841513!16s%2Fg%2F1q5ccch1y?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D
+      
       <div id="map" class="map-static" aria-label="Venue location map">
         <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
@@ -255,7 +269,7 @@
           <h3>Subway</h3>
           <p>Line 2 · Line 9 Samseong Jungang Station Exit 5<br>About a 3-minute walk</p>
         </article>
-        <article>
+        <article class="route-card">
           <h3>Bus</h3>
           <p>Get off at Trade Center · Hyundai Department Store stop</p>
           <ul class="bus-list">
@@ -329,10 +343,41 @@
         If you let us know your attendance in advance,<br>
         we will prepare the venue with extra care.<br><br>
         Thank you in advance to everyone<br>
-        미리 감사의 마음을 전합니다.
+        for your warm support.
       </p>
-      <!-- placeholder: RSVP_FORM_URL 외부 폼(Tally / Google Form / FormSubmit)으로 교체 필요 -->
-      <a class="btn primary" href="#" id="rsvp-link" target="_blank" rel="noopener" data-placeholder-url>Send RSVP</a>
+      <div class="manager-panel is-hidden" id="manager-panel" aria-live="polite">
+        <div class="stats-panel is-hidden" id="rsvp-stats"></div>
+        <div class="manager-tabs" role="tablist" aria-label="RSVP response filter">
+          <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All list</button>
+          <button class="manager-tab" type="button" data-filter="참석" role="tab" aria-selected="false">Attending</button>
+          <button class="manager-tab" type="button" data-filter="미참석" role="tab" aria-selected="false">Not attending</button>
+          <button class="manager-tab" type="button" data-filter="미정" role="tab" aria-selected="false">Pending</button>
+        </div>
+        <ul class="manager-list" id="rsvp-manager-list"></ul>
+      </div>
+      <form class="rsvp-form" id="rsvp-form" novalidate>
+        <label class="rsvp-field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="e.g. Jane Kim" required>
+        </label>
+        <label class="rsvp-field">
+          <span>Attendance</span>
+          <select name="attendance" required>
+            <option value="Attending">Attending</option>
+            <option value="Not attending">Not attending</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>Guests</span>
+          <input type="number" name="guests" min="1" max="10" value="1">
+        </label>
+        <label class="rsvp-field">
+          <span>Note</span>
+          <textarea name="message" rows="3" placeholder="Meal preference, message, or guest notes"></textarea>
+        </label>
+        <button class="btn primary" type="submit">Send RSVP</button>
+      </form>
     </section>
 
     <!-- 9. GUESTBOOK -->
@@ -340,13 +385,22 @@
       <p class="section-eyebrow en">GUEST BOOK</p>
       <h2 class="section-title" id="guestbook-heading">Guest Book</h2>
       <p class="guestbook-message">
-        두 사람에게 전하고 싶은 한마디를<br>
-        남겨 주세요.<br><br>
-        오래도록 마음에 담아<br>
-        간직하겠습니다.
+        Leave a note for the couple.<br><br>
+        We will cherish your warm words for a long time.
       </p>
-      <!-- placeholder: GUESTBOOK_FORM_URL 외부 폼으로 교체 필요 -->
-      <a class="btn" href="#" id="guestbook-link" target="_blank" rel="noopener" data-placeholder-url>Leave a message</a>
+      <div class="stats-panel is-hidden" id="guestbook-stats" aria-live="polite"></div>
+      <form class="guestbook-form" id="guestbook-form">
+        <label class="rsvp-field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="e.g. Minji" required>
+        </label>
+        <label class="rsvp-field">
+          <span>Message</span>
+          <textarea name="message" rows="3" placeholder="Leave a warm note for the couple"></textarea>
+        </label>
+        <button class="btn" type="submit">Leave a message</button>
+      </form>
+      <ul class="guestbook-list" id="guestbook-list"></ul>
     </section>
 
     <!-- 10. SHARE -->
@@ -372,7 +426,13 @@
 
   <!-- 라이트박스 모달 -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="View enlarged photo">
-    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="닫기">
+    <button class="lightbox-nav lightbox-nav-prev" id="lightbox-prev" type="button" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-nav-next" id="lightbox-next" type="button" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
     <img class="lightbox-img" id="lightbox-img" alt="">
@@ -384,6 +444,6 @@
   <!-- placeholder: 카카오 SDK (KAKAO_JS_KEY 발급 후 활성화) -->
   <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script> -->
 
-  <script src="/script.js"></script>
+  <script src="/script.js?v=20260802-3"></script>
 </body>
 </html>

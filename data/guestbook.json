@@ -1,0 +1,14 @@
+[
+  {
+    "id": "local-1785710673775",
+    "name": "브라우저검증",
+    "message": "브라우저로 직접 남긴 메시지입니다.",
+    "createdAt": "2026-08-02T22:44:33.775Z"
+  },
+  {
+    "id": "guestbook-1",
+    "name": "게스트북검증",
+    "message": "guestbook direct check",
+    "createdAt": "2026-08-02T00:00:00Z"
+  }
+]

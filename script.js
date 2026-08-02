@@ -10,8 +10,8 @@
   // PLACEHOLDERS — 실제 운영 시 아래 값을 채워주세요.
   // ---------------------------------------------------------
   const KAKAO_JS_KEY     = ''; // placeholder: 카카오 JavaScript 키 (https://developers.kakao.com/)
-  const RSVP_FORM_URL    = ''; // placeholder: Tally / Google Form / FormSubmit URL
-  const GUESTBOOK_URL    = ''; // placeholder: 외부 방명록 폼 URL
+  const RSVP_FORM_URL    = 'https://formsubmit.co/ajax/minhocha1004@gmail.com';
+  const GUESTBOOK_URL    = 'https://formsubmit.co/ajax/minhocha1004@gmail.com';
   const SHARE_TITLE      = '차민호 ♡ 조성경 결혼합니다';
   const SHARE_DESC       = '2026년 10월 17일 토요일 오후 4시\n삼청각 일화당';
   const SHARE_IMAGE      = location.origin + '/images/og-thumbnail.png';
@@ -27,6 +27,8 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
   const haptic = (n) => { try { navigator.vibrate && navigator.vibrate(n); } catch (e) {} };
+  let galleryAPI = { count: 0 };
+  let activeRsvpFilter = 'all';
 
   // ---------------------------------------------------------
   // 1. HERO entrance step-in
@@ -241,105 +243,67 @@
   }
 
   // ---------------------------------------------------------
-  // 5. Gallery: swipe + nav + dots + auto-play (motion §3-2)
+  // 5. Gallery Grid: click to lightbox + Load More
   // ---------------------------------------------------------
-  let galleryAPI = null;
   function setupGallery() {
-    const stage = $('.gallery-stage');
-    const track = $('#gallery-track');
-    if (!stage || !track) return;
-    const slides = $$('.gallery-slide', track);
-    const dots   = $$('#gallery-dots li');
-    const prev   = $('.gallery-prev');
-    const next   = $('.gallery-next');
-    const N = slides.length;
-    let idx = 0;
-    let auto = null;
-    let dragX = 0;
-    let dragStartX = 0;
-    let dragging = false;
-    let inViewport = false;
-    let userPaused = false;
+    const items = $$('.gallery-grid-item');
+    if (!items.length) return;
+    const N = items.length;
+    const batchSize = 9;
+    let visibleCount = Math.min(batchSize, N);
 
-    function show(i, withTransition = true) {
-      idx = ((i % N) + N) % N;
-      track.style.transition = withTransition ? '' : 'none';
-      track.style.transform = `translateX(-${idx * 100}%)`;
-      dots.forEach((d, k) => d.classList.toggle('active', k === idx));
-      slides.forEach((s, k) => {
-        s.setAttribute('aria-hidden', k === idx ? 'false' : 'true');
+    function attachClickHandlers(itemsToAttach) {
+      itemsToAttach.forEach((item, i) => {
+        const idx = parseInt(item.dataset.index, 10);
+        item.addEventListener('click', () => {
+          haptic(8);
+          openLightbox(idx);
+        });
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            haptic(8);
+            openLightbox(idx);
+          }
+        });
       });
     }
-    function startAuto() {
-      if (isReduced() || userPaused || !inViewport) return;
-      stopAuto();
-      auto = setInterval(() => show(idx + 1), 5000);
-    }
-    function stopAuto() {
-      if (auto) { clearInterval(auto); auto = null; }
-    }
-    function pauseUser(durationMs = 10000) {
-      userPaused = true;
-      stopAuto();
-      clearTimeout(pauseUser._t);
-      pauseUser._t = setTimeout(() => { userPaused = false; startAuto(); }, durationMs);
-    }
 
-    // Touch events
-    track.addEventListener('touchstart', (e) => {
-      if (e.touches.length !== 1) return;
-      dragging = true;
-      dragStartX = e.touches[0].clientX;
-      dragX = 0;
-      track.style.transition = 'none';
-    }, { passive: true });
+    // Attach handlers to all items (visible and hidden)
+    attachClickHandlers(items);
 
-    track.addEventListener('touchmove', (e) => {
-      if (!dragging) return;
-      dragX = e.touches[0].clientX - dragStartX;
-      const w = stage.clientWidth || 1;
-      track.style.transform = `translateX(calc(-${idx * 100}% + ${dragX}px))`;
-    }, { passive: true });
+    // Load More / Collapse button
+    const loadMoreBtn = $('#gallery-load-more');
+    if (loadMoreBtn) {
+      const renderGallery = () => {
+        items.forEach((item, index) => {
+          item.classList.toggle('hidden', index >= visibleCount);
+        });
 
-    track.addEventListener('touchend', () => {
-      if (!dragging) return;
-      dragging = false;
-      track.style.transition = '';
-      const threshold = 50;
-      if (dragX > threshold) { show(idx - 1); haptic(8); }
-      else if (dragX < -threshold) { show(idx + 1); haptic(8); }
-      else { show(idx); }
-      pauseUser(10000);
-    });
+        if (N <= batchSize) {
+          loadMoreBtn.style.display = 'none';
+          return;
+        }
 
-    // Click navigation
-    prev?.addEventListener('click', () => { show(idx - 1); haptic(8); pauseUser(10000); });
-    next?.addEventListener('click', () => { show(idx + 1); haptic(8); pauseUser(10000); });
+        loadMoreBtn.style.display = '';
+        loadMoreBtn.textContent = visibleCount >= N ? '접기' : '더 보기';
+        loadMoreBtn.setAttribute('aria-expanded', String(visibleCount >= N));
+      };
 
-    // Click slide → lightbox
-    slides.forEach((slide, i) => {
-      const img = $('img', slide);
-      img?.addEventListener('click', () => {
-        if (Math.abs(dragX) > 5) return; // 스와이프 후 클릭 무시
-        openLightbox(i);
+      renderGallery();
+
+      loadMoreBtn.addEventListener('click', () => {
+        if (visibleCount >= N) {
+          visibleCount = batchSize;
+        } else {
+          visibleCount = Math.min(N, visibleCount + batchSize);
+        }
+        haptic(8);
+        renderGallery();
       });
-    });
+    }
 
-    // Keyboard
-    stage.tabIndex = 0;
-    stage.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft')  { show(idx - 1); haptic(8); pauseUser(10000); }
-      if (e.key === 'ArrowRight') { show(idx + 1); haptic(8); pauseUser(10000); }
-    });
-
-    // Auto-play viewport gating
-    new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting;
-      if (inViewport) startAuto(); else stopAuto();
-    }, { threshold: 0.4 }).observe(stage);
-
-    show(0);
-    galleryAPI = { show, count: N };
+    galleryAPI = { count: N };
   }
 
   // ---------------------------------------------------------
@@ -350,9 +314,11 @@
     const lb = $('#lightbox');
     const img = $('#lightbox-img');
     const close = $('#lightbox-close');
-    if (!lb || !img || !close) return;
+    const prevBtn = $('#lightbox-prev');
+    const nextBtn = $('#lightbox-next');
+    if (!lb || !img || !close || !prevBtn || !nextBtn) return;
 
-    const slides = $$('.gallery-slide img');
+    const slides = $$('.gallery-grid-item img');
     let scale = 1;
     let originX = 0, originY = 0;
     let lastDist = 0;
@@ -367,6 +333,15 @@
     function reset() {
       scale = 1; originX = 0; originY = 0;
       img.style.transform = '';
+    }
+
+    function showSlide(i) {
+      const total = galleryAPI?.count || slides.length;
+      if (!total) return;
+      currentIdx = (i + total) % total;
+      img.src = slides[currentIdx].src;
+      img.alt = slides[currentIdx].alt || '';
+      reset();
     }
 
     function open(i) {
@@ -391,34 +366,35 @@
     }
 
     close.addEventListener('click', closeFn);
+    prevBtn.addEventListener('click', () => { if (galleryAPI) { showSlide(currentIdx - 1); haptic(8); } });
+    nextBtn.addEventListener('click', () => { if (galleryAPI) { showSlide(currentIdx + 1); haptic(8); } });
     lb.addEventListener('click', (e) => { if (e.target === lb) closeFn(); });
     document.addEventListener('keydown', (e) => {
       if (lb.hidden) return;
       if (e.key === 'Escape') closeFn();
       if (e.key === 'ArrowLeft' && galleryAPI) {
-        currentIdx = (currentIdx - 1 + galleryAPI.count) % galleryAPI.count;
-        img.src = slides[currentIdx].src; reset();
-        galleryAPI.show(currentIdx);
+        showSlide(currentIdx - 1);
       }
       if (e.key === 'ArrowRight' && galleryAPI) {
-        currentIdx = (currentIdx + 1) % galleryAPI.count;
-        img.src = slides[currentIdx].src; reset();
-        galleryAPI.show(currentIdx);
+        showSlide(currentIdx + 1);
       }
     });
 
-    // Pinch / double-tap zoom
+    // Pinch / double-tap zoom / swipe navigation
+    let swipeStartX = null;
     img.addEventListener('touchstart', (e) => {
       lb.classList.add('is-zooming');
       if (e.touches.length === 2) {
         const [a, b] = e.touches;
         lastDist = Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
+        swipeStartX = null;
       } else if (e.touches.length === 1) {
         const now = Date.now();
+        swipeStartX = e.touches[0].clientX;
         if (now - lastTap < 300) {
           scale = scale > 1.05 ? 1 : 2.4;
           originX = 0; originY = 0;
-          lb.classList.remove('is-zooming'); // smooth transition
+          lb.classList.remove('is-zooming');
           setTransform();
           haptic(10);
         } else {
@@ -439,10 +415,21 @@
           setTransform();
         }
         lastDist = d;
+        swipeStartX = null;
       } else if (e.touches.length === 1 && panStart && scale > 1) {
         originX = e.touches[0].clientX - panStart.x;
         originY = e.touches[0].clientY - panStart.y;
         setTransform();
+      } else if (e.touches.length === 1 && scale <= 1.05 && swipeStartX !== null) {
+        const deltaX = e.touches[0].clientX - swipeStartX;
+        if (Math.abs(deltaX) > 40) {
+          if (deltaX < 0) {
+            showSlide(currentIdx + 1);
+          } else {
+            showSlide(currentIdx - 1);
+          }
+          swipeStartX = null;
+        }
       }
     }, { passive: true });
 
@@ -450,6 +437,7 @@
       if (e.touches.length === 0) {
         lastDist = 0;
         panStart = null;
+        swipeStartX = null;
         if (scale < 1.05) reset();
         lb.classList.remove('is-zooming');
       }
@@ -608,33 +596,354 @@
   }
 
   // ---------------------------------------------------------
-  // 11. RSVP / Guestbook placeholder URL handling
+  // 11. RSVP / Guestbook handling
   // ---------------------------------------------------------
-  function setupExternalLinks() {
-    const rsvp = $('#rsvp-link');
-    const gb   = $('#guestbook-link');
-    if (rsvp) {
-      if (RSVP_FORM_URL) {
-        rsvp.href = RSVP_FORM_URL;
-        rsvp.removeAttribute('data-placeholder-url');
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  async function readStoredEntries(key) {
+    try {
+      const response = await fetch(`/api/${key === 'wedding_rsvp_entries' ? 'rsvp' : 'guestbook'}`);
+      if (!response.ok) throw new Error('network');
+      const payload = await response.json();
+      if (Array.isArray(payload.entries)) {
+        return payload.entries;
+      }
+    } catch (e) {
+      // ignore and fall back below
+    }
+
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+      if (Array.isArray(parsed)) return parsed;
+    } catch (err) {}
+    return [];
+  }
+
+  async function writeStoredEntries(key, entries) {
+    const endpoint = key === 'wedding_rsvp_entries' ? '/api/rsvp' : '/api/guestbook';
+    const body = entries[0] || null;
+    if (!body) return [];
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) throw new Error('network');
+      const payload = await response.json();
+      if (Array.isArray(payload.entries)) {
+        return payload.entries;
+      }
+    } catch (e) {
+      // fall through to local fallback if backend is unavailable
+    }
+
+    const normalized = entries.slice(0, 100);
+    localStorage.setItem(key, JSON.stringify(normalized));
+    return normalized;
+  }
+
+  async function removeStoredEntry(key, id) {
+    const endpoint = key === 'wedding_rsvp_entries' ? '/api/rsvp' : '/api/guestbook';
+    try {
+      const response = await fetch(endpoint, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      if (!response.ok) throw new Error('network');
+      const payload = await response.json();
+      if (Array.isArray(payload.entries)) {
+        return payload.entries;
+      }
+    } catch (e) {
+      // fall through to local fallback if backend is unavailable
+    }
+
+    const nextEntries = (await readStoredEntries(key)).filter((entry) => entry.id !== id);
+    localStorage.setItem(key, JSON.stringify(nextEntries));
+    return nextEntries;
+  }
+
+  function isManagerView() {
+    const params = new URLSearchParams(location.search);
+    return params.get('manager') === '1' || params.get('admin') === '1';
+  }
+
+  function getAttendanceCategory(entry) {
+    const attendance = String(entry.attendance || '').trim();
+    if (/미참석|Not attending/i.test(attendance)) return '미참석';
+    if (/미정|Pending/i.test(attendance)) return '미정';
+    if (/참석|Attending/i.test(attendance)) return '참석';
+    return '미정';
+  }
+
+  function getFilteredRsvpEntries(entries) {
+    if (!activeRsvpFilter || activeRsvpFilter === 'all') return entries;
+    return entries.filter((entry) => getAttendanceCategory(entry) === activeRsvpFilter);
+  }
+
+  function formatRsvpTime(createdAt) {
+    try {
+      return new Date(createdAt).toLocaleString('ko-KR', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    } catch (e) {
+      return '';
+    }
+  }
+
+  async function renderRsvpStats() {
+    const panel = $('#manager-panel');
+    const container = $('#rsvp-stats');
+    const list = $('#rsvp-manager-list');
+    if (!container) return;
+    if (!isManagerView()) {
+      panel?.classList.add('is-hidden');
+      container.classList.add('is-hidden');
+      container.innerHTML = '';
+      if (list) list.innerHTML = '';
+      return;
+    }
+    panel?.classList.remove('is-hidden');
+    container.classList.remove('is-hidden');
+
+    const storedEntries = await readStoredEntries('wedding_rsvp_entries');
+    const entries = storedEntries
+      .slice()
+      .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+    const attending = entries.filter((entry) => getAttendanceCategory(entry) === '참석').length;
+    const declined = entries.filter((entry) => getAttendanceCategory(entry) === '미참석').length;
+    const pending = entries.filter((entry) => getAttendanceCategory(entry) === '미정').length;
+    const totalGuests = entries.reduce((sum, entry) => sum + (Number(entry.guests) || 1), 0);
+    const filteredEntries = getFilteredRsvpEntries(entries);
+
+    container.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card"><strong>${entries.length}</strong><span>총 응답</span></div>
+        <div class="stat-card"><strong>${attending}</strong><span>참석</span></div>
+        <div class="stat-card"><strong>${declined}</strong><span>미참석</span></div>
+        <div class="stat-card"><strong>${pending}</strong><span>미정</span></div>
+      </div>
+      <p class="stats-footnote">예상 참석 인원: ${totalGuests}명</p>
+    `;
+
+    if (list) {
+      if (!filteredEntries.length) {
+        list.innerHTML = '<li class="manager-empty">아직 표시할 응답이 없어요.</li>';
       } else {
-        rsvp.addEventListener('click', (e) => {
-          e.preventDefault();
-          showToast('참석 의사 폼은 준비 중입니다');
-        });
+        list.innerHTML = filteredEntries.map((entry) => {
+          const attendance = entry.attendance || '미정';
+          const guestCount = Number(entry.guests) || 1;
+          const note = entry.message || '전할 말씀이 남겨지지 않았어요.';
+          return `
+            <li>
+              <div class="manager-item-top">
+                <strong>${escapeHtml(entry.name || '익명')}</strong>
+                <div class="manager-item-actions">
+                  <span class="manager-chip">${escapeHtml(attendance)}</span>
+                  <button class="manager-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_rsvp_entries">삭제</button>
+                </div>
+              </div>
+              <div class="manager-item-meta">
+                <span>인원 ${guestCount}명</span>
+                <span>${escapeHtml(formatRsvpTime(entry.createdAt))}</span>
+              </div>
+              <p>${escapeHtml(note)}</p>
+            </li>
+          `;
+        }).join('');
       }
     }
-    if (gb) {
-      if (GUESTBOOK_URL) {
-        gb.href = GUESTBOOK_URL;
-        gb.removeAttribute('data-placeholder-url');
-      } else {
-        gb.addEventListener('click', (e) => {
-          e.preventDefault();
-          showToast('방명록은 준비 중입니다');
+
+    const tabs = $$('.manager-tab');
+    tabs.forEach((button) => {
+      const isActive = (button.dataset.filter || 'all') === activeRsvpFilter;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-selected', String(isActive));
+    });
+  }
+
+  async function renderGuestbookStats() {
+    const container = $('#guestbook-stats');
+    if (!container) return;
+    if (!isManagerView()) {
+      container.classList.add('is-hidden');
+      container.innerHTML = '';
+      return;
+    }
+    container.classList.remove('is-hidden');
+    const entries = await readStoredEntries('wedding_guestbook_entries');
+    container.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card"><strong>${entries.length}</strong><span>총 메시지</span></div>
+        <div class="stat-card"><strong>${entries.slice(0, 3).length}</strong><span>최근 메시지</span></div>
+      </div>
+    `;
+  }
+
+  function setupRsvpManagerTabs() {
+    const tabs = $$('.manager-tab');
+    if (!tabs.length) return;
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        activeRsvpFilter = tab.dataset.filter || 'all';
+        void renderRsvpStats();
+      });
+    });
+  }
+
+  function setupRSVPAndGuestbook() {
+    const rsvpForm = $('#rsvp-form');
+    const guestbookForm = $('#guestbook-form');
+    const guestbookList = $('#guestbook-list');
+    const managerList = $('#rsvp-manager-list');
+
+    async function submitToEndpoint(endpoint, fields) {
+      const payload = new URLSearchParams();
+      Object.entries(fields).forEach(([key, value]) => {
+        payload.append(key, String(value));
+      });
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: payload.toString()
         });
+        if (!response.ok) throw new Error('request failed');
+        return true;
+      } catch (e) {
+        showToast('메일 전송에 실패했습니다. 잠시 후 다시 시도해 주세요');
+        return false;
       }
     }
+
+    if (rsvpForm) {
+      rsvpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(rsvpForm);
+        const payload = {
+          name: String(data.get('name') || '').trim(),
+          attendance: String(data.get('attendance') || '').trim(),
+          guests: String(data.get('guests') || '1').trim(),
+          message: String(data.get('message') || '').trim(),
+          subject: "Minho & Clair's Wedding Data - RSVP",
+          _subject: "Minho & Clair's Wedding Data - RSVP"
+        };
+        if (!payload.name) {
+          showToast('성함을 입력해 주세요');
+          return;
+        }
+        const entries = (await readStoredEntries('wedding_rsvp_entries'));
+        const nextEntries = [{
+          id: `local-${Date.now()}`,
+          name: payload.name,
+          attendance: payload.attendance,
+          guests: payload.guests,
+          message: payload.message,
+          createdAt: new Date().toISOString()
+        }, ...entries];
+        await writeStoredEntries('wedding_rsvp_entries', nextEntries);
+        void renderRsvpStats();
+
+        submitToEndpoint(RSVP_FORM_URL, payload).then((sent) => {
+          if (sent) {
+            rsvpForm.reset();
+            const guestCount = Number(payload.guests) || 1;
+            const attendanceLabel = payload.attendance || '참석';
+            showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
+          }
+        });
+      });
+    }
+
+    async function renderGuestbook() {
+      if (!guestbookList) return;
+      const entries = await readStoredEntries('wedding_guestbook_entries');
+      if (!entries.length) {
+        guestbookList.innerHTML = '<li>아직 남겨진 마음이 없어요. 첫 번째 마음을 남겨 주세요.</li>';
+        return;
+      }
+      guestbookList.innerHTML = entries.map((entry) => {
+        const time = new Date(entry.createdAt).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        return `<li><div class="guestbook-meta"><strong>${escapeHtml(entry.name || '익명')}</strong><div class="guestbook-meta-actions"><span>${escapeHtml(time)}</span><button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">삭제</button></div></div><p>${escapeHtml(entry.message || '')}</p></li>`;
+      }).join('');
+    }
+
+    if (managerList) {
+      managerList.addEventListener('click', async (e) => {
+        const button = e.target.closest('[data-entry-id]');
+        if (!button) return;
+        const id = button.getAttribute('data-entry-id');
+        const key = button.getAttribute('data-entry-key');
+        if (!id || !key) return;
+        await removeStoredEntry(key, id);
+        void renderRsvpStats();
+        showToast('삭제되었습니다');
+      });
+    }
+
+    if (guestbookList) {
+      guestbookList.addEventListener('click', async (e) => {
+        const button = e.target.closest('[data-entry-id]');
+        if (!button) return;
+        const id = button.getAttribute('data-entry-id');
+        const key = button.getAttribute('data-entry-key');
+        if (!id || !key) return;
+        await removeStoredEntry(key, id);
+        await renderGuestbook();
+        await renderGuestbookStats();
+        showToast('삭제되었습니다');
+      });
+    }
+
+    if (guestbookForm) {
+      guestbookForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(guestbookForm);
+        const name = String(data.get('name') || '').trim();
+        const message = String(data.get('message') || '').trim();
+        if (!name || !message) {
+          showToast('이름과 메시지를 모두 입력해 주세요');
+          return;
+        }
+        const entries = await readStoredEntries('wedding_guestbook_entries');
+        const nextEntries = [{ id: `local-${Date.now()}`, name, message, createdAt: new Date().toISOString() }, ...entries];
+        await writeStoredEntries('wedding_guestbook_entries', nextEntries);
+        guestbookForm.reset();
+        await renderGuestbook();
+        await renderGuestbookStats();
+        submitToEndpoint(GUESTBOOK_URL, {
+          name,
+          message: [
+            "Minho & Clair's Wedding Data - Guestbook",
+            "",
+            `이름: ${name}`,
+            `메시지: ${message}`
+          ].join('\n'),
+          subject: "Minho & Clair's Wedding Data - Guestbook",
+          _subject: "Minho & Clair's Wedding Data - Guestbook"
+        }).catch(() => {});
+        showToast('방명록에 마음이 저장되었습니다');
+      });
+    }
+
+    setupRsvpManagerTabs();
+    void renderGuestbook();
+    void renderRsvpStats();
+    void renderGuestbookStats();
   }
 
   // ---------------------------------------------------------
@@ -645,12 +954,12 @@
     setupReveal();
     setupPetals();
     setupCalendar();
-    setupGallery();
     setupLightbox();
+    setupGallery();
     setupCopy();
     setupMusic();
     setupShare();
-    setupExternalLinks();
+    setupRSVPAndGuestbook();
 
     // reduced-motion 변경 시 단순 reload (모션 일관성 보장)
     if (reducedMotion.addEventListener) {

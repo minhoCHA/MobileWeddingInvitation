@@ -1,0 +1,106 @@
+[
+  {
+    "id": "rsvp-13",
+    "name": "최종검증",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "final check",
+    "createdAt": "2026-08-02T22:53:31Z"
+  },
+  {
+    "id": "log-check-2",
+    "name": "log-check-2",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "check",
+    "createdAt": "2026-08-02T00:00:00Z"
+  },
+  {
+    "id": "http-post-check",
+    "name": "http-post-check",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "http-post-check",
+    "createdAt": "2026-08-02T00:00:00Z"
+  },
+  {
+    "id": "local-1785711113551",
+    "name": "버전업검증",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "버전 업된 스크립트로 확인",
+    "createdAt": "2026-08-02T22:51:53.551Z"
+  },
+  {
+    "id": "local-1785711095963",
+    "name": "로그디버그",
+    "attendance": "참석",
+    "guests": "1",
+    "message": "console log check",
+    "createdAt": "2026-08-02T22:51:35.963Z"
+  },
+  {
+    "id": "rsvp-8",
+    "name": "page-check",
+    "attendance": "참석",
+    "guests": "1",
+    "message": "from browser",
+    "createdAt": "2026-08-02T22:50:46Z"
+  },
+  {
+    "id": "local-1785711036613",
+    "name": "캐시무시검증",
+    "attendance": "참석",
+    "guests": "4",
+    "message": "캐시 무시로 새 스크립트를 쓰는지 확인",
+    "createdAt": "2026-08-02T22:50:36.613Z"
+  },
+  {
+    "id": "rsvp-6",
+    "name": "재시작검증",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "restart check",
+    "createdAt": "2026-08-02T00:00:00Z"
+  },
+  {
+    "id": "rsvp-5",
+    "name": "로그테스트",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "server log test",
+    "createdAt": "2026-08-02T00:00:00Z"
+  },
+  {
+    "id": "local-1785710936242",
+    "name": "원격검증",
+    "attendance": "참석",
+    "guests": "3",
+    "message": "supabase로 바로 저장되는지 확인",
+    "createdAt": "2026-08-02T22:48:56.242Z"
+  },
+  {
+    "id": "local-1785710651741",
+    "name": "민호",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "추가로 확인해보겠습니다.",
+    "createdAt": "2026-08-02T22:44:11.741Z"
+  },
+  {
+    "id": "rsvp-2",
+    "name": "직접검증",
+    "attendance": "참석",
+    "guests": "2",
+    "message": "api direct check",
+    "createdAt": "2026-08-02T00:00:00Z"
+  },
+  {
+    "id": "manual-test",
+    "name": "테스트",
+    "attendance": "예정",
+    "guests": "2",
+    "message": "hello",
+    "createdAt": "2026-08-02T00:00:00Z"
+  }
+]

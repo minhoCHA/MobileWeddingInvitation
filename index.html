@@ -28,6 +28,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="ko-page">
@@ -59,22 +62,23 @@
     <section class="hero" id="hero" aria-label="청첩장 메인">
       <div class="hero-frame">
         <img class="hero-illustration"
-             src="images/hero-illustration.png"
+             src="images/119.jpg"
              alt="더스티 로즈 장미와 세이지 유칼립투스 가지의 워터컬러 보태니컬 일러스트"
              fetchpriority="high"
              width="1024" height="1280">
         <div class="hero-content">
-          <p class="hero-eyebrow script" data-hero-step="1">We&rsquo;re getting married</p>
-          <!-- <p class="hero-savedate en" data-hero-step="2">SAVE THE DATE<br><span class="hero-savedate-num">10 . 17 . 2026</span></p> -->
-          <h1 class="hero-names">
-            <span class="hero-name-ko" data-hero-step="3">차민호</span>
-            <span class="hero-amp script" data-hero-step="4">&amp;</span>
-            <span class="hero-name-ko" data-hero-step="5">조성경</span>
-          </h1>
-          <p class="hero-info" data-hero-step="6">
-            2026년 10월 17일 토요일 오후 4시<br>
-            삼청각 일화당
-          </p>
+          <div class="hero-card">
+            <p class="hero-eyebrow script" data-hero-step="1">We&rsquo;re getting married</p>
+            <h1 class="hero-names">
+              <span class="hero-name-ko" data-hero-step="3">차민호</span>
+              <span class="hero-amp script" data-hero-step="4">&amp;</span>
+              <span class="hero-name-ko" data-hero-step="5">조성경</span>
+            </h1>
+            <p class="hero-info" data-hero-step="6">
+              2026년 10월 17일 토요일 오후 4시<br>
+              삼청각 일화당
+            </p>
+          </div>
         </div>
       </div>
       <div class="scroll-indicator" data-hero-step="7" aria-hidden="true">
@@ -107,17 +111,17 @@
 
       <div class="couple-grid">
         <article class="couple-card couple-groom">
-          <p class="parents"><span>차재동</span> · <span>지미숙</span> 의 차남</p>
+          <p class="parents"><span>차재동</span> · <span>지미숙</span> 의 아들</p>
           <p class="couple-name">차민호 <span class="en">Minho Cha</span></p>
-          <p class="couple-bio">한 걸음씩, 진심을 닮아가는 사람.</p>
+          <!-- <p class="couple-bio">한 걸음씩, 진심을 닮아가는 사람.</p> -->
         </article>
 
         <span class="couple-amp script" aria-hidden="true">&amp;</span>
 
         <article class="couple-card couple-bride">
-          <p class="parents"><span>조권탁</span> · <span>왕금희</span> 의 장녀</p>
+          <p class="parents"><span>조권탁</span> · <span>왕금희</span> 의 딸</p>
           <p class="couple-name">조성경 <span class="en">Claire Cho</span></p>
-          <p class="couple-bio">곁에 머물수록 따뜻해지는 사람.</p>
+          <!-- <p class="couple-bio">곁에 머물수록 따뜻해지는 사람.</p> -->
         </article>
       </div>
       <img class="divider divider-narrow" src="images/floral-divider.png" alt="" loading="lazy" width="1536" height="512">
@@ -160,73 +164,83 @@
         나누고 싶습니다.
       </p>
 
-      <div class="gallery-stage" role="region" aria-label="사진 갤러리" aria-roledescription="carousel">
-        <ul class="gallery-track" id="gallery-track">
-          <li class="gallery-slide" aria-label="사진 1 / 5">
+      <div class="gallery-stage" role="region" aria-label="사진 갤러리">
+        <div class="gallery-grid">
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="0">
             <img src="images/111.jpg" alt="갤러리 1" loading="eager" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 2 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="1">
             <img src="images/112.jpg" alt="갤러리 2" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 3 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="2">
             <img src="images/113.jpg" alt="갤러리 3" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 4 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="3">
             <img src="images/114.jpg" alt="갤러리 4" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="4">
             <img src="images/115.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/116.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/117.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/118.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/119.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/120.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/121.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/122.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/123.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/124.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/125.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/126.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/127.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-          <li class="gallery-slide" aria-label="사진 5 / 5">
-            <img src="images/128.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
-          </li>
-        </ul>
-        <button class="gallery-nav gallery-prev" type="button" aria-label="이전 사진">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="gallery-nav gallery-next" type="button" aria-label="다음 사진">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="5">
+            <img src="images/116.jpg" alt="갤러리 6" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="6">
+            <img src="images/117.jpg" alt="갤러리 7" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="7">
+            <img src="images/118.jpg" alt="갤러리 8" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item" role="button" tabindex="0" data-index="8">
+            <img src="images/119.jpg" alt="갤러리 9" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="9">
+            <img src="images/120.jpg" alt="갤러리 10" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="10">
+            <img src="images/121.jpg" alt="갤러리 11" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="11">
+            <img src="images/122.jpg" alt="갤러리 12" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="12">
+            <img src="images/123.jpg" alt="갤러리 13" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="13">
+            <img src="images/124.jpg" alt="갤러리 14" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="14">
+            <img src="images/125.jpg" alt="갤러리 15" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="15">
+            <img src="images/126.jpg" alt="갤러리 16" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="16">
+            <img src="images/127.jpg" alt="갤러리 17" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+          <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="17">
+            <img src="images/128.jpg" alt="갤러리 18" loading="lazy" width="1024" height="1280">
+            <div class="gallery-overlay"></div>
+          </div>
+        </div>
+        <button id="gallery-load-more" class="btn btn-secondary" type="button" style="margin-top: 24px; width: 100%;">더 보기</button>
       </div>
-      <ol class="gallery-dots" id="gallery-dots" aria-hidden="true">
-        <li class="active"></li><li></li><li></li><li></li><li></li>
-      </ol>
       <p class="gallery-hint">사진을 누르면 크게 볼 수 있어요</p>
     </section>
 
@@ -248,28 +262,29 @@
       </div>
 
       <div class="venue-actions">
-        <a class="btn" href="https://map.kakao.com/?q=%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9D%B8%ED%84%B0%EC%BB%A8%ED%8B%B0%EB%84%A8%ED%83%88%20%EC%84%9C%EC%9A%B8%20%ED%8C%8C%EB%A5%B4%EB%82%98%EC%8A%A4" target="_blank" rel="noopener">카카오맵</a>
-        <a class="btn" href="https://map.naver.com/v5/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9D%B8%ED%84%B0%EC%BB%A8%ED%8B%B0%EB%84%A8%ED%83%88%20%EC%84%9C%EC%9A%B8%20%ED%8C%8C%EB%A5%B4%EB%82%98%EC%8A%A4" target="_blank" rel="noopener">네이버지도</a>
+        <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">카카오맵</a>
+        <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">네이버지도</a>
         <a class="btn" href="https://tmap.life/02fcf830" target="_blank" rel="noopener">T map</a>
       </div>
 
       <div class="directions">
         <article>
           <h3>지하철</h3>
-          <p>2호선 · 9호선 삼성중앙역 5번 출구<br>도보 약 3분</p>
+          <p>4호선 한성대입구역 6번 출구 · 3호선 안국역 5번 출구<br>셔틀 버스</p>
         </article>
-        <article>
-          <h3>버스</h3>
-          <p>무역센터 · 현대백화점 정류장 하차</p>
+        <article class="route-card">
+          <h3>삼청각 셔틀버스</h3>
+          <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">운행 시간표</a>
           <ul class="bus-list">
-            <li><span class="bus-tag bus-blue">간선</span> 146 · 341 · 360 · 740</li>
-            <li><span class="bus-tag bus-green">지선</span> 2415 · 4318</li>
-            <li><span class="bus-tag bus-red">광역</span> 9404 · 9407 · 9507</li>
+            <li><span class="bus-tag bus-blue">한성대입구역 6번출구</span>운행시간 / 11:00 ~ 21:00</li>
+            <span class="muted">미운행시간 (15:40~16:50)</span>
+            <li><span class="bus-tag bus-green">안국역 5번출구</span>운행시간 / 10:45 ~ 21:20</li>
+            <span class="muted">미운행시간 (15:55~16:25)</span>
           </ul>
         </article>
         <article>
           <h3>자가용 / 주차</h3>
-          <p>호텔 지하 주차장 이용<br>예식 시간 기준 3시간 무료 주차 지원<br><span class="muted">네비게이션: "삼청각 서울" 또는 "대사관로 3"</span></p>
+          <p>네비게이션: "삼청각" 입력<br>예식 시간 기준 3시간 무료 주차 지원<br><span class="muted">네비게이션: "삼청각" 또는 "대사관로 3"</span></p>
         </article>
       </div>
     </section>
@@ -334,8 +349,39 @@
         소중한 시간 내어 주시는 모든 분들께<br>
         미리 감사의 마음을 전합니다.
       </p>
-      <!-- placeholder: RSVP_FORM_URL 외부 폼(Tally / Google Form / FormSubmit)으로 교체 필요 -->
-      <a class="btn primary" href="#" id="rsvp-link" target="_blank" rel="noopener" data-placeholder-url>마음 전하기</a>
+      <div class="manager-panel is-hidden" id="manager-panel" aria-live="polite">
+        <div class="stats-panel is-hidden" id="rsvp-stats"></div>
+        <div class="manager-tabs" role="tablist" aria-label="RSVP 응답 필터">
+          <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">전체 리스트</button>
+          <button class="manager-tab" type="button" data-filter="참석" role="tab" aria-selected="false">참석</button>
+          <button class="manager-tab" type="button" data-filter="미참석" role="tab" aria-selected="false">미참석</button>
+          <button class="manager-tab" type="button" data-filter="미정" role="tab" aria-selected="false">미정</button>
+        </div>
+        <ul class="manager-list" id="rsvp-manager-list"></ul>
+      </div>
+      <form class="rsvp-form" id="rsvp-form" novalidate>
+        <label class="rsvp-field">
+          <span>성함</span>
+          <input type="text" name="name" placeholder="예: 홍길동" required>
+        </label>
+        <label class="rsvp-field">
+          <span>참석 여부</span>
+          <select name="attendance" required>
+            <option value="참석">참석</option>
+            <option value="미참석">미참석</option>
+            <option value="미정">미정</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>동행 인원</span>
+          <input type="number" name="guests" min="1" max="10" value="1">
+        </label>
+        <label class="rsvp-field">
+          <span>전하실 말씀</span>
+          <textarea name="message" rows="3" placeholder="식사 여부, 전하고 싶은 말, 동행 인원 등을 남겨 주세요"></textarea>
+        </label>
+        <button class="btn primary" type="submit">마음 전하기</button>
+      </form>
     </section>
 
     <!-- 9. GUESTBOOK -->
@@ -348,8 +394,19 @@
         오래도록 마음에 담아<br>
         간직하겠습니다.
       </p>
-      <!-- placeholder: GUESTBOOK_FORM_URL 외부 폼으로 교체 필요 -->
-      <a class="btn" href="#" id="guestbook-link" target="_blank" rel="noopener" data-placeholder-url>마음 남기기</a>
+      <div class="stats-panel is-hidden" id="guestbook-stats" aria-live="polite"></div>
+      <form class="guestbook-form" id="guestbook-form">
+        <label class="rsvp-field">
+          <span>이름</span>
+          <input type="text" name="name" placeholder="예: 김예식" required>
+        </label>
+        <label class="rsvp-field">
+          <span>축하의 마음</span>
+          <textarea name="message" rows="3" placeholder="축하의 마음을 한 줄 남겨 주세요"></textarea>
+        </label>
+        <button class="btn" type="submit">마음 남기기</button>
+      </form>
+      <ul class="guestbook-list" id="guestbook-list"></ul>
     </section>
 
     <!-- 10. SHARE -->
@@ -375,6 +432,12 @@
 
   <!-- 라이트박스 모달 -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="사진 확대 보기">
+    <button class="lightbox-nav lightbox-nav-prev" id="lightbox-prev" type="button" aria-label="이전 사진">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-nav-next" id="lightbox-next" type="button" aria-label="다음 사진">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <button class="lightbox-close" id="lightbox-close" type="button" aria-label="닫기">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
@@ -387,6 +450,6 @@
   <!-- placeholder: 카카오 SDK (KAKAO_JS_KEY 발급 후 활성화) -->
   <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script> -->
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260802-3"></script>
 </body>
 </html>
