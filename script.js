@@ -641,6 +641,14 @@
     return '미정';
   }
 
+  function getMealLabel(value) {
+    const normalized = String(value || '').trim();
+    if (normalized === '1' || /^(O|Y|YES)$/i.test(normalized)) return '식사 예정';
+    if (normalized === '-1' || /^(X|N|NO)$/i.test(normalized)) return '식사 안 함';
+    if (normalized === '0' || /^미정|PENDING|NOT SURE/i.test(normalized)) return '미정';
+    return normalized || '미정';
+  }
+
   function getFilteredRsvpEntries(entries) {
     if (!activeRsvpFilter || activeRsvpFilter === 'all') return entries;
     return entries.filter((entry) => getAttendanceCategory(entry) === activeRsvpFilter);
@@ -713,7 +721,7 @@
           const attendance = String(entry.attendance || '미정').trim() || '미정';
           const guestCount = Number(entry.guests) || 0;
           const side = String(entry.side || '미선택').trim() || '미선택';
-          const meal = String(entry.meal || '-').trim() || '-';
+          const meal = getMealLabel(entry.meal);
           const afterparty = String(entry.afterparty || '').trim();
           const summary = [`구분 ${side}`, `동반 ${guestCount}명`, `식사 ${meal}`];
           if (afterparty) summary.push(`애프터 ${afterparty}`);
