@@ -31,6 +31,7 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <base href="/">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="ko-page">
@@ -388,6 +389,14 @@
           <select name="meal" required>
             <option value="O">O</option>
             <option value="X">X</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>애프터 파티</span>
+          <select name="afterparty" required>
+            <option value="참석">참석</option>
+            <option value="불참">불참</option>
+            <option value="미정">미정</option>
           </select>
         </label>
         <button class="btn primary" type="submit">마음 전하기</button>

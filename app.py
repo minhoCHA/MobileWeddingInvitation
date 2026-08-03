@@ -99,8 +99,20 @@ def index():
     return send_from_directory('.', 'index.html')
 
 
+@app.route('/en/')
+def index_en():
+    return send_from_directory('en', 'index.html')
+
+
+@app.route('/friends/')
+def index_friends():
+    return send_from_directory('friends', 'index.html')
+
+
 @app.route('/<path:path>')
 def static_proxy(path):
+    if path.endswith('/'):
+        return send_from_directory(path.rstrip('/'), 'index.html')
     return send_from_directory('.', path)
 
 

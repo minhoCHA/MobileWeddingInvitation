@@ -670,7 +670,7 @@
 
   function getAttendanceCategory(entry) {
     const attendance = String(entry.attendance || '').trim();
-    if (/미참석|Not attending/i.test(attendance)) return '미참석';
+    if (/불참|미참석|Not attending/i.test(attendance)) return '불참';
     if (/미정|Pending/i.test(attendance)) return '미정';
     if (/참석|Attending/i.test(attendance)) return '참석';
     return '미정';
@@ -722,9 +722,12 @@
       .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
     const attending = entries.filter((entry) => getAttendanceCategory(entry) === '참석').length;
-    const declined = entries.filter((entry) => getAttendanceCategory(entry) === '미참석').length;
+    const declined = entries.filter((entry) => getAttendanceCategory(entry) === '불참').length;
     const pending = entries.filter((entry) => getAttendanceCategory(entry) === '미정').length;
-    const totalGuests = entries.reduce((sum, entry) => sum + (Number(entry.guests) || 1), 0);
+    const totalGuests = entries.reduce((sum, entry) => {
+      if (getAttendanceCategory(entry) !== '참석') return sum;
+      return sum + 1 + (Number(entry.guests) || 0);
+    }, 0);
     const filteredEntries = getFilteredRsvpEntries(entries);
 
     container.innerHTML = `
@@ -743,8 +746,13 @@
       } else {
         list.innerHTML = filteredEntries.map((entry) => {
           const attendance = String(entry.attendance || '미정').trim() || '미정';
-          const guestCount = Number(entry.guests) || 1;
-          const note = String(entry.message || '').trim() || '전할 말씀이 남겨지지 않았어요.';
+          const guestCount = Number(entry.guests) || 0;
+          const side = String(entry.side || '미선택').trim() || '미선택';
+          const meal = String(entry.meal || '-').trim() || '-';
+          const afterparty = String(entry.afterparty || '').trim();
+          const summary = [`구분 ${side}`, `동반 ${guestCount}명`, `식사 ${meal}`];
+          if (afterparty) summary.push(`애프터 ${afterparty}`);
+          const note = String(entry.message || '').trim();
           return `
             <li>
               <div class="manager-item-top">
@@ -755,10 +763,10 @@
                 </div>
               </div>
               <div class="manager-item-meta">
-                <span>인원 ${guestCount}명</span>
+                <span>${escapeHtml(summary.join(' · '))}</span>
                 <span>${escapeHtml(formatRsvpTime(entry.createdAt))}</span>
               </div>
-              <p>${escapeHtml(note)}</p>
+              <p>${escapeHtml(note || '추가 메모 없음')}</p>
             </li>
           `;
         }).join('');
@@ -840,8 +848,11 @@
         const data = new FormData(rsvpForm);
         const payload = {
           name: String(data.get('name') || '').trim(),
+          side: String(data.get('side') || '').trim(),
           attendance: String(data.get('attendance') || '').trim(),
-          guests: String(data.get('guests') || '1').trim(),
+          guests: String(data.get('guests') || '0').trim(),
+          meal: String(data.get('meal') || '').trim(),
+          afterparty: String(data.get('afterparty') || '').trim(),
           message: String(data.get('message') || '').trim(),
           subject: "Minho & Clair's Wedding Data - RSVP",
           _subject: "Minho & Clair's Wedding Data - RSVP"
@@ -853,17 +864,20 @@
         try {
           await writeStoredEntries('wedding_rsvp_entries', [{
             name: payload.name,
+            side: payload.side,
             attendance: payload.attendance,
             guests: payload.guests,
+            meal: payload.meal,
+            afterparty: payload.afterparty,
             message: payload.message,
             createdAt: new Date().toISOString()
           }]);
           void renderRsvpStats();
 
           rsvpForm.reset();
-          const guestCount = Number(payload.guests) || 1;
+          const guestCount = Number(payload.guests) || 0;
           const attendanceLabel = payload.attendance || '참석';
-          showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
+          showToast(`${attendanceLabel} · 동반 ${guestCount}명으로 저장되었습니다`);
         } catch (err) {
           showToast('저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
         }
@@ -872,6 +886,7 @@
 
     async function renderGuestbook() {
       if (!guestbookList) return;
+      const managerView = isManagerView();
       let entries = [];
       try {
         entries = await readStoredEntries('wedding_guestbook_entries');
@@ -885,7 +900,10 @@
       }
       guestbookList.innerHTML = entries.map((entry) => {
         const time = new Date(entry.createdAt).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-        return `<li><div class="guestbook-meta"><strong>${escapeHtml(entry.name || '익명')}</strong><div class="guestbook-meta-actions"><span>${escapeHtml(time)}</span><button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">삭제</button></div></div><p>${escapeHtml(entry.message || '')}</p></li>`;
+        const deleteButton = managerView
+          ? `<button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">삭제</button>`
+          : '';
+        return `<li><div class="guestbook-meta"><strong>${escapeHtml(entry.name || '익명')}</strong><div class="guestbook-meta-actions"><span>${escapeHtml(time)}</span>${deleteButton}</div></div><p>${escapeHtml(entry.message || '')}</p></li>`;
       }).join('');
     }
 
@@ -908,6 +926,7 @@
 
     if (guestbookList) {
       guestbookList.addEventListener('click', async (e) => {
+        if (!isManagerView()) return;
         const button = e.target.closest('[data-entry-id]');
         if (!button) return;
         const id = button.getAttribute('data-entry-id');

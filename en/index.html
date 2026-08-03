@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body class="en-page">
-  <div class="language-switch"><a href="/" aria-label="Switch to Korean version">한국어</a></div>
+  <div class="language-switch"><a href="/friends/" aria-label="Switch to Korean version">한국어</a></div>
   <!-- 배경 모션: 꽃잎 파티클 캔Bus (prefers-reduced-motion에서는 숨김) -->
   <canvas class="bg-petals" aria-hidden="true"></canvas>
 
@@ -349,7 +349,7 @@
         <div class="manager-tabs" role="tablist" aria-label="RSVP response filter">
           <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All list</button>
           <button class="manager-tab" type="button" data-filter="참석" role="tab" aria-selected="false">Attending</button>
-          <button class="manager-tab" type="button" data-filter="미참석" role="tab" aria-selected="false">Not attending</button>
+          <button class="manager-tab" type="button" data-filter="불참" role="tab" aria-selected="false">Not attending</button>
           <button class="manager-tab" type="button" data-filter="미정" role="tab" aria-selected="false">Pending</button>
         </div>
         <ul class="manager-list" id="rsvp-manager-list"></ul>
@@ -360,20 +360,38 @@
           <input type="text" name="name" placeholder="e.g. Jane Kim" required>
         </label>
         <label class="rsvp-field">
-          <span>Attendance</span>
-          <select name="attendance" required>
-            <option value="Attending">Attending</option>
-            <option value="Not attending">Not attending</option>
-            <option value="Pending">Pending</option>
+          <span>Side</span>
+          <select name="side" required>
+            <option value="신랑">Groom</option>
+            <option value="신부">Bride</option>
           </select>
         </label>
         <label class="rsvp-field">
-          <span>Guests</span>
-          <input type="number" name="guests" min="1" max="10" value="1">
+          <span>Attendance</span>
+          <select name="attendance" required>
+            <option value="참석">Attending</option>
+            <option value="불참">Not attending</option>
+            <option value="미정">Pending</option>
+          </select>
         </label>
         <label class="rsvp-field">
-          <span>Note</span>
-          <textarea name="message" rows="3" placeholder="Meal preference, message, or guest notes"></textarea>
+          <span>Additional Guests</span>
+          <input type="number" name="guests" min="0" max="10" value="0">
+        </label>
+        <label class="rsvp-field">
+          <span>Meal</span>
+          <select name="meal" required>
+            <option value="O">Yes</option>
+            <option value="X">No</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>After Party</span>
+          <select name="afterparty" required>
+            <option value="참석">Attending</option>
+            <option value="불참">Not attending</option>
+            <option value="미정">Pending</option>
+          </select>
         </label>
         <button class="btn primary" type="submit">Send RSVP</button>
       </form>

@@ -16,8 +16,11 @@ module.exports = async function handler(req, res) {
       const entry = {
         id: payload.id || `rsvp-${Date.now()}`,
         name: payload.name || '익명',
+        side: payload.side || '',
         attendance: payload.attendance || '미정',
-        guests: payload.guests || '1',
+        guests: payload.guests || '0',
+        meal: payload.meal || '',
+        afterparty: payload.afterparty || '',
         message: payload.message || '',
         createdAt: payload.createdAt || new Date().toISOString()
       };

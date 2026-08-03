@@ -44,8 +44,11 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     entry = {
         'id': payload.get('id') or f"{table}-{int(datetime.now(timezone.utc).timestamp()*1000)}",
         'name': payload.get('name', '익명'),
+        'side': payload.get('side', ''),
         'attendance': payload.get('attendance', '미정'),
-        'guests': payload.get('guests', '1'),
+        'guests': payload.get('guests', '0'),
+        'meal': payload.get('meal', ''),
+        'afterparty': payload.get('afterparty', ''),
         'message': payload.get('message', ''),
         'createdAt': payload.get('createdAt') or now_iso(),
     }

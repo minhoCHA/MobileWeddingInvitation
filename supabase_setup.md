@@ -8,8 +8,11 @@
 create table if not exists public.rsvp (
   id text primary key,
   name text not null,
+  side text default '',
   attendance text not null default '미정',
-  guests text not null default '1',
+  guests text not null default '0',
+  meal text default '',
+  afterparty text default '',
   message text default '',
   "createdAt" text not null
 );
@@ -31,6 +34,11 @@ create policy "Allow public delete on rsvp" on public.rsvp for delete using (tru
 create policy "Allow public insert on guestbook" on public.guestbook for insert with check (true);
 create policy "Allow public select on guestbook" on public.guestbook for select using (true);
 create policy "Allow public delete on guestbook" on public.guestbook for delete using (true);
+
+alter table public.rsvp add column if not exists side text default '';
+alter table public.rsvp add column if not exists meal text default '';
+alter table public.rsvp add column if not exists afterparty text default '';
 ```
 
-4. 실행 후 서버를 재시작하면, 앱이 Supabase를 우선 사용하고 테이블이 없을 때는 로컬 JSON 폴백으로 동작합니다.
+4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` 구문까지 꼭 실행해야 새 RSVP 필드가 정상 저장됩니다.
+5. 실행 후 서버를 재시작합니다.
