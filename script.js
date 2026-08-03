@@ -642,12 +642,13 @@
         return payload.entries;
       }
     } catch (e) {
-      // fall through to local fallback if backend is unavailable
+      const normalized = entries.slice(0, 100);
+      localStorage.setItem(key, JSON.stringify(normalized));
+      showToast('서버 저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
+      return normalized;
     }
 
-    const normalized = entries.slice(0, 100);
-    localStorage.setItem(key, JSON.stringify(normalized));
-    return normalized;
+    return [];
   }
 
   async function removeStoredEntry(key, id) {
