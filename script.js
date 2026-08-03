@@ -10,8 +10,8 @@
   // PLACEHOLDERS — 실제 운영 시 아래 값을 채워주세요.
   // ---------------------------------------------------------
   const KAKAO_JS_KEY     = ''; // placeholder: 카카오 JavaScript 키 (https://developers.kakao.com/)
-  const RSVP_FORM_URL    = 'https://formsubmit.co/ajax/minhocha1004@gmail.com';
-  const GUESTBOOK_URL    = 'https://formsubmit.co/ajax/minhocha1004@gmail.com';
+  const RSVP_FORM_URL    = '';
+  const GUESTBOOK_URL    = '';
   const SHARE_TITLE      = '차민호 ♡ 조성경 결혼합니다';
   const SHARE_DESC       = '2026년 10월 17일 토요일 오후 4시\n삼청각 일화당';
   const SHARE_IMAGE      = location.origin + '/images/og-thumbnail.png';
@@ -859,14 +859,10 @@
         await writeStoredEntries('wedding_rsvp_entries', nextEntries);
         void renderRsvpStats();
 
-        submitToEndpoint(RSVP_FORM_URL, payload).then((sent) => {
-          if (sent) {
-            rsvpForm.reset();
-            const guestCount = Number(payload.guests) || 1;
-            const attendanceLabel = payload.attendance || '참석';
-            showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
-          }
-        });
+        rsvpForm.reset();
+        const guestCount = Number(payload.guests) || 1;
+        const attendanceLabel = payload.attendance || '참석';
+        showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
       });
     }
 
@@ -926,17 +922,6 @@
         guestbookForm.reset();
         await renderGuestbook();
         await renderGuestbookStats();
-        submitToEndpoint(GUESTBOOK_URL, {
-          name,
-          message: [
-            "Minho & Clair's Wedding Data - Guestbook",
-            "",
-            `이름: ${name}`,
-            `메시지: ${message}`
-          ].join('\n'),
-          subject: "Minho & Clair's Wedding Data - Guestbook",
-          _subject: "Minho & Clair's Wedding Data - Guestbook"
-        }).catch(() => {});
         showToast('방명록에 마음이 저장되었습니다');
       });
     }
