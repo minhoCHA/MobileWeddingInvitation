@@ -54,10 +54,28 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     }
     if table == 'guestbook':
         entry = {'id': entry['id'], 'name': entry['name'], 'message': entry['message'], 'createdAt': entry['createdAt']}
-    response = supabase.table(table).insert(entry).execute()
-    if hasattr(response, 'data'):
-        return response.data or []
-    return []
+    try:
+        response = supabase.table(table).insert(entry).execute()
+        if hasattr(response, 'data'):
+            return response.data or []
+        return []
+    except Exception:
+        # Backward-compatible fallback for older RSVP schemas
+        # that do not yet include side/meal/afterparty columns.
+        if table == 'rsvp':
+            legacy_entry = {
+                'id': entry['id'],
+                'name': entry['name'],
+                'attendance': entry['attendance'],
+                'guests': entry['guests'],
+                'message': entry['message'],
+                'createdAt': entry['createdAt'],
+            }
+            response = supabase.table(table).insert(legacy_entry).execute()
+            if hasattr(response, 'data'):
+                return response.data or []
+            return []
+        raise
 
 
 def delete_entry(key: str, entry_id: str) -> List[Dict[str, Any]]:

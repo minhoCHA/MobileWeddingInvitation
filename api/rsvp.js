@@ -24,7 +24,20 @@ module.exports = async function handler(req, res) {
         message: payload.message || '',
         createdAt: payload.createdAt || new Date().toISOString()
       };
-      const entries = await createEntry(table, entry);
+      let entries;
+      try {
+        entries = await createEntry(table, entry);
+      } catch (_err) {
+        // Fallback for older RSVP schemas without side/meal/afterparty columns.
+        entries = await createEntry(table, {
+          id: entry.id,
+          name: entry.name,
+          attendance: entry.attendance,
+          guests: entry.guests,
+          message: entry.message,
+          createdAt: entry.createdAt
+        });
+      }
       return res.status(200).json({ ok: true, entries });
     }
 
