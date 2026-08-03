@@ -41,6 +41,24 @@
     });
   }
 
+  function setupIntroOverlay(onDone) {
+    const overlay = $('#intro-overlay');
+    if (!overlay) {
+      if (typeof onDone === 'function') onDone();
+      return;
+    }
+
+    const holdMs = isReduced() ? 220 : 1180;
+    window.setTimeout(() => {
+      overlay.classList.add('is-leaving');
+      document.body.classList.remove('intro-active');
+      if (typeof onDone === 'function') onDone();
+      window.setTimeout(() => {
+        overlay.hidden = true;
+      }, isReduced() ? 0 : 560);
+    }, holdMs);
+  }
+
   // ---------------------------------------------------------
   // 2. IntersectionObserver fade reveal
   // ---------------------------------------------------------
@@ -307,7 +325,7 @@
   }
 
   // ---------------------------------------------------------
-  // 6. Lightbox + pinch zoom + double-tap (motion §3-5)
+  // 6. Lightbox (no in-modal zoom; swipe only)
   // ---------------------------------------------------------
   let lightboxAPI = null;
   function setupLightbox() {
@@ -319,21 +337,9 @@
     if (!lb || !img || !close || !prevBtn || !nextBtn) return;
 
     const slides = $$('.gallery-grid-item img');
-    let scale = 1;
-    let originX = 0, originY = 0;
-    let lastDist = 0;
-    let lastTap = 0;
-    let panStart = null;
+    let touchStartX = null;
     let prevFocus = null;
     let currentIdx = 0;
-
-    function setTransform() {
-      img.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
-    }
-    function reset() {
-      scale = 1; originX = 0; originY = 0;
-      img.style.transform = '';
-    }
 
     function showSlide(i) {
       const total = galleryAPI?.count || slides.length;
@@ -341,7 +347,6 @@
       currentIdx = (i + total) % total;
       img.src = slides[currentIdx].src;
       img.alt = slides[currentIdx].alt || '';
-      reset();
     }
 
     function open(i) {
@@ -359,7 +364,6 @@
       lb.classList.remove('is-open');
       setTimeout(() => {
         lb.hidden = true;
-        reset();
         document.body.style.overflow = '';
         if (prevFocus && prevFocus.focus) prevFocus.focus();
       }, isReduced() ? 0 : 220);
@@ -380,67 +384,27 @@
       }
     });
 
-    // Pinch / double-tap zoom / swipe navigation
-    let swipeStartX = null;
+    // Swipe navigation only
     img.addEventListener('touchstart', (e) => {
-      lb.classList.add('is-zooming');
-      if (e.touches.length === 2) {
-        const [a, b] = e.touches;
-        lastDist = Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
-        swipeStartX = null;
-      } else if (e.touches.length === 1) {
-        const now = Date.now();
-        swipeStartX = e.touches[0].clientX;
-        if (now - lastTap < 300) {
-          scale = scale > 1.05 ? 1 : 2.4;
-          originX = 0; originY = 0;
-          lb.classList.remove('is-zooming');
-          setTransform();
-          haptic(10);
-        } else {
-          if (scale > 1) {
-            panStart = { x: e.touches[0].clientX - originX, y: e.touches[0].clientY - originY };
-          }
-        }
-        lastTap = now;
-      }
+      if (e.touches.length !== 1) return;
+      touchStartX = e.touches[0].clientX;
     }, { passive: true });
 
     img.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 2) {
-        const [a, b] = e.touches;
-        const d = Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
-        if (lastDist > 0) {
-          scale = clamp(scale * (d / lastDist), 1, 3);
-          setTransform();
+      if (e.touches.length !== 1 || touchStartX === null) return;
+      const deltaX = e.touches[0].clientX - touchStartX;
+      if (Math.abs(deltaX) > 40) {
+        if (deltaX < 0) {
+          showSlide(currentIdx + 1);
+        } else {
+          showSlide(currentIdx - 1);
         }
-        lastDist = d;
-        swipeStartX = null;
-      } else if (e.touches.length === 1 && panStart && scale > 1) {
-        originX = e.touches[0].clientX - panStart.x;
-        originY = e.touches[0].clientY - panStart.y;
-        setTransform();
-      } else if (e.touches.length === 1 && scale <= 1.05 && swipeStartX !== null) {
-        const deltaX = e.touches[0].clientX - swipeStartX;
-        if (Math.abs(deltaX) > 40) {
-          if (deltaX < 0) {
-            showSlide(currentIdx + 1);
-          } else {
-            showSlide(currentIdx - 1);
-          }
-          swipeStartX = null;
-        }
+        touchStartX = null;
       }
     }, { passive: true });
 
-    img.addEventListener('touchend', (e) => {
-      if (e.touches.length === 0) {
-        lastDist = 0;
-        panStart = null;
-        swipeStartX = null;
-        if (scale < 1.05) reset();
-        lb.classList.remove('is-zooming');
-      }
+    img.addEventListener('touchend', () => {
+      touchStartX = null;
     });
 
     lightboxAPI = { open };
@@ -817,10 +781,101 @@
   }
 
   function setupRSVPAndGuestbook() {
+    const body = document.body;
+    const rsvpModal = $('#rsvp-modal');
+    const rsvpOpenBtn = $('#rsvp-open');
+    const rsvpCloseBtn = $('#rsvp-modal-close');
     const rsvpForm = $('#rsvp-form');
     const guestbookForm = $('#guestbook-form');
     const guestbookList = $('#guestbook-list');
     const managerList = $('#rsvp-manager-list');
+    const enhancedSelectInstances = [];
+    let previousFocusedElement = null;
+
+    function setupEnhancedSelects() {
+      if (!rsvpForm || typeof window.TomSelect !== 'function') return;
+      const selects = Array.from(rsvpForm.querySelectorAll('select'));
+      selects.forEach((select) => {
+        if (select.dataset.enhanced === 'true') return;
+        const instance = new window.TomSelect(select, {
+          create: false,
+          maxOptions: 20,
+          persist: false,
+          allowEmptyOption: false,
+          copyClassesToDropdown: false,
+          render: {
+            option(data, escape) {
+              return `<div class="ts-opt-row"><span class="ts-opt-dot" aria-hidden="true"></span><span>${escape(data.text)}</span></div>`;
+            },
+            item(data, escape) {
+              return `<div>${escape(data.text)}</div>`;
+            }
+          }
+        });
+        select.dataset.enhanced = 'true';
+        enhancedSelectInstances.push(instance);
+      });
+    }
+
+    function getFocusableElements(container) {
+      if (!container) return [];
+      return Array.from(container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter((element) => !element.hasAttribute('disabled') && !element.getAttribute('aria-hidden'));
+    }
+
+    function openRsvpModal() {
+      if (!rsvpModal) return;
+      previousFocusedElement = document.activeElement;
+      rsvpModal.hidden = false;
+      requestAnimationFrame(() => rsvpModal.classList.add('is-open'));
+      body.classList.add('modal-open');
+      const focusables = getFocusableElements(rsvpModal);
+      (focusables[0] || rsvpCloseBtn || rsvpModal).focus();
+    }
+
+    function closeRsvpModal() {
+      if (!rsvpModal || rsvpModal.hidden) return;
+      rsvpModal.classList.remove('is-open');
+      body.classList.remove('modal-open');
+      window.setTimeout(() => {
+        rsvpModal.hidden = true;
+      }, 220);
+      if (previousFocusedElement instanceof HTMLElement) {
+        previousFocusedElement.focus();
+      } else {
+        rsvpOpenBtn?.focus();
+      }
+    }
+
+    if (rsvpOpenBtn && rsvpModal) {
+      rsvpOpenBtn.addEventListener('click', openRsvpModal);
+      rsvpCloseBtn?.addEventListener('click', closeRsvpModal);
+      rsvpModal.addEventListener('click', (event) => {
+        if (event.target === rsvpModal) {
+          closeRsvpModal();
+        }
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !rsvpModal.hidden) {
+          closeRsvpModal();
+          return;
+        }
+        if (event.key !== 'Tab' || rsvpModal.hidden) return;
+        const focusables = getFocusableElements(rsvpModal);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+
+        if (event.shiftKey && active === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+    }
 
     async function submitToEndpoint(endpoint, fields) {
       const payload = new URLSearchParams();
@@ -875,6 +930,11 @@
           void renderRsvpStats();
 
           rsvpForm.reset();
+          enhancedSelectInstances.forEach((instance) => {
+            const value = instance.input.value;
+            instance.setValue(value, true);
+          });
+          closeRsvpModal();
           const guestCount = Number(payload.guests) || 0;
           const attendanceLabel = payload.attendance || '참석';
           showToast(`${attendanceLabel} · 동반 ${guestCount}명으로 저장되었습니다`);
@@ -966,6 +1026,7 @@
     }
 
     setupRsvpManagerTabs();
+    setupEnhancedSelects();
     void renderGuestbook();
     void renderRsvpStats();
     void renderGuestbookStats();
@@ -975,7 +1036,7 @@
   // INIT
   // ---------------------------------------------------------
   function init() {
-    setupHero();
+    setupIntroOverlay(setupHero);
     setupReveal();
     setupPetals();
     setupCalendar();

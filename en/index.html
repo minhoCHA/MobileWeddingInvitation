@@ -30,7 +30,13 @@
 
   <link rel="stylesheet" href="/style.css">
 </head>
-<body class="en-page">
+<body class="en-page intro-active">
+  <div class="intro-overlay" id="intro-overlay" role="status" aria-live="polite">
+    <div class="intro-inner">
+      <p class="intro-title"><span>Minho</span><span class="intro-amp script">&amp;</span><span>Claire</span></p>
+      <p class="intro-sub">You are invited to our wedding</p>
+    </div>
+  </div>
   <div class="language-switch"><a href="/friends/" aria-label="Switch to Korean version">한국어</a></div>
   <!-- 배경 모션: 꽃잎 파티클 캔Bus (prefers-reduced-motion에서는 숨김) -->
   <canvas class="bg-petals" aria-hidden="true"></canvas>
@@ -97,7 +103,7 @@
         <p class="reveal-line">make this day unforgettable.</p>
         <p class="reveal-line">We will cherish it always.</p>
       </div>
-      <p class="greeting-en script">A quiet promise, in autumn light.</p>
+      <!-- <p class="greeting-en script">A quiet promise, in autumn light.</p> -->
     </section>
 
     <!-- 3. COUPLE INTRO -->
@@ -145,6 +151,37 @@
         <p class="dday-label">Until Minho & Seongkyung wedding</p>
         <p class="dday">D - <span id="dday-num" data-target="0">0</span></p>
         <p class="dday-sub">Saturday, October 17, 2026 4 PM<br>Samcheonggak Ilhwa-dang</p>
+      </div>
+    </section>
+
+    <!-- 4-1. AFTER PARTY -->
+    <section class="section afterparty reveal" id="afterparty" aria-labelledby="afterparty-heading">
+      <p class="section-eyebrow en">AFTER PARTY</p>
+      <h2 class="section-title" id="afterparty-heading">After Party</h2>
+      <p class="afterparty-message">
+        After the wedding, we are going out for a fun night with friends.<br>
+        The after party runs from 6 PM to 12 AM, and you are welcome to join later or leave early.<br>
+        Please check your after-party attendance in the RSVP form below.
+      </p>
+      <p class="afterparty-route">From Samcheonggak to Liquortation: about 20-30 minutes by car</p>
+      <article class="afterparty-card" aria-label="After-party details">
+        <p><strong>Venue</strong><span>Liquortation (리커테이션)</span></p>
+        <p><strong>Address</strong><span>B1, 13 Apgujeong-ro 10-gil, Gangnam-gu, Seoul</span></p>
+        <p><strong>Taxi</strong><span>Approx. KRW 8,000-15,000 from Samcheonggak</span></p>
+      </article>
+      <div class="afterparty-faq" aria-label="Transport and parking info">
+        <article>
+          <h3>Q. How can I get there by subway?</h3>
+          <p>About an 8-minute walk from Apgujeong Station (Line 3) or Sinsa Station (Line 3).</p>
+        </article>
+        <article>
+          <h3>Q. Is parking available?</h3>
+          <p>Paid on-site parking and valet service are available. Nearby public parking guidance is provided when busy.</p>
+        </article>
+      </div>
+      <div class="afterparty-actions">
+        <a class="btn primary" href="https://map.naver.com/p/search/%EB%A6%AC%EC%BB%A4%ED%85%8C%EC%9D%B4%EC%85%98?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608031147%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EB%A6%AC%EC%BB%A4%ED%85%8C%EC%9D%B4%EC%85%98" target="_blank" rel="noopener">Open Naver Map</a>
+        <a class="btn" href="https://liquortation.com/" target="_blank" rel="noopener">Official Website</a>
       </div>
     </section>
 
@@ -239,17 +276,21 @@
     </section>
 
     <!-- 6. VENUE -->
+    <!-- Legacy venue layout backup kept for potential reuse.
     <section class="section venue reveal" id="venue" aria-labelledby="venue-heading">
       <p class="section-eyebrow en">LOCATION</p>
       <h2 class="section-title" id="venue-heading">How to Find Us</h2>
       <p class="venue-name">Samcheonggak</p>
       <p class="venue-hall">Ilhwa-dang</p>
       <p class="venue-addr">3 Daesagwan-ro, Seongbuk-gu, Seoul</p>
+    </section>
+    -->
+    <section class="section venue reveal venue-modern" id="venue" aria-labelledby="venue-heading">
+      <p class="section-eyebrow en">LOCATION</p>
+      <h2 class="section-title" id="venue-heading">How to Find Us</h2>
+      <p class="venue-name">Samcheonggak Ilhwa-dang</p>
+      <p class="venue-addr">3 Daesagwan-ro, Seongbuk-gu, Seoul</p>
 
-      <!-- 지도: Kakao Map SDK가 없으면 정적 placeholder -->
-      <!-- placeholder: KAKAO_JS_KEY 가 설정되면 Kakao Map SDK가 활성화됩니다. (script.js 의 KAKAO_JS_KEY 상수 확인) -->
-      https://www.google.com/maps/place/Samcheong-Gag/@37.5972914,126.981571,17z/data=!3m1!4b1!4m6!3m5!1s0x357cbd3184998183:0xd19574c9bb643b4d!8m2!3d37.5972872!4d126.9841513!16s%2Fg%2F1q5ccch1y?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D
-      
       <div id="map" class="map-static" aria-label="Venue location map">
         <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
@@ -257,29 +298,32 @@
         </div>
       </div>
 
+      <div class="venue-quick" aria-label="Quick route info">
+        <span class="venue-chip">Subway + shuttle recommended</span>
+        <span class="venue-chip">3-hour free parking during ceremony</span>
+      </div>
+
       <div class="venue-actions">
-        <a class="btn" href="https://map.kakao.com/?q=%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9D%B8%ED%84%B0%EC%BB%A8%ED%8B%B0%EB%84%A8%ED%83%88%20%EC%84%9C%EC%9A%B8%20%ED%8C%8C%EB%A5%B4%EB%82%98%EC%8A%A4" target="_blank" rel="noopener">Kakao Map</a>
-        <a class="btn" href="https://map.naver.com/v5/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9D%B8%ED%84%B0%EC%BB%A8%ED%8B%B0%EB%84%A8%ED%83%88%20%EC%84%9C%EC%9A%B8%20%ED%8C%8C%EB%A5%B4%EB%82%98%EC%8A%A4" target="_blank" rel="noopener">Naver Map</a>
+        <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">Kakao Map</a>
+        <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">Naver Map</a>
         <a class="btn" href="https://tmap.life/02fcf830" target="_blank" rel="noopener">T map</a>
       </div>
 
-      <div class="directions">
+      <article class="venue-info-card" aria-label="Transit details">
+        <p><strong>Subway</strong><span>Line 4 Hansung Univ. Exit 6 / Line 3 Anguk Exit 5</span></p>
+        <p><strong>Shuttle</strong><span>Board at Hansung Univ. or Anguk station (check break times)</span></p>
+        <p><strong>Nav</strong><span>Search "Samcheonggak" or "3 Daesagwan-ro"</span></p>
+      </article>
+
+      <div class="venue-faq" aria-label="Detailed guidance">
         <article>
-          <h3>Subway</h3>
-          <p>Line 2 · Line 9 Samseong Jungang Station Exit 5<br>About a 3-minute walk</p>
-        </article>
-        <article class="route-card">
-          <h3>Bus</h3>
-          <p>Get off at Trade Center · Hyundai Department Store stop</p>
-          <ul class="bus-list">
-            <li><span class="bus-tag bus-blue">Main</span> 146 · 341 · 360 · 740</li>
-            <li><span class="bus-tag bus-green">Local</span> 2415 · 4318</li>
-            <li><span class="bus-tag bus-red">Express</span> 9404 · 9407 · 9507</li>
-          </ul>
+          <h3>Q. Where can I check shuttle times?</h3>
+          <p>Use the button below to open the official Samcheonggak shuttle timetable PDF.</p>
+          <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">Shuttle Timetable</a>
         </article>
         <article>
-          <h3>Car / Parking</h3>
-          <p>Use the hotel underground parking lot<br>3 hours free parking during the ceremony<br><span class="muted">Navigation: "Samcheonggak Seoul" or "Daesagwan-ro 3"</span></p>
+          <h3>Q. Is parking available?</h3>
+          <p>Yes, 3-hour complimentary parking is provided during the wedding schedule.</p>
         </article>
       </div>
     </section>
@@ -354,47 +398,7 @@
         </div>
         <ul class="manager-list" id="rsvp-manager-list"></ul>
       </div>
-      <form class="rsvp-form" id="rsvp-form" novalidate>
-        <label class="rsvp-field">
-          <span>Name</span>
-          <input type="text" name="name" placeholder="e.g. Jane Kim" required>
-        </label>
-        <label class="rsvp-field">
-          <span>Side</span>
-          <select name="side" required>
-            <option value="신랑">Groom</option>
-            <option value="신부">Bride</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>Attendance</span>
-          <select name="attendance" required>
-            <option value="참석">Attending</option>
-            <option value="불참">Not attending</option>
-            <option value="미정">Pending</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>Additional Guests</span>
-          <input type="number" name="guests" min="0" max="10" value="0">
-        </label>
-        <label class="rsvp-field">
-          <span>Meal</span>
-          <select name="meal" required>
-            <option value="O">Yes</option>
-            <option value="X">No</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>After Party</span>
-          <select name="afterparty" required>
-            <option value="참석">Attending</option>
-            <option value="불참">Not attending</option>
-            <option value="미정">Pending</option>
-          </select>
-        </label>
-        <button class="btn primary" type="submit">Send RSVP</button>
-      </form>
+      <button class="btn primary rsvp-open-btn" id="rsvp-open" type="button" aria-haspopup="dialog" aria-controls="rsvp-modal">Open RSVP form</button>
     </section>
 
     <!-- 9. GUESTBOOK -->
@@ -438,8 +442,59 @@
       <p class="script">Thank you</p>
       <p class="footer-line">2026 . 10 . 17</p>
       <p class="footer-line en">민호 &amp; 성경</p>
+      <p class="footer-copy">Copyright © Minho Cha. All rights reserved.</p>
     </footer>
   </main>
+
+  <div class="rsvp-modal" id="rsvp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+    <div class="rsvp-modal-sheet" role="document">
+      <div class="rsvp-modal-head">
+        <h3 class="section-title" id="rsvp-modal-title">RSVP</h3>
+        <button class="rsvp-modal-close" id="rsvp-modal-close" type="button" aria-label="Close RSVP modal">&times;</button>
+      </div>
+      <form class="rsvp-form" id="rsvp-form" novalidate>
+        <label class="rsvp-field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="e.g. Jane Kim" required>
+        </label>
+        <label class="rsvp-field">
+          <span>Side</span>
+          <select name="side" required>
+            <option value="신랑">Groom</option>
+            <option value="신부">Bride</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>Attendance</span>
+          <select name="attendance" required>
+            <option value="참석">Attending</option>
+            <option value="불참">Not attending</option>
+            <option value="미정">Pending</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>Additional Guests</span>
+          <input type="number" name="guests" min="0" max="10" value="0">
+        </label>
+        <label class="rsvp-field">
+          <span>Meal</span>
+          <select name="meal" required>
+            <option value="O">Yes</option>
+            <option value="X">No</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>After Party</span>
+          <select name="afterparty" required>
+            <option value="참석">Attending</option>
+            <option value="불참">Not attending</option>
+            <option value="미정">Pending</option>
+          </select>
+        </label>
+        <button class="btn primary" type="submit">Send RSVP</button>
+      </form>
+    </div>
+  </div>
 
   <!-- 라이트박스 모달 -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="View enlarged photo">
@@ -461,6 +516,8 @@
   <!-- placeholder: 카카오 SDK (KAKAO_JS_KEY 발급 후 활성화) -->
   <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script> -->
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
   <script src="/script.js?v=20260803-1"></script>
 </body>
 </html>

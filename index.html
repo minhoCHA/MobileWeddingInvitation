@@ -33,7 +33,13 @@
   <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="ko-page">
+<body class="ko-page intro-active">
+  <div class="intro-overlay" id="intro-overlay" role="status" aria-live="polite">
+    <div class="intro-inner">
+      <p class="intro-title"><span>Minho</span><span class="intro-amp script">&amp;</span><span>Claire</span></p>
+      <p class="intro-sub">결혼식에 초대합니다</p>
+    </div>
+  </div>
   <div class="language-switch"><a href="/en/" aria-label="Switch to English version">English</a></div>
   <!-- 배경 모션: 꽃잎 파티클 캔버스 (prefers-reduced-motion에서는 숨김) -->
   <canvas class="bg-petals" aria-hidden="true"></canvas>
@@ -76,14 +82,7 @@
              alt="더스티 로즈 장미와 세이지 유칼립투스 가지의 워터컬러 보태니컬 일러스트"
              fetchpriority="high"
              width="1024" height="1280">
-        <div class="hero-content">
-          <!-- <div class="hero-card" aria-hidden="true"></div> -->
-                 <h1 class="hero-names" style="margin: 0 0 16px; justify-content: center;">
-        <span class="hero-name-ko">Minho</span>
-        <span class="hero-amp script">&amp;</span>
-        <span class="hero-name-ko">Claire</span>
-      </h1>
-        </div>
+        <div class="hero-content"></div>
       </div>
       <div class="scroll-indicator" data-hero-step="7" aria-hidden="true">
         <span></span><span></span>
@@ -255,20 +254,31 @@
     </section>
 
     <!-- 6. VENUE -->
+    <!-- Legacy venue layout backup kept for potential reuse.
     <section class="section venue reveal" id="venue" aria-labelledby="venue-heading">
       <p class="section-eyebrow en">LOCATION</p>
       <h2 class="section-title" id="venue-heading">오시는 길</h2>
       <p class="venue-name">삼청각</p>
       <p class="venue-hall">일화당</p>
       <p class="venue-addr">서울특별시 성북구 대사관로 3</p>
+    </section>
+    -->
+    <section class="section venue reveal venue-modern" id="venue" aria-labelledby="venue-heading">
+      <p class="section-eyebrow en">LOCATION</p>
+      <h2 class="section-title" id="venue-heading">오시는 길</h2>
+      <p class="venue-name">삼청각 일화당</p>
+      <p class="venue-addr">서울특별시 성북구 대사관로 3</p>
 
-      <!-- 지도: 카카오맵 SDK가 없으면 정적 placeholder -->
-      <!-- placeholder: KAKAO_JS_KEY 가 설정되면 카카오맵 SDK가 활성화됩니다. (script.js 의 KAKAO_JS_KEY 상수 확인) -->
       <div id="map" class="map-static" aria-label="예식장 위치 지도">
         <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
           <span>삼청각 일화당</span>
         </div>
+      </div>
+
+      <div class="venue-quick" aria-label="핵심 이동 정보">
+        <span class="venue-chip">지하철 + 셔틀버스 추천</span>
+        <span class="venue-chip">예식 기준 3시간 무료주차</span>
       </div>
 
       <div class="venue-actions">
@@ -277,24 +287,21 @@
         <a class="btn" href="https://tmap.life/02fcf830" target="_blank" rel="noopener">T map</a>
       </div>
 
-      <div class="directions">
+      <article class="venue-info-card" aria-label="교통 안내">
+        <p><strong>지하철</strong><span>4호선 한성대입구역 6번 출구 · 3호선 안국역 5번 출구</span></p>
+        <p><strong>셔틀</strong><span>한성대입구역/안국역 탑승 가능 (미운행 시간대 유의)</span></p>
+        <p><strong>네비</strong><span>"삼청각" 또는 "대사관로 3" 입력</span></p>
+      </article>
+
+      <div class="venue-faq" aria-label="상세 안내">
         <article>
-          <h3>지하철</h3>
-          <p>4호선 한성대입구역 6번 출구 · 3호선 안국역 5번 출구<br>셔틀 버스</p>
-        </article>
-        <article class="route-card">
-          <h3>삼청각 셔틀버스</h3>
+          <h3>Q. 셔틀버스 시간은 어디서 확인하나요?</h3>
+          <p>아래 버튼으로 삼청각 공식 운행 시간표를 확인할 수 있습니다.</p>
           <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">운행 시간표</a>
-          <ul class="bus-list">
-            <li><span class="bus-tag bus-blue">한성대입구역 6번출구</span>운행시간 / 11:00 ~ 21:00</li>
-            <span class="muted">미운행시간 (15:40~16:50)</span>
-            <li><span class="bus-tag bus-green">안국역 5번출구</span>운행시간 / 10:45 ~ 21:20</li>
-            <span class="muted">미운행시간 (15:55~16:25)</span>
-          </ul>
         </article>
         <article>
-          <h3>자가용 / 주차</h3>
-          <p>네비게이션: "삼청각" 입력<br>예식 시간 기준 3시간 무료 주차 지원<br><span class="muted">네비게이션: "삼청각" 또는 "대사관로 3"</span></p>
+          <h3>Q. 자가용 주차는 가능한가요?</h3>
+          <p>예식 시간 기준 3시간 무료 주차가 지원됩니다.</p>
         </article>
       </div>
     </section>
@@ -359,39 +366,7 @@
         소중한 시간 내어 주시는 모든 분들께<br>
         미리 감사의 마음을 전합니다.
       </p>
-      <form class="rsvp-form" id="rsvp-form" novalidate>
-        <label class="rsvp-field">
-          <span>성함</span>
-          <input type="text" name="name" placeholder="예: 홍길동" required>
-        </label>
-        <label class="rsvp-field">
-          <span>구분</span>
-          <select name="side" required>
-            <option value="신랑">신랑</option>
-            <option value="신부">신부</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>참석 여부</span>
-          <select name="attendance" required>
-            <option value="참석">참석</option>
-            <option value="불참">불참</option>
-            <option value="미정">미정</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>본인 외 동반인 수</span>
-          <input type="number" name="guests" min="0" max="10" value="0">
-        </label>
-        <label class="rsvp-field">
-          <span>식사 여부</span>
-          <select name="meal" required>
-            <option value="O">O</option>
-            <option value="X">X</option>
-          </select>
-        </label>
-        <button class="btn primary" type="submit">마음 전하기</button>
-      </form>
+      <button class="btn primary rsvp-open-btn" id="rsvp-open" type="button" aria-haspopup="dialog" aria-controls="rsvp-modal">참석 정보 입력하기</button>
     </section>
 
     <!-- 9. GUESTBOOK -->
@@ -437,8 +412,51 @@
       <p class="script">Thank you</p>
       <p class="footer-line">2026 . 10 . 17</p>
       <p class="footer-line en">민호 &amp; 성경</p>
+      <p class="footer-copy">Copyright © Minho Cha. All rights reserved.</p>
     </footer>
   </main>
+
+  <div class="rsvp-modal" id="rsvp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+    <div class="rsvp-modal-sheet" role="document">
+      <div class="rsvp-modal-head">
+        <h3 class="section-title" id="rsvp-modal-title">RSVP</h3>
+        <button class="rsvp-modal-close" id="rsvp-modal-close" type="button" aria-label="모달 닫기">&times;</button>
+      </div>
+      <form class="rsvp-form" id="rsvp-form" novalidate>
+        <label class="rsvp-field">
+          <span>성함</span>
+          <input type="text" name="name" placeholder="예: 홍길동" required>
+        </label>
+        <label class="rsvp-field">
+          <span>구분</span>
+          <select name="side" required>
+            <option value="신랑">신랑</option>
+            <option value="신부">신부</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>참석 여부</span>
+          <select name="attendance" required>
+            <option value="참석">참석</option>
+            <option value="불참">불참</option>
+            <option value="미정">미정</option>
+          </select>
+        </label>
+        <label class="rsvp-field">
+          <span>본인 외 동반인 수</span>
+          <input type="number" name="guests" min="0" max="10" value="0">
+        </label>
+        <label class="rsvp-field">
+          <span>식사 여부</span>
+          <select name="meal" required>
+            <option value="O">O</option>
+            <option value="X">X</option>
+          </select>
+        </label>
+        <button class="btn primary" type="submit">마음 전하기</button>
+      </form>
+    </div>
+  </div>
 
   <!-- 라이트박스 모달 -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="사진 확대 보기">
@@ -460,6 +478,8 @@
   <!-- placeholder: 카카오 SDK (KAKAO_JS_KEY 발급 후 활성화) -->
   <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script> -->
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
   <script src="script.js?v=20260803-1"></script>
 </body>
 </html>
