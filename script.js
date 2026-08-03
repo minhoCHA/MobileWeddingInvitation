@@ -793,7 +793,9 @@
     let previousFocusedElement = null;
 
     function setupEnhancedSelects() {
+      // Keep native select behavior in the modal for consistent mobile UX.
       if (!rsvpForm || typeof window.TomSelect !== 'function') return;
+      return;
       const selects = Array.from(rsvpForm.querySelectorAll('select'));
       selects.forEach((select) => {
         if (select.dataset.enhanced === 'true') return;
