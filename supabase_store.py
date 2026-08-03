@@ -1,5 +1,4 @@
 import os
-import json
 from datetime import datetime, timezone
 from typing import List, Dict, Any
 
@@ -24,15 +23,15 @@ def _table_name(key: str) -> str:
     return 'rsvp' if key == 'wedding_rsvp_entries' else 'guestbook'
 
 
+def is_configured() -> bool:
+    return supabase is not None
+
+
 def list_entries(key: str) -> List[Dict[str, Any]]:
     if not supabase:
-        return []
+        raise RuntimeError('Supabase is not configured')
     table = _table_name(key)
-    try:
-        response = supabase.table(table).select('*').order('createdAt', desc=True).execute()
-    except Exception as exc:
-        print(f"Supabase list_entries failed for {table}: {exc}")
-        return []
+    response = supabase.table(table).select('*').order('createdAt', desc=True).execute()
     if hasattr(response, 'data'):
         return response.data or []
     return []
@@ -40,8 +39,7 @@ def list_entries(key: str) -> List[Dict[str, Any]]:
 
 def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     if not supabase:
-        print('[supabase] no client available')
-        return []
+        raise RuntimeError('Supabase is not configured')
     table = _table_name(key)
     entry = {
         'id': payload.get('id') or f"{table}-{int(datetime.now(timezone.utc).timestamp()*1000)}",
@@ -53,11 +51,7 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     }
     if table == 'guestbook':
         entry = {'id': entry['id'], 'name': entry['name'], 'message': entry['message'], 'createdAt': entry['createdAt']}
-    try:
-        response = supabase.table(table).insert(entry).execute()
-    except Exception as exc:
-        print(f"Supabase add_entry failed for {table}: {exc}")
-        return []
+    response = supabase.table(table).insert(entry).execute()
     if hasattr(response, 'data'):
         return response.data or []
     return []
@@ -65,13 +59,9 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
 
 def delete_entry(key: str, entry_id: str) -> List[Dict[str, Any]]:
     if not supabase:
-        return []
+        raise RuntimeError('Supabase is not configured')
     table = _table_name(key)
-    try:
-        response = supabase.table(table).delete().eq('id', entry_id).execute()
-    except Exception as exc:
-        print(f"Supabase delete_entry failed for {table}: {exc}")
-        return []
+    response = supabase.table(table).delete().eq('id', entry_id).execute()
     if hasattr(response, 'data'):
         return response.data or []
     return []

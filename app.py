@@ -1,138 +1,97 @@
 import os
-import json
-from datetime import datetime, timezone
 from flask import Flask, jsonify, request, send_from_directory
 
-from supabase_store import list_entries, add_entry, delete_entry
+from supabase_store import list_entries, add_entry, delete_entry, is_configured
 
 app = Flask(__name__, static_folder='.', static_url_path='')
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-os.makedirs(DATA_DIR, exist_ok=True)
-RSVP_PATH = os.path.join(DATA_DIR, 'rsvp.json')
-GUESTBOOK_PATH = os.path.join(DATA_DIR, 'guestbook.json')
 
 
-def _load_entries(path):
-    if not os.path.exists(path):
-        return []
-    try:
-        with open(path, 'r', encoding='utf-8') as fh:
-            data = json.load(fh)
-            return data if isinstance(data, list) else []
-    except Exception:
-        return []
-
-
-def _save_entries(path, entries):
-    os.makedirs(DATA_DIR, exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as fh:
-        json.dump(entries, fh, ensure_ascii=False, indent=2)
-
-
-def _now_iso():
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+def _service_unavailable():
+    return jsonify({'ok': False, 'error': 'Supabase is not configured'}), 503
 
 
 @app.get('/api/rsvp')
 def get_rsvp():
+    if not is_configured():
+        return _service_unavailable()
     try:
         entries = list_entries('wedding_rsvp_entries')
     except Exception as exc:
         print(f"Rsvp list error: {exc}")
-        entries = []
-    if entries:
-        return jsonify({'entries': entries})
-    return jsonify({'entries': _load_entries(RSVP_PATH)})
+        return jsonify({'ok': False, 'error': 'Failed to load RSVP entries'}), 500
+    return jsonify({'ok': True, 'entries': entries})
 
 
 @app.post('/api/rsvp')
 def post_rsvp():
+    if not is_configured():
+        return _service_unavailable()
     payload = request.get_json(silent=True) or {}
+    if not str(payload.get('name', '')).strip():
+        return jsonify({'ok': False, 'error': 'Name is required'}), 400
     try:
         synced = add_entry('wedding_rsvp_entries', payload)
     except Exception as exc:
         print(f"Rsvp add error: {exc}")
-        synced = []
-    if synced:
-        return jsonify({'ok': True, 'entries': synced})
-    entries = _load_entries(RSVP_PATH)
-    entry = {
-        'id': payload.get('id') or f"rsvp-{len(entries)+1}",
-        'name': payload.get('name', '익명'),
-        'attendance': payload.get('attendance', '미정'),
-        'guests': payload.get('guests', '1'),
-        'message': payload.get('message', ''),
-        'createdAt': payload.get('createdAt') or _now_iso(),
-    }
-    entries.insert(0, entry)
-    _save_entries(RSVP_PATH, entries)
-    return jsonify({'ok': True, 'entries': entries})
+        return jsonify({'ok': False, 'error': 'Failed to save RSVP entry'}), 500
+    return jsonify({'ok': True, 'entries': synced})
 
 
 @app.delete('/api/rsvp')
 def delete_rsvp():
+    if not is_configured():
+        return _service_unavailable()
     payload = request.get_json(silent=True) or {}
+    if not payload.get('id'):
+        return jsonify({'ok': False, 'error': 'id is required'}), 400
     try:
         synced = delete_entry('wedding_rsvp_entries', payload.get('id'))
     except Exception as exc:
         print(f"Rsvp delete error: {exc}")
-        synced = []
-    if synced:
-        return jsonify({'ok': True, 'entries': synced})
-    entries = _load_entries(RSVP_PATH)
-    remaining = [entry for entry in entries if entry.get('id') != payload.get('id')]
-    _save_entries(RSVP_PATH, remaining)
-    return jsonify({'ok': True, 'entries': remaining})
+        return jsonify({'ok': False, 'error': 'Failed to delete RSVP entry'}), 500
+    return jsonify({'ok': True, 'entries': synced})
 
 
 @app.get('/api/guestbook')
 def get_guestbook():
+    if not is_configured():
+        return _service_unavailable()
     try:
         entries = list_entries('wedding_guestbook_entries')
     except Exception as exc:
         print(f"Guestbook list error: {exc}")
-        entries = []
-    if entries:
-        return jsonify({'entries': entries})
-    return jsonify({'entries': _load_entries(GUESTBOOK_PATH)})
+        return jsonify({'ok': False, 'error': 'Failed to load guestbook entries'}), 500
+    return jsonify({'ok': True, 'entries': entries})
 
 
 @app.post('/api/guestbook')
 def post_guestbook():
+    if not is_configured():
+        return _service_unavailable()
     payload = request.get_json(silent=True) or {}
+    if not str(payload.get('name', '')).strip() or not str(payload.get('message', '')).strip():
+        return jsonify({'ok': False, 'error': 'Name and message are required'}), 400
     try:
         synced = add_entry('wedding_guestbook_entries', payload)
     except Exception as exc:
         print(f"Guestbook add error: {exc}")
-        synced = []
-    if synced:
-        return jsonify({'ok': True, 'entries': synced})
-    entries = _load_entries(GUESTBOOK_PATH)
-    entry = {
-        'id': payload.get('id') or f"guestbook-{len(entries)+1}",
-        'name': payload.get('name', '익명'),
-        'message': payload.get('message', ''),
-        'createdAt': payload.get('createdAt') or _now_iso(),
-    }
-    entries.insert(0, entry)
-    _save_entries(GUESTBOOK_PATH, entries)
-    return jsonify({'ok': True, 'entries': entries})
+        return jsonify({'ok': False, 'error': 'Failed to save guestbook entry'}), 500
+    return jsonify({'ok': True, 'entries': synced})
 
 
 @app.delete('/api/guestbook')
 def delete_guestbook():
+    if not is_configured():
+        return _service_unavailable()
     payload = request.get_json(silent=True) or {}
+    if not payload.get('id'):
+        return jsonify({'ok': False, 'error': 'id is required'}), 400
     try:
         synced = delete_entry('wedding_guestbook_entries', payload.get('id'))
     except Exception as exc:
         print(f"Guestbook delete error: {exc}")
-        synced = []
-    if synced:
-        return jsonify({'ok': True, 'entries': synced})
-    entries = _load_entries(GUESTBOOK_PATH)
-    remaining = [entry for entry in entries if entry.get('id') != payload.get('id')]
-    _save_entries(GUESTBOOK_PATH, remaining)
-    return jsonify({'ok': True, 'entries': remaining})
+        return jsonify({'ok': False, 'error': 'Failed to delete guestbook entry'}), 500
+    return jsonify({'ok': True, 'entries': synced})
 
 
 @app.route('/')

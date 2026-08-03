@@ -12,7 +12,7 @@ function getHeaders() {
 
 async function supabaseRequest(table, method = 'GET', body = null, id = null) {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    return { ok: false, data: [] };
+    throw new Error('Supabase is not configured');
   }
 
   const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);

@@ -608,69 +608,59 @@
   }
 
   async function readStoredEntries(key) {
+    const endpoint = key === 'wedding_rsvp_entries' ? '/api/rsvp' : '/api/guestbook';
     try {
-      const response = await fetch(`/api/${key === 'wedding_rsvp_entries' ? 'rsvp' : 'guestbook'}`);
-      if (!response.ok) throw new Error('network');
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || 'network');
+      }
       const payload = await response.json();
       if (Array.isArray(payload.entries)) {
         return payload.entries;
       }
+      throw new Error('invalid response payload');
     } catch (e) {
-      // ignore and fall back below
+      throw new Error(`read failed: ${e.message || 'unknown error'}`);
     }
-
-    try {
-      const parsed = JSON.parse(localStorage.getItem(key) || '[]');
-      if (Array.isArray(parsed)) return parsed;
-    } catch (err) {}
-    return [];
   }
 
   async function writeStoredEntries(key, entries) {
     const endpoint = key === 'wedding_rsvp_entries' ? '/api/rsvp' : '/api/guestbook';
     const body = entries[0] || null;
     if (!body) return [];
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      if (!response.ok) throw new Error('network');
-      const payload = await response.json();
-      if (Array.isArray(payload.entries)) {
-        return payload.entries;
-      }
-    } catch (e) {
-      const normalized = entries.slice(0, 100);
-      localStorage.setItem(key, JSON.stringify(normalized));
-      showToast('서버 저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
-      return normalized;
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || 'save failed');
     }
-
-    return [];
+    const payload = await response.json();
+    if (Array.isArray(payload.entries)) {
+      return payload.entries;
+    }
+    throw new Error('invalid response payload');
   }
 
   async function removeStoredEntry(key, id) {
     const endpoint = key === 'wedding_rsvp_entries' ? '/api/rsvp' : '/api/guestbook';
-    try {
-      const response = await fetch(endpoint, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      });
-      if (!response.ok) throw new Error('network');
-      const payload = await response.json();
-      if (Array.isArray(payload.entries)) {
-        return payload.entries;
-      }
-    } catch (e) {
-      // fall through to local fallback if backend is unavailable
+    const response = await fetch(endpoint, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || 'delete failed');
     }
-
-    const nextEntries = (await readStoredEntries(key)).filter((entry) => entry.id !== id);
-    localStorage.setItem(key, JSON.stringify(nextEntries));
-    return nextEntries;
+    const payload = await response.json();
+    if (Array.isArray(payload.entries)) {
+      return payload.entries;
+    }
+    throw new Error('invalid response payload');
   }
 
   function isManagerView() {
@@ -719,7 +709,14 @@
     panel?.classList.remove('is-hidden');
     container.classList.remove('is-hidden');
 
-    const storedEntries = await readStoredEntries('wedding_rsvp_entries');
+    let storedEntries = [];
+    try {
+      storedEntries = await readStoredEntries('wedding_rsvp_entries');
+    } catch (e) {
+      container.innerHTML = '<p class="stats-footnote">RSVP 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.</p>';
+      if (list) list.innerHTML = '<li class="manager-empty">데이터를 불러올 수 없습니다.</li>';
+      return;
+    }
     const entries = storedEntries
       .slice()
       .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
@@ -785,7 +782,13 @@
       return;
     }
     container.classList.remove('is-hidden');
-    const entries = await readStoredEntries('wedding_guestbook_entries');
+    let entries = [];
+    try {
+      entries = await readStoredEntries('wedding_guestbook_entries');
+    } catch (e) {
+      container.innerHTML = '<p class="stats-footnote">방명록 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.</p>';
+      return;
+    }
     container.innerHTML = `
       <div class="stats-grid">
         <div class="stat-card"><strong>${entries.length}</strong><span>총 메시지</span></div>
@@ -847,28 +850,35 @@
           showToast('성함을 입력해 주세요');
           return;
         }
-        const entries = (await readStoredEntries('wedding_rsvp_entries'));
-        const nextEntries = [{
-          id: `local-${Date.now()}`,
-          name: payload.name,
-          attendance: payload.attendance,
-          guests: payload.guests,
-          message: payload.message,
-          createdAt: new Date().toISOString()
-        }, ...entries];
-        await writeStoredEntries('wedding_rsvp_entries', nextEntries);
-        void renderRsvpStats();
+        try {
+          await writeStoredEntries('wedding_rsvp_entries', [{
+            name: payload.name,
+            attendance: payload.attendance,
+            guests: payload.guests,
+            message: payload.message,
+            createdAt: new Date().toISOString()
+          }]);
+          void renderRsvpStats();
 
-        rsvpForm.reset();
-        const guestCount = Number(payload.guests) || 1;
-        const attendanceLabel = payload.attendance || '참석';
-        showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
+          rsvpForm.reset();
+          const guestCount = Number(payload.guests) || 1;
+          const attendanceLabel = payload.attendance || '참석';
+          showToast(`${attendanceLabel} ${guestCount}명 확인되었습니다`);
+        } catch (err) {
+          showToast('저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
+        }
       });
     }
 
     async function renderGuestbook() {
       if (!guestbookList) return;
-      const entries = await readStoredEntries('wedding_guestbook_entries');
+      let entries = [];
+      try {
+        entries = await readStoredEntries('wedding_guestbook_entries');
+      } catch (e) {
+        guestbookList.innerHTML = '<li>방명록 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</li>';
+        return;
+      }
       if (!entries.length) {
         guestbookList.innerHTML = '<li>아직 남겨진 마음이 없어요. 첫 번째 마음을 남겨 주세요.</li>';
         return;
@@ -886,9 +896,13 @@
         const id = button.getAttribute('data-entry-id');
         const key = button.getAttribute('data-entry-key');
         if (!id || !key) return;
-        await removeStoredEntry(key, id);
-        void renderRsvpStats();
-        showToast('삭제되었습니다');
+        try {
+          await removeStoredEntry(key, id);
+          void renderRsvpStats();
+          showToast('삭제되었습니다');
+        } catch (err) {
+          showToast('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요');
+        }
       });
     }
 
@@ -899,10 +913,14 @@
         const id = button.getAttribute('data-entry-id');
         const key = button.getAttribute('data-entry-key');
         if (!id || !key) return;
-        await removeStoredEntry(key, id);
-        await renderGuestbook();
-        await renderGuestbookStats();
-        showToast('삭제되었습니다');
+        try {
+          await removeStoredEntry(key, id);
+          await renderGuestbook();
+          await renderGuestbookStats();
+          showToast('삭제되었습니다');
+        } catch (err) {
+          showToast('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요');
+        }
       });
     }
 
@@ -916,13 +934,15 @@
           showToast('이름과 메시지를 모두 입력해 주세요');
           return;
         }
-        const entries = await readStoredEntries('wedding_guestbook_entries');
-        const nextEntries = [{ id: `local-${Date.now()}`, name, message, createdAt: new Date().toISOString() }, ...entries];
-        await writeStoredEntries('wedding_guestbook_entries', nextEntries);
-        guestbookForm.reset();
-        await renderGuestbook();
-        await renderGuestbookStats();
-        showToast('방명록에 마음이 저장되었습니다');
+        try {
+          await writeStoredEntries('wedding_guestbook_entries', [{ name, message, createdAt: new Date().toISOString() }]);
+          guestbookForm.reset();
+          await renderGuestbook();
+          await renderGuestbookStats();
+          showToast('방명록에 마음이 저장되었습니다');
+        } catch (err) {
+          showToast('저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
+        }
       });
     }
 
