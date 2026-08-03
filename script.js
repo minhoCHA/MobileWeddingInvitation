@@ -745,9 +745,9 @@
         list.innerHTML = '<li class="manager-empty">아직 표시할 응답이 없어요.</li>';
       } else {
         list.innerHTML = filteredEntries.map((entry) => {
-          const attendance = entry.attendance || '미정';
+          const attendance = String(entry.attendance || '미정').trim() || '미정';
           const guestCount = Number(entry.guests) || 1;
-          const note = entry.message || '전할 말씀이 남겨지지 않았어요.';
+          const note = String(entry.message || '').trim() || '전할 말씀이 남겨지지 않았어요.';
           return `
             <li>
               <div class="manager-item-top">
