@@ -17,6 +17,7 @@
   const SHARE_IMAGE      = location.origin + '/images/og-thumbnail.png';
   const TARGET_DATE_STR  = '2026-10-17';
   const TARGET_HOUR      = 14;
+  const GUESTBOOK_PAGE_SIZE = 5;
 
   // ---------------------------------------------------------
   // HELPERS
@@ -730,7 +731,6 @@
                 <span>${escapeHtml(summary.join(' · '))}</span>
                 <span>${escapeHtml(formatRsvpTime(entry.createdAt))}</span>
               </div>
-              <p>${escapeHtml(note || '추가 메모 없음')}</p>
             </li>
           `;
         }).join('');
@@ -791,6 +791,53 @@
     const managerList = $('#rsvp-manager-list');
     const enhancedSelectInstances = [];
     let previousFocusedElement = null;
+    let guestbookPage = 1;
+    let guestbookPagination = null;
+
+    function ensureGuestbookPagination() {
+      if (!guestbookList) return null;
+      if (guestbookPagination && guestbookPagination.isConnected) return guestbookPagination;
+      guestbookPagination = document.createElement('div');
+      guestbookPagination.className = 'guestbook-pagination';
+      guestbookPagination.hidden = true;
+      guestbookPagination.innerHTML = `
+        <button class="guestbook-page-btn" type="button" data-page-action="prev" aria-label="이전 방명록 페이지">이전</button>
+        <span class="guestbook-page-indicator" aria-live="polite">1 / 1</span>
+        <button class="guestbook-page-btn" type="button" data-page-action="next" aria-label="다음 방명록 페이지">다음</button>
+      `;
+      guestbookPagination.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-page-action]');
+        if (!button) return;
+        const action = button.getAttribute('data-page-action');
+        if (action === 'prev') {
+          guestbookPage = Math.max(1, guestbookPage - 1);
+          void renderGuestbook();
+          return;
+        }
+        if (action === 'next') {
+          guestbookPage += 1;
+          void renderGuestbook();
+        }
+      });
+      guestbookList.insertAdjacentElement('afterend', guestbookPagination);
+      return guestbookPagination;
+    }
+
+    function renderGuestbookPagination(totalPages, totalEntries) {
+      const pagination = ensureGuestbookPagination();
+      if (!pagination) return;
+      if (totalEntries <= GUESTBOOK_PAGE_SIZE || totalPages <= 1) {
+        pagination.hidden = true;
+        return;
+      }
+      pagination.hidden = false;
+      const indicator = pagination.querySelector('.guestbook-page-indicator');
+      const prevButton = pagination.querySelector('[data-page-action="prev"]');
+      const nextButton = pagination.querySelector('[data-page-action="next"]');
+      if (indicator) indicator.textContent = `${guestbookPage} / ${totalPages}`;
+      if (prevButton) prevButton.disabled = guestbookPage <= 1;
+      if (nextButton) nextButton.disabled = guestbookPage >= totalPages;
+    }
 
     function setupEnhancedSelects() {
       // Keep native select behavior in the modal for consistent mobile UX.
@@ -954,19 +1001,33 @@
         entries = await readStoredEntries('wedding_guestbook_entries');
       } catch (e) {
         guestbookList.innerHTML = '<li>방명록 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</li>';
+        const pagination = ensureGuestbookPagination();
+        if (pagination) pagination.hidden = true;
         return;
       }
       if (!entries.length) {
+        guestbookPage = 1;
         guestbookList.innerHTML = '<li>아직 남겨진 마음이 없어요. 첫 번째 마음을 남겨 주세요.</li>';
+        const pagination = ensureGuestbookPagination();
+        if (pagination) pagination.hidden = true;
         return;
       }
-      guestbookList.innerHTML = entries.map((entry) => {
+      const sortedEntries = entries
+        .slice()
+        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      const totalPages = Math.max(1, Math.ceil(sortedEntries.length / GUESTBOOK_PAGE_SIZE));
+      guestbookPage = clamp(guestbookPage, 1, totalPages);
+      const startIndex = (guestbookPage - 1) * GUESTBOOK_PAGE_SIZE;
+      const pageEntries = sortedEntries.slice(startIndex, startIndex + GUESTBOOK_PAGE_SIZE);
+
+      guestbookList.innerHTML = pageEntries.map((entry) => {
         const time = new Date(entry.createdAt).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
         const deleteButton = managerView
           ? `<button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">삭제</button>`
           : '';
         return `<li><div class="guestbook-meta"><strong>${escapeHtml(entry.name || '익명')}</strong><div class="guestbook-meta-actions"><span>${escapeHtml(time)}</span>${deleteButton}</div></div><p>${escapeHtml(entry.message || '')}</p></li>`;
       }).join('');
+      renderGuestbookPagination(totalPages, sortedEntries.length);
     }
 
     if (managerList) {
@@ -1018,6 +1079,7 @@
         try {
           await writeStoredEntries('wedding_guestbook_entries', [{ name, message, createdAt: new Date().toISOString() }]);
           guestbookForm.reset();
+          guestbookPage = 1;
           await renderGuestbook();
           await renderGuestbookStats();
           showToast('방명록에 마음이 저장되었습니다');
