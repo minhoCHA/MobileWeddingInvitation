@@ -41,4 +41,6 @@ alter table public.rsvp add column if not exists afterparty text default '';
 ```
 
 4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` 구문까지 꼭 실행해야 새 RSVP 필드가 정상 저장됩니다.
-5. 실행 후 서버를 재시작합니다.
+5. 빠르게 패치만 적용하려면 [data/rsvp_schema_patch.sql](data/rsvp_schema_patch.sql) 파일 내용을 SQL Editor에서 실행하세요.
+6. 현재 서버는 RSVP 스키마가 구버전이면 `RSVP_SCHEMA_MISMATCH` 에러를 반환하도록 설정되어 있습니다. (조용한 필드 누락 방지)
+7. 실행 후 서버를 재시작합니다.

@@ -59,22 +59,11 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
         if hasattr(response, 'data'):
             return response.data or []
         return []
-    except Exception:
-        # Backward-compatible fallback for older RSVP schemas
-        # that do not yet include side/meal/afterparty columns.
-        if table == 'rsvp':
-            legacy_entry = {
-                'id': entry['id'],
-                'name': entry['name'],
-                'attendance': entry['attendance'],
-                'guests': entry['guests'],
-                'message': entry['message'],
-                'createdAt': entry['createdAt'],
-            }
-            response = supabase.table(table).insert(legacy_entry).execute()
-            if hasattr(response, 'data'):
-                return response.data or []
-            return []
+    except Exception as exc:
+        message = str(exc)
+        schema_mismatch = ('column' in message and 'does not exist' in message) or ('schema cache' in message.lower())
+        if table == 'rsvp' and schema_mismatch:
+            raise RuntimeError('RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.') from exc
         raise
 
 

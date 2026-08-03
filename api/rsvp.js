@@ -24,21 +24,21 @@ module.exports = async function handler(req, res) {
         message: payload.message || '',
         createdAt: payload.createdAt || new Date().toISOString()
       };
-      let entries;
       try {
-        entries = await createEntry(table, entry);
-      } catch (_err) {
-        // Fallback for older RSVP schemas without side/meal/afterparty columns.
-        entries = await createEntry(table, {
-          id: entry.id,
-          name: entry.name,
-          attendance: entry.attendance,
-          guests: entry.guests,
-          message: entry.message,
-          createdAt: entry.createdAt
-        });
+        const entries = await createEntry(table, entry);
+        return res.status(200).json({ ok: true, entries });
+      } catch (err) {
+        const message = String(err?.message || '');
+        const schemaMismatch = /column .* does not exist|schema cache/i.test(message);
+        if (schemaMismatch) {
+          return res.status(500).json({
+            ok: false,
+            code: 'RSVP_SCHEMA_MISMATCH',
+            error: 'RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.'
+          });
+        }
+        throw err;
       }
-      return res.status(200).json({ ok: true, entries });
     }
 
     if (req.method === 'DELETE') {

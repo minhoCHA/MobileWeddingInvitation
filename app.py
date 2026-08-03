@@ -31,6 +31,9 @@ def post_rsvp():
         return jsonify({'ok': False, 'error': 'Name is required'}), 400
     try:
         synced = add_entry('wedding_rsvp_entries', payload)
+    except RuntimeError as exc:
+        print(f"Rsvp schema error: {exc}")
+        return jsonify({'ok': False, 'code': 'RSVP_SCHEMA_MISMATCH', 'error': str(exc)}), 500
     except Exception as exc:
         print(f"Rsvp add error: {exc}")
         return jsonify({'ok': False, 'error': 'Failed to save RSVP entry'}), 500
