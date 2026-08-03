@@ -18,6 +18,8 @@
 - [x] 배포용 GitHub 저장소 기준 최신 커밋 반영 완료
 - [x] GitHub에 푸시해 Vercel 자동 재배포가 시작되도록 준비 완료
 - [ ] 새 RSVP 필드(`side`, `meal`, `afterparty`)는 Supabase `rsvp` 테이블 컬럼 추가 SQL 적용 후 저장 검증 필요
+- [x] Friends/EN 전용 AFTER PARTY 섹션 구성 및 실제 장소 정보 반영 완료
+- [x] RSVP 모달 전환 및 셀렉트 UI(Choices.js) 리디자인 완료
 
 ## 남은 점검 포인트
 - [x] Vercel 공개 페이지에서 실제 제출 테스트는 배포 완료 후 확인 가능
@@ -28,3 +30,12 @@
 ## 다음에 바로 이어서 할 수 있는 작업
 - Supabase SQL Editor에서 `rsvp` 테이블 컬럼(`side`, `meal`, `afterparty`) 추가
 - 배포 완료 후 공개 페이지에서 실제 RSVP/방명록 제출 테스트
+- [x] 페이지 맨 아래 "Copyright © Minho Cha. All rights reserved." 추가 한 것 진짜 페이지 완전 맨 아래로 (살짝 여백 아래만 주고)
+- [x] select dropdown 스타일 리디자인 완료
+- [x] 라이트박스 오픈 후 추가 확대(핀치/더블탭) 비활성화 완료
+- [x] hero section 이미지 확대/축소 느낌(ken burns) 제거 완료
+- [x] 첫 진입 인트로("Minho & Claire / 결혼식에 초대합니다") 후 hero 노출 애니메이션 추가 완료
+- raffle 할 지 말 지?
+- [x] rsvp modal 안에 에프터 파티 참석 미정 선택하는거 (거기 간략하게 에프터파티 장소 및 시간 (미리가도되는것도))
+
+
