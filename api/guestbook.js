@@ -34,6 +34,8 @@ module.exports = async function handler(req, res) {
 
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   } catch (error) {
-    return res.status(500).json({ ok: false, error: error.message || 'Supabase request failed' });
+    const message = error?.message || 'Supabase request failed';
+    const isConfigMissing = /Supabase is not configured/i.test(String(message));
+    return res.status(isConfigMissing ? 503 : 500).json({ ok: false, error: message });
   }
 };

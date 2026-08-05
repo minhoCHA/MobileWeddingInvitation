@@ -14,7 +14,7 @@
   const GUESTBOOK_URL    = '';
   const SHARE_TITLE      = '차민호 ♡ 조성경 결혼합니다';
   const SHARE_DESC       = '2026년 10월 17일 토요일 오후 4시\n삼청각 일화당';
-  const SHARE_IMAGE      = location.origin + '/images/og-thumbnail.png';
+  const SHARE_IMAGE      = location.origin + '/images/128.jpg';
   const TARGET_DATE_STR  = '2026-10-17';
   const TARGET_HOUR      = 14;
 

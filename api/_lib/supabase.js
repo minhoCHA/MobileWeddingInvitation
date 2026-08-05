@@ -1,5 +1,8 @@
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 function getHeaders() {
   return {
@@ -12,7 +15,7 @@ function getHeaders() {
 
 async function supabaseRequest(table, method = 'GET', body = null, id = null) {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    throw new Error('Supabase is not configured');
+    throw new Error('Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY (or SUPABASE_KEY).');
   }
 
   const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
