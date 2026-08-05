@@ -290,32 +290,31 @@
     // Attach handlers to all items (visible and hidden)
     attachClickHandlers(items);
 
-    // Load More / Collapse button
+    // Load More button: reveal in batches, then hide when fully shown
     const loadMoreBtn = $('#gallery-load-more');
     if (loadMoreBtn) {
+      const isEnglish = (document.documentElement.lang || '').toLowerCase().startsWith('en');
+      const loadMoreLabel = isEnglish ? 'View More' : '더 보기';
+
       const renderGallery = () => {
         items.forEach((item, index) => {
           item.classList.toggle('hidden', index >= visibleCount);
         });
 
-        if (N <= batchSize) {
+        if (N <= batchSize || visibleCount >= N) {
           loadMoreBtn.style.display = 'none';
           return;
         }
 
         loadMoreBtn.style.display = '';
-        loadMoreBtn.textContent = visibleCount >= N ? '접기' : '더 보기';
-        loadMoreBtn.setAttribute('aria-expanded', String(visibleCount >= N));
+        loadMoreBtn.textContent = loadMoreLabel;
+        loadMoreBtn.setAttribute('aria-expanded', 'false');
       };
 
       renderGallery();
 
       loadMoreBtn.addEventListener('click', () => {
-        if (visibleCount >= N) {
-          visibleCount = batchSize;
-        } else {
-          visibleCount = Math.min(N, visibleCount + batchSize);
-        }
+        visibleCount = Math.min(N, visibleCount + batchSize);
         haptic(8);
         renderGallery();
       });
