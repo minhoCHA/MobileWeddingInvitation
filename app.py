@@ -115,19 +115,19 @@ def index_friends():
 @app.route('/manager')
 @app.route('/manager/')
 def index_manager():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('manager', 'index.html')
 
 
 @app.route('/friends/manager')
 @app.route('/friends/manager/')
 def index_friends_manager():
-    return send_from_directory('friends', 'index.html')
+    return send_from_directory('friends/manager', 'index.html')
 
 
 @app.route('/en/manager')
 @app.route('/en/manager/')
 def index_en_manager():
-    return send_from_directory('en', 'index.html')
+    return send_from_directory('en/manager', 'index.html')
 
 
 @app.route('/<path:path>')

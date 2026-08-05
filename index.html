@@ -93,7 +93,7 @@
     <section class="section greeting reveal" id="greeting" aria-labelledby="greeting-heading">
       <p class="section-eyebrow en">INVITATION</p>
       <h2 class="section-title" id="greeting-heading">초대합니다</h2>
-      <p class="hero-eyebrow script" style="margin: 0 0 12px; font-size: 1.2rem;">We&rsquo;re getting married</p>
+      <p class="hero-eyebrow script" style="margin: 0 0 20px; font-size: 2rem;">We&rsquo;re getting married</p>
 
       <p class="hero-info" style="margin: 0 0 24px;">
         2026년 10월 17일 토요일 오후 4시<br>
@@ -119,27 +119,6 @@
       </div>
     </section>
 
-    <section class="section journey-section reveal" id="journey" aria-labelledby="journey-heading">
-      <p class="section-eyebrow en">OUR JOURNEY</p>
-      <h2 class="section-title" id="journey-heading">우리의 여정</h2>
-      <p class="journey-message">서울과 시카고에서 시작된 두 사람이<br>LA를 지나 라스베이거스로 함께 향합니다.</p>
-
-      <div class="journey-scroll-scene" aria-label="스크롤 연동 선 그리기">
-        <div class="journey-sticky-stage" role="region" aria-label="도시 경로 애니메이션">
-          <span class="journey-city-label l-seoul">Seoul</span>
-          <span class="journey-city-label l-sf">SF</span>
-          <span class="journey-city-label l-chicago">Chicago</span>
-          <span class="journey-city-label l-la">LA</span>
-          <span class="journey-city-label l-lv">Las Vegas</span>
-
-          <svg class="journey-svg" viewBox="0 0 560 800" role="img" aria-label="신랑 신부 경로가 LA에서 만나 라스베이거스로 향하는 지도 선">
-            <path id="groom-path" d="M100 110 C120 170, 150 210, 190 250 C230 290, 255 335, 280 390 C295 425, 300 455, 300 505 C300 560, 300 620, 300 705" />
-            <path id="bride-path" d="M450 110 C430 165, 410 215, 365 270 C330 315, 307 350, 280 390 C265 415, 260 450, 260 505 C260 560, 260 620, 260 705" />
-          </svg>
-        </div>
-      </div>
-    </section>
-
     <!-- 4. CALENDAR + D-DAY -->
     <section class="section calendar-section reveal" id="calendar" aria-labelledby="calendar-heading">
       <img class="day-hero" src="images/123.jpg" alt="가을 무드의 웨딩 스냅" loading="lazy" width="1024" height="640">
@@ -162,16 +141,40 @@
       </div>
     </section>
 
+    
+    <section class="section journey-section reveal" id="journey" aria-labelledby="journey-heading">
+      <p class="section-eyebrow en">OUR JOURNEY</p>
+      <h2 class="section-title" id="journey-heading">우리의 여정</h2>
+
+      <div class="journey-scroll-scene" aria-label="스크롤 연동 선 그리기">
+        <div class="journey-sticky-stage" role="region" aria-label="도시 경로 애니메이션">
+          <span class="journey-city-label l-seoul">서울</span>
+          <span class="journey-city-label l-sf">샌프란시스코</span>
+          <span class="journey-city-label l-chicago">시카고</span>
+          <span class="journey-city-label l-la">로스 앤젤레스</span>
+          <span class="journey-city-label l-lv">라스 베가스</span>
+
+          <svg class="journey-svg" viewBox="0 0 560 800" role="img" aria-label="남자는 서울과 샌프란시스코를 거쳐 LA로, 여자는 시카고에서 LA로 이동한 뒤 라스 베가스로 함께 향하는 경로">
+            <path id="groom-path" d="M100 110 C130 170, 170 225, 220 275 C250 305, 265 340, 280 390" />
+            <path id="bride-path" d="M460 130 C420 190, 365 260, 320 330 C305 350, 292 370, 280 390" />
+            <path id="shared-path" d="M280 390 C285 460, 288 545, 290 656" />
+            <circle class="journey-end-dot" cx="290" cy="656" r="5" aria-hidden="true" />
+          </svg>
+        </div>
+      </div>
+    </section>
+    
     <!-- 5. GALLERY -->
     <section class="section gallery-section reveal" id="gallery" aria-labelledby="gallery-heading">
       <p class="section-eyebrow en">OUR MOMENTS</p>
       <h2 class="section-title" id="gallery-heading">우리의 순간</h2>
-      <p class="gallery-message">
+      <!-- <p class="gallery-message">
         함께 걸어온 시간들,<br>
         그 안에 담긴 마음을<br>
         나누고 싶습니다.
-      </p>
+      </p> -->
 
+    
       <div class="gallery-stage" role="region" aria-label="사진 갤러리">
         <div class="gallery-grid">
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="0">
@@ -252,6 +255,7 @@
       <p class="gallery-hint">사진을 누르면 크게 볼 수 있어요</p>
     </section>
 
+
     <!-- 6. VENUE -->
     <!-- Legacy venue layout backup kept for potential reuse.
     <section class="section venue reveal" id="venue" aria-labelledby="venue-heading">
@@ -274,23 +278,21 @@
           title="삼청각 일화당 지도"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=Samcheonggak%20Ilhwa-dang%20Seoul&z=16&output=embed">
+          src="https://maps.google.com/maps?q=37.5972872,126.9841513&z=17&t=k&output=embed">
         </iframe>
-        <div class="map-pin">
+        <!-- <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
           <span>삼청각 일화당</span>
-        </div>
-      </div>
-
-      <div class="venue-quick" aria-label="핵심 이동 정보">
-        <span class="venue-chip">지하철 + 셔틀버스 추천</span>
-        <span class="venue-chip">오후 4시 예식 · 3시 20분 이전 도착 권장</span>
-        <span class="venue-chip">예식 기준 3시간 무료주차</span>
+        </div> -->
       </div>
 
       <div class="venue-actions">
         <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">카카오맵</a>
         <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">네이버지도</a>
+      </div>
+
+      <div class="venue-schedule-action">
+        <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">셔틀 운행 시간표</a>
       </div>
 
       <article class="venue-info-card" aria-label="교통 안내">
@@ -302,8 +304,7 @@
       <div class="venue-faq" aria-label="상세 안내">
         <article>
           <h3>Q. 오후 4시 예식이면 언제 도착하면 좋을까요?</h3>
-          <p>셔틀 미운행 구간이 있어 최소 3시 20분 이전 도착을 권장드립니다. 아래 공식 시간표를 꼭 확인해 주세요.</p>
-          <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">운행 시간표</a>
+          <p>셔틀 미운행 구간이 있어 최소 3시 20분 이전 도착을 권장드립니다. 위 지도 버튼 아래의 셔틀 운행 시간표 버튼을 꼭 확인해 주세요.</p>
         </article>
         <article>
           <h3>Q. 주차는 몇 대까지 가능한가요?</h3>
@@ -316,12 +317,12 @@
     <section class="section account reveal" id="account" aria-labelledby="account-heading">
       <p class="section-eyebrow en">WITH HEART</p>
       <h2 class="section-title" id="account-heading">마음 전하실 곳</h2>
-      <p class="account-message">
+      <!-- <p class="account-message">
         참석이 어려우신 분들을 위해<br>
         마음 전하실 곳을 안내드립니다.<br><br>
         따뜻한 축하의 마음,<br>
         저희 두 사람 오래 간직하겠습니다.
-      </p>
+      </p> -->
 
       <details class="acc-group">
         <summary>신랑측 계좌번호</summary>
@@ -378,12 +379,12 @@
     <section class="section guestbook reveal" id="guestbook" aria-labelledby="guestbook-heading">
       <p class="section-eyebrow en">GUEST BOOK</p>
       <h2 class="section-title" id="guestbook-heading">방명록</h2>
-      <p class="guestbook-message">
+      <!-- <p class="guestbook-message">
         두 사람에게 전하고 싶은 한마디를<br>
         남겨 주세요.<br><br>
         오래도록 마음에 담아<br>
         간직하겠습니다.
-      </p>
+      </p> -->
       <div class="stats-panel is-hidden" id="guestbook-stats" aria-live="polite"></div>
       <form class="guestbook-form" id="guestbook-form">
         <label class="rsvp-field">
@@ -402,11 +403,11 @@
     <!-- 10. SHARE -->
     <section class="section share reveal" id="share" aria-labelledby="share-heading">
       <p class="section-eyebrow en">SHARE</p>
-      <h2 class="section-title" id="share-heading">청첩장 공유</h2>
-      <p class="share-message">
+      <h2 class="section-title" id="share-heading">공유하기</h2>
+      <!-- <p class="share-message">
         저희의 소식을<br>
         가까운 분들께도 함께 전해 주세요.
-      </p>
+      </p> -->
       <div class="share-actions">
         <button type="button" class="btn primary" id="share-kakao" aria-label="카카오톡으로 공유하기">카카오톡으로 공유하기</button>
         <button type="button" class="btn" id="share-link" aria-label="청첩장 링크 복사하기">링크 복사하기</button>
@@ -443,25 +444,33 @@
         <label class="rsvp-field">
           <span>참석 여부</span>
           <select name="attendance" required>
+            <option value="미정">미정</option>
             <option value="참석">참석</option>
             <option value="불참">불참</option>
-            <option value="미정">미정</option>
           </select>
         </label>
-        <label class="rsvp-field">
-          <span>본인 외 동반인 수</span>
-          <input type="number" name="guests" min="0" max="10" value="0">
-        </label>
-        <label class="rsvp-field">
-          <span>식사 여부</span>
-          <select name="meal" required>
-            <option value="0">미정</option>
-            <option value="1">식사 예정</option>
-            <option value="-1">식사 안 함</option>
-          </select>
-        </label>
-        <input type="hidden" name="afterparty" value="초대안함">
-        <button class="btn primary" type="submit">마음 전하기</button>
+        <div class="rsvp-conditional-fields" data-rsvp-hide-on-declined>
+          <div class="rsvp-guests-row">
+            <label class="rsvp-field">
+              <span>어른 동반 인원</span>
+              <input type="number" name="adultGuests" min="0" max="10" value="0">
+            </label>
+            <label class="rsvp-field">
+              <span>아이(10세 이하) 동반 인원</span>
+              <input type="number" name="childGuests" min="0" max="10" value="0">
+            </label>
+          </div>
+          <label class="rsvp-field">
+            <span>식사 여부</span>
+            <select name="meal" required>
+              <option value="0">미정</option>
+              <option value="1">식사 예정</option>
+              <option value="-1">식사 안 함</option>
+            </select>
+          </label>
+        </div>
+        <input type="hidden" name="afterparty" value="불참">
+        <button class="btn primary" type="submit">참석 정보 전달하기</button>
       </form>
     </div>
   </div>
@@ -489,6 +498,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
   <script src="https://www.unpkg.com/scroll-svg@1.5.2/dist/index.js" crossorigin="anonymous"></script>
-  <script src="script.js?v=20260805-2"></script>
+  <script src="script.js?v=20260805-3"></script>
 </body>
 </html>

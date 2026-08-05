@@ -16,11 +16,13 @@ module.exports = async function handler(req, res) {
       const entry = {
         id: payload.id || `rsvp-${Date.now()}`,
         name: payload.name || '익명',
-        side: payload.side || '',
+        side: payload.side || '신랑',
         attendance: payload.attendance || '미정',
         guests: payload.guests || '0',
-        meal: payload.meal || '',
-        afterparty: payload.afterparty || '',
+        adultGuests: payload.adultGuests || '0',
+        childGuests: payload.childGuests || '0',
+        meal: payload.meal || '0',
+        afterparty: payload.afterparty || '미정',
         message: payload.message || '',
         createdAt: payload.createdAt || new Date().toISOString()
       };
@@ -34,7 +36,7 @@ module.exports = async function handler(req, res) {
           return res.status(500).json({
             ok: false,
             code: 'RSVP_SCHEMA_MISMATCH',
-            error: 'RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.'
+            error: 'RSVP schema is outdated. Add side, meal, afterparty, adultGuests, childGuests columns to public.rsvp.'
           });
         }
         throw err;

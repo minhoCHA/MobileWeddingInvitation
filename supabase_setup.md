@@ -8,11 +8,13 @@
 create table if not exists public.rsvp (
   id text primary key,
   name text not null,
-  side text default '',
+  side text not null default '신랑',
   attendance text not null default '미정',
   guests text not null default '0',
-  meal text default '',
-  afterparty text not null default '초대안함',
+  "adultGuests" text not null default '0',
+  "childGuests" text not null default '0',
+  meal text not null default '0',
+  afterparty text not null default '미정',
   "createdAt" text not null
 );
 
@@ -34,15 +36,23 @@ create policy "Allow public insert on guestbook" on public.guestbook for insert 
 create policy "Allow public select on guestbook" on public.guestbook for select using (true);
 create policy "Allow public delete on guestbook" on public.guestbook for delete using (true);
 
-alter table public.rsvp add column if not exists side text default '';
-alter table public.rsvp add column if not exists meal text default '';
-alter table public.rsvp add column if not exists afterparty text not null default '초대안함';
+alter table public.rsvp add column if not exists side text not null default '신랑';
+alter table public.rsvp add column if not exists meal text not null default '0';
+alter table public.rsvp add column if not exists afterparty text not null default '미정';
+alter table public.rsvp add column if not exists "adultGuests" text not null default '0';
+alter table public.rsvp add column if not exists "childGuests" text not null default '0';
 alter table public.rsvp drop column if exists message;
 
-update public.rsvp set afterparty = '초대안함' where afterparty is null or afterparty = '';
+update public.rsvp set side = '신랑' where side is null or side = '';
+update public.rsvp set attendance = '미정' where attendance is null or attendance = '';
+update public.rsvp set guests = '0' where guests is null or guests = '';
+update public.rsvp set meal = '0' where meal is null or meal = '';
+update public.rsvp set afterparty = '미정' where afterparty is null or afterparty = '';
+update public.rsvp set "adultGuests" = guests where "adultGuests" is null or "adultGuests" = '';
+update public.rsvp set "childGuests" = '0' where "childGuests" is null or "childGuests" = '';
 ```
 
-4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` + `update` 구문까지 꼭 실행해야 6개 RSVP 필드가 정상 저장됩니다.
+4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` + `update` 구문까지 꼭 실행해야 8개 RSVP 필드가 정상 저장됩니다.
 5. 빠르게 패치만 적용하려면 [data/rsvp_schema_patch.sql](data/rsvp_schema_patch.sql) 파일 내용을 SQL Editor에서 실행하세요.
 6. 현재 서버는 RSVP 스키마가 구버전이면 `RSVP_SCHEMA_MISMATCH` 에러를 반환하도록 설정되어 있습니다. (조용한 필드 누락 방지)
 7. 실행 후 서버를 재시작합니다.

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <meta name="theme-color" content="#FBF7F3">
+  <title>RSVP Manager</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="ko-page">
+  <main class="card" id="card">
+    <div class="manager-panel" id="manager-panel" aria-live="polite">
+      <div class="stats-panel" id="rsvp-stats"></div>
+      <div class="manager-tabs" role="tablist" aria-label="RSVP 응답 필터">
+        <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">전체 리스트</button>
+        <button class="manager-tab" type="button" data-filter="참석" role="tab" aria-selected="false">참석</button>
+        <button class="manager-tab" type="button" data-filter="불참" role="tab" aria-selected="false">불참</button>
+        <button class="manager-tab" type="button" data-filter="미정" role="tab" aria-selected="false">미정</button>
+      </div>
+      <ul class="manager-list" id="rsvp-manager-list"></ul>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+  <script src="/script.js?v=20260805-3"></script>
+</body>
+</html>

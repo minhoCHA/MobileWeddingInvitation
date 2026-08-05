@@ -66,7 +66,7 @@
         <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All list</button>
         <button class="manager-tab" type="button" data-filter="Attending" role="tab" aria-selected="false">Attending</button>
         <button class="manager-tab" type="button" data-filter="Not attending" role="tab" aria-selected="false">Not attending</button>
-        <button class="manager-tab" type="button" data-filter="Pending" role="tab" aria-selected="false">Pending</button>
+        <button class="manager-tab" type="button" data-filter="Not sure yet" role="tab" aria-selected="false">Not sure yet</button>
       </div>
       <ul class="manager-list" id="rsvp-manager-list"></ul>
     </div>
@@ -92,7 +92,7 @@
     <section class="section greeting reveal" id="greeting" aria-labelledby="greeting-heading">
       <p class="section-eyebrow en">INVITATION</p>
       <h2 class="section-title" id="greeting-heading">You are invited</h2>
-      <p class="hero-eyebrow script" style="margin: 0 0 12px; font-size: 1.2rem;">We&rsquo;re getting married</p>
+      <p class="hero-eyebrow script" style="margin: 0 0 20px; font-size: 2rem;">We&rsquo;re getting married</p>
       <p class="hero-info" style="margin: 0 0 24px;">
         Saturday, October 17, 2026 4 PM<br>
         Seoul, South Korea
@@ -110,11 +110,18 @@
       <!-- <p class="greeting-en script">A quiet promise, in autumn light.</p> -->
     </section>
 
+    <section class="family-bridge reveal bride-groom-intro" aria-label="Groom and bride introduction">
+      <div class="bride-groom-lines">
+        <p><span class="bride-groom-label">Groom</span><strong>Minho Cha</strong></p>
+        <p><span class="bride-groom-label">Bride</span><strong>Claire Cho</strong></p>
+      </div>
+    </section>
+
     <!-- 4. CALENDAR + D-DAY -->
     <section class="section calendar-section reveal" id="calendar" aria-labelledby="calendar-heading">
       <img class="day-hero" src="/images/123.jpg" alt="Autumn mood wedding photo" loading="lazy" width="1024" height="640">
       <p class="section-eyebrow en">THE DAY</p>
-      <h2 class="section-title" id="calendar-heading">Wedding Date</h2>
+      <!-- <h2 class="section-title" id="calendar-heading">Wedding Date</h2> -->
 
       <table class="cal" data-target="2026-10-17" aria-label="October 2026 calendar">
         <caption class="cal-caption en">OCTOBER 2026</caption>
@@ -129,24 +136,24 @@
       <div class="dday-wrap" aria-live="polite">
         <p class="dday-label">Until Minho and Claire's wedding</p>
         <p class="dday">D - <span id="dday-num" data-target="0">0</span></p>
-        <p class="dday-sub">Saturday, October 17, 2026 4 PM<br>Samcheonggak Ilhwa-dang</p>
+        <p class="dday-sub">Saturday, October 17, 2026 4 PM</p>
       </div>
     </section>
 
     <!-- 4-1. AFTER PARTY -->
     <section class="section afterparty reveal" id="afterparty" aria-labelledby="afterparty-heading">
       <p class="section-eyebrow en">AFTER PARTY</p>
-      <h2 class="section-title" id="afterparty-heading">After Party</h2>
+      <!-- <h2 class="section-title" id="afterparty-heading">After Party</h2> -->
       <p class="afterparty-message">
         After the wedding, we are going out for a fun night with friends.<br>
         The after party runs from 6 PM to 12 AM, and you are welcome to join later or leave early.<br>
         Please check your after-party attendance in the RSVP form below.
       </p>
-      <p class="afterparty-route">From Samcheonggak to Liquortation: about 20-30 minutes by car</p>
+      <!-- <p class="afterparty-route">From Samcheonggak to Liquortation: about 20-30 minutes by car</p> -->
       <article class="afterparty-card" aria-label="After-party details">
         <p><strong>Venue</strong><span>Liquortation</span></p>
         <p><strong>Address</strong><span class="single-line">B1, 13 Apgujeong-ro 10-gil, Gangnam-gu, Seoul</span></p>
-        <p><strong>Taxi</strong><span>Approx. KRW 8,000-15,000 from Samcheonggak</span></p>
+        <p><strong>Taxi</strong><span>Approx. 20-30 mins<br>(KRW 8,000-15,000) from Samcheonggak</span></p>
       </article>
       <div class="afterparty-faq" aria-label="Transport and parking info">
         <article>
@@ -164,15 +171,39 @@
       </div>
     </section>
 
+    
+    <section class="section journey-section reveal" id="journey" aria-labelledby="journey-heading">
+      <p class="section-eyebrow en">OUR JOURNEY</p>
+      <!-- <h2 class="section-title" id="journey-heading">Our Journey</h2> -->
+      <!-- <p class="journey-message">His path moves from Seoul to San Francisco and into Los Angeles,<br>her path starts in Chicago, and after meeting in Los Angeles, they continue together to Las Vegas.</p> -->
+
+      <div class="journey-scroll-scene" aria-label="Scroll-linked route drawing">
+        <div class="journey-sticky-stage" role="region" aria-label="City route animation">
+          <span class="journey-city-label l-seoul">Seoul</span>
+          <span class="journey-city-label l-sf">San Francisco</span>
+          <span class="journey-city-label l-chicago">Chicago</span>
+          <span class="journey-city-label l-la">Los Angeles</span>
+          <span class="journey-city-label l-lv">Las Vegas</span>
+
+          <svg class="journey-svg" viewBox="0 0 560 800" role="img" aria-label="His route runs Seoul to San Francisco to Los Angeles, her route runs Chicago to Los Angeles, then one shared route continues to Las Vegas">
+            <path id="groom-path" d="M100 110 C130 170, 170 225, 220 275 C250 305, 265 340, 280 390" />
+            <path id="bride-path" d="M460 130 C420 190, 365 260, 320 330 C305 350, 292 370, 280 390" />
+            <path id="shared-path" d="M280 390 C285 460, 288 545, 290 656" />
+            <circle class="journey-end-dot" cx="290" cy="656" r="5" aria-hidden="true" />
+          </svg>
+        </div>
+      </div>
+    </section>
+    
     <!-- 5. GALLERY -->
     <section class="section gallery-section reveal" id="gallery" aria-labelledby="gallery-heading">
       <p class="section-eyebrow en">OUR MOMENTS</p>
-      <h2 class="section-title" id="gallery-heading">Our Moments</h2>
-      <p class="gallery-message">
+      <!-- <h2 class="section-title" id="gallery-heading">Our Moments</h2> -->
+      <!-- <p class="gallery-message">
         The moments we have shared,<br>
         the feelings we carry within,<br>
         we want to share with you.
-      </p>
+      </p> -->
 
       <div class="gallery-stage" role="region" aria-label="Photo gallery">
         <div class="gallery-grid">
@@ -254,6 +285,7 @@
       <p class="gallery-hint">Tap the photo to enlarge</p>
     </section>
 
+
     <!-- 6. VENUE -->
     <!-- Legacy venue layout backup kept for potential reuse.
     <section class="section venue reveal" id="venue" aria-labelledby="venue-heading">
@@ -266,8 +298,8 @@
     -->
     <section class="section venue reveal venue-modern" id="venue" aria-labelledby="venue-heading">
       <p class="section-eyebrow en">LOCATION</p>
-      <h2 class="section-title" id="venue-heading">How to Find Us</h2>
-      <p class="venue-name">Samcheonggak Ilhwa-dang</p>
+      <!-- <h2 class="section-title" id="venue-heading">How to Find Us</h2> -->
+      <p class="venue-name">Samcheonggak, 삼청각</p>
       <p class="venue-addr">3 Daesagwan-ro, Seongbuk-gu, Seoul</p>
 
       <div id="map" class="map-static" aria-label="Venue location map">
@@ -276,22 +308,26 @@
           title="Samcheonggak Ilhwa-dang map"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=Samcheonggak%20Ilhwa-dang%20Seoul&z=16&output=embed">
+          src="https://maps.google.com/maps?q=37.5972872,126.9841513&z=17&t=k&output=embed">
         </iframe>
-        <div class="map-pin">
+        <!-- <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
           <span>Samcheonggak Ilhwa-dang</span>
-        </div>
+        </div> -->
       </div>
 
-      <div class="venue-quick" aria-label="Quick route info">
+      <!-- <div class="venue-quick" aria-label="Quick route info">
         <span class="venue-chip">Subway + shuttle recommended</span>
         <span class="venue-chip">3-hour free parking during ceremony</span>
-      </div>
+      </div> -->
 
       <div class="venue-actions">
         <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">Kakao Map</a>
         <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">Naver Map</a>
+      </div>
+
+      <div class="venue-schedule-action">
+        <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">Shuttle Timetable</a>
       </div>
 
       <article class="venue-info-card" aria-label="Transit details">
@@ -303,8 +339,7 @@
       <div class="venue-faq" aria-label="Detailed guidance">
         <article>
           <h3>Q. Where can I check shuttle times?</h3>
-          <p>Use the button below to open the official Samcheonggak shuttle timetable PDF.</p>
-          <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">Shuttle Timetable</a>
+          <p>Please arrive by 3:20 PM due to shuttle service gaps, and check the Shuttle Timetable button below the map buttons.</p>
         </article>
         <article>
           <h3>Q. Is parking available?</h3>
@@ -314,7 +349,7 @@
     </section>
 
     <!-- 7. ACCOUNT -->
-    <section class="section account reveal" id="account" aria-labelledby="account-heading">
+    <!-- <section class="section account reveal" id="account" aria-labelledby="account-heading">
       <p class="section-eyebrow en">WITH HEART</p>
       <h2 class="section-title" id="account-heading">Gift Account</h2>
       <p class="account-message">
@@ -327,7 +362,6 @@
       <details class="acc-group">
         <summary>Groom Side Account</summary>
         <ul class="acc-list">
-          <!-- placeholder: replace with real bank/account details -->
           <li>
             <p class="acc-name">Groom's Father Jae-dong Cha</p>
             <p class="acc-num">Bank XXX-XXXX-XXXX</p>
@@ -360,12 +394,23 @@
           </li>
         </ul>
       </details>
+    </section> -->
+
+    <section class="section travel-guide reveal" id="travel-guide" aria-labelledby="travel-guide-heading">
+      <p class="section-eyebrow en">TRAVEL GUIDE</p>
+      <h2 class="section-title" id="travel-guide-heading">For Guests Traveling from the U.S.</h2>
+      <p class="travel-guide-message">
+        We prepared a Google Drive guide with hotel recommendations,<br>
+        airport transportation tips, local tour ideas, and useful Seoul notes.
+      </p>
+      <a class="btn primary" href="https://drive.google.com/" target="_blank" rel="noopener">Open Travel Guide</a>
+      <p class="travel-guide-note">If access is needed, please contact us and we will share it right away.</p>
     </section>
 
     <!-- 8. RSVP -->
     <section class="section rsvp reveal" id="rsvp" aria-labelledby="rsvp-heading">
       <p class="section-eyebrow en">RSVP</p>
-      <h2 class="section-title" id="rsvp-heading">RSVP</h2>
+      <!-- <h2 class="section-title" id="rsvp-heading">RSVP</h2> -->
       <p class="rsvp-message">
         If you let us know your attendance in advance,<br>
         we will prepare the venue with extra care.<br><br>
@@ -378,11 +423,11 @@
     <!-- 9. GUESTBOOK -->
     <section class="section guestbook reveal" id="guestbook" aria-labelledby="guestbook-heading">
       <p class="section-eyebrow en">GUEST BOOK</p>
-      <h2 class="section-title" id="guestbook-heading">Guest Book</h2>
+      <!-- <h2 class="section-title" id="guestbook-heading">Guest Book</h2>
       <p class="guestbook-message">
         Leave a note for the couple.<br><br>
         We will cherish your warm words for a long time.
-      </p>
+      </p> -->
       <div class="stats-panel is-hidden" id="guestbook-stats" aria-live="polite"></div>
       <form class="guestbook-form" id="guestbook-form">
         <label class="rsvp-field">
@@ -401,11 +446,11 @@
     <!-- 10. SHARE -->
     <section class="section share reveal" id="share" aria-labelledby="share-heading">
       <p class="section-eyebrow en">SHARE</p>
-      <h2 class="section-title" id="share-heading">Share Invitation</h2>
+      <!-- <h2 class="section-title" id="share-heading">Share Invitation</h2>
       <p class="share-message">
         Share our wedding news<br>
         with your loved ones.
-      </p>
+      </p> -->
       <div class="share-actions">
         <button type="button" class="btn primary" id="share-kakao" aria-label="Share on KakaoTalk">Share on KakaoTalk</button>
         <button type="button" class="btn" id="share-link" aria-label="Copy invitation link">Copy link</button>
@@ -442,33 +487,41 @@
         <label class="rsvp-field">
           <span>Attendance</span>
           <select name="attendance" required>
-            <option value="Attending">Attending</option>
-            <option value="Not attending">Not attending</option>
-            <option value="Pending">Pending</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>Additional Guests</span>
-          <input type="number" name="guests" min="0" max="10" value="0">
-        </label>
-        <label class="rsvp-field">
-          <span>Meal</span>
-          <select name="meal" required>
-            <option value="0">Not sure yet</option>
-            <option value="1">Will have a meal</option>
-            <option value="-1">Will not have a meal</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>After Party</span>
-          <select name="afterparty" required>
-            <option value="Pending">Pending</option>
+            <option value="Pending">Not sure yet</option>
             <option value="Attending">Attending</option>
             <option value="Not attending">Not attending</option>
           </select>
-          <small class="rsvp-field-note">Liquortation · 6 PM to 12 AM (late join and early leave welcome)</small>
         </label>
-        <button class="btn primary" type="submit">Send RSVP</button>
+        <div class="rsvp-conditional-fields">
+          <div class="rsvp-guests-row" data-rsvp-hide-on-declined>
+            <label class="rsvp-field">
+              <span>Adult guests</span>
+              <input type="number" name="adultGuests" min="0" max="10" value="0">
+            </label>
+            <label class="rsvp-field">
+              <span>Kids (10 and under)</span>
+              <input type="number" name="childGuests" min="0" max="10" value="0">
+            </label>
+          </div>
+          <label class="rsvp-field" data-rsvp-hide-on-declined>
+            <span>Meal</span>
+            <select name="meal" required>
+              <option value="0">Not sure yet</option>
+              <option value="1">Will have a meal</option>
+              <option value="-1">Will not have a meal</option>
+            </select>
+          </label>
+          <label class="rsvp-field">
+            <span>After Party</span>
+            <select name="afterparty" required>
+              <option value="Pending">Not sure yet</option>
+              <option value="Attending">Attending</option>
+              <option value="Not attending">Not attending</option>
+            </select>
+            <small class="rsvp-field-note">Liquortation · 6 PM to 12 AM (late join and early leave welcome)</small>
+          </label>
+        </div>
+        <button class="btn primary" type="submit">Submit RSVP</button>
       </form>
     </div>
   </div>
@@ -495,6 +548,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
-  <script src="/script.js?v=20260805-2"></script>
+  <script src="https://www.unpkg.com/scroll-svg@1.5.2/dist/index.js" crossorigin="anonymous"></script>
+  <script src="/script.js?v=20260805-3"></script>
 </body>
 </html>

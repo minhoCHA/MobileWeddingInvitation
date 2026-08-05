@@ -44,11 +44,13 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     entry = {
         'id': payload.get('id') or f"{table}-{int(datetime.now(timezone.utc).timestamp()*1000)}",
         'name': payload.get('name', '익명'),
-        'side': payload.get('side', ''),
-        'attendance': payload.get('attendance', '미정'),
+        'side': payload.get('side', '신랑') or '신랑',
+        'attendance': payload.get('attendance', '미정') or '미정',
         'guests': payload.get('guests', '0'),
-        'meal': payload.get('meal', ''),
-        'afterparty': payload.get('afterparty', '초대안함'),
+        'adultGuests': payload.get('adultGuests', payload.get('guests', '0')),
+        'childGuests': payload.get('childGuests', '0'),
+        'meal': payload.get('meal', '0') or '0',
+        'afterparty': payload.get('afterparty', '미정') or '미정',
         'createdAt': payload.get('createdAt') or now_iso(),
     }
     if table == 'guestbook':
@@ -81,7 +83,7 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
                     return fallback_response.data or []
                 return []
             except Exception as fallback_exc:
-                raise RuntimeError('RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.') from fallback_exc
+                raise RuntimeError('RSVP schema is outdated. Add side, meal, afterparty, adultGuests, childGuests columns to public.rsvp.') from fallback_exc
         raise
 
 

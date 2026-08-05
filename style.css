@@ -132,23 +132,29 @@ body.intro-active main {
 }
 
 .language-switch {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 4;
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 16px;
+  z-index: 52;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition: opacity 320ms var(--ease-out-cubic),
+              transform 320ms var(--ease-out-cubic),
+              visibility 0s linear 0s;
 }
 .language-switch a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 82px;
+  min-width: 60px;
   gap: 0.35rem;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.68rem;
   border-radius: 999px;
   border: 1px solid rgba(58, 46, 42, 0.12);
   background: rgba(251, 247, 243, 0.92);
   color: var(--color-text);
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   line-height: 1;
   text-decoration: none;
   transition: transform var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
@@ -551,6 +557,43 @@ body::before {
   text-align: center;
 }
 
+.bride-groom-intro {
+  padding-top: 12px;
+}
+
+.bride-groom-lines {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+}
+
+.bride-groom-lines p {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  text-align: left;
+}
+
+.bride-groom-label {
+  font-family: var(--font-en-serif);
+  font-size: 14px;
+  color: var(--color-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bride-groom-lines strong {
+  font-family: var(--font-en-serif);
+  font-size: 22px;
+  color: var(--color-accent);
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+
 /* ==========================================================
    3. COUPLE INTRO
    ========================================================== */
@@ -647,23 +690,20 @@ body::before {
 }
 .journey-scroll-scene {
   position: relative;
-  height: 300vh;
+  height: clamp(520px, 88vh, 660px);
   margin: 0 calc(var(--side-pad) * -1);
 }
 .journey-sticky-stage {
   position: sticky;
-  top: 8vh;
+  top: clamp(8px, 4vh, 32px);
   width: min(94vw, 460px);
   margin: 0 auto;
   aspect-ratio: 7 / 10;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 20% 12%, rgba(201, 162, 162, 0.2), transparent 46%),
-    radial-gradient(circle at 78% 82%, rgba(168, 181, 156, 0.2), transparent 50%),
-    rgba(255, 252, 248, 0.92);
-  border: 1px solid rgba(201, 162, 162, 0.36);
-  box-shadow: 0 18px 36px rgba(58, 46, 42, 0.12);
-  overflow: hidden;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
 }
 .journey-svg {
   display: block;
@@ -671,14 +711,18 @@ body::before {
   height: 100%;
 }
 #groom-path,
-#bride-path {
+#bride-path,
+#shared-path {
   transition: stroke-dashoffset 20ms ease-in-out;
   fill: none;
   stroke: #333;
   stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 #groom-path { stroke: #8b5a5a; }
 #bride-path { stroke: #5f7668; }
+#shared-path { stroke: #4e5a62; }
 
 .journey-city-label {
   position: absolute;
@@ -694,12 +738,152 @@ body::before {
   box-shadow: 0 6px 14px rgba(58, 46, 42, 0.08);
   transform: translate(-50%, -50%);
   white-space: nowrap;
+  transition: transform 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
 }
 .journey-city-label.l-seoul { left: 18%; top: 13%; }
-.journey-city-label.l-sf { left: 31%; top: 28%; }
-.journey-city-label.l-chicago { left: 79%; top: 13%; }
+.journey-city-label.l-sf { left: 33%; top: 28%; }
+.journey-city-label.l-chicago { left: 80%; top: 16%; }
 .journey-city-label.l-la { left: 50%; top: 49%; }
 .journey-city-label.l-lv { left: 50%; top: 82%; }
+
+@keyframes lvArrivalPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 6px 14px rgba(58, 46, 42, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 10px 24px rgba(139, 90, 90, 0.26);
+    background: rgba(255, 245, 247, 0.98);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 6px 14px rgba(58, 46, 42, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+  }
+}
+
+@keyframes laArrivalPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 6px 14px rgba(58, 46, 42, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 9px 20px rgba(95, 118, 104, 0.24);
+    background: rgba(244, 250, 246, 0.98);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 6px 14px rgba(58, 46, 42, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+  }
+}
+
+@keyframes laHeartFloat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(8px) scale(0.6);
+  }
+  28% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(-4px) scale(1);
+  }
+  70% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) translateY(-14px) scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-24px) scale(0.9);
+  }
+}
+
+@keyframes lvFireworkBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.45);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.65);
+  }
+}
+
+.journey-city-label.l-la {
+  overflow: visible;
+}
+
+.journey-city-label.l-lv {
+  overflow: visible;
+}
+
+.journey-city-label.l-la::before,
+.journey-city-label.l-lv::after {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.journey-city-label.l-la::before {
+  content: '♥';
+  left: 80%;
+  top: -5%;
+  font-size: 30px;
+  color: #c56a7b;
+  text-shadow: 0 2px 8px rgba(197, 106, 123, 0.35);
+  z-index: 3;
+}
+
+.journey-city-label.l-lv::after {
+  content: '✦';
+  left: 90%;
+  top: -30%;
+  font-size: 30px;
+  color: #e5ad6f;
+  text-shadow:
+    0 -12px 0 rgba(255, 232, 179, 0.95),
+    11px -3px 0 rgba(229, 173, 111, 0.92),
+    -11px -2px 0 rgba(255, 194, 128, 0.88),
+    7px 10px 0 rgba(240, 126, 126, 0.75),
+    -8px 9px 0 rgba(255, 220, 122, 0.8);
+  z-index: 2;
+}
+
+.journey-city-label.l-la.is-arrived {
+  animation: laArrivalPulse 1300ms ease-in-out infinite;
+}
+
+.journey-city-label.l-la.is-arrived::before {
+  animation: laHeartFloat 1300ms ease-in-out infinite;
+}
+
+.journey-city-label.l-lv.is-arrived {
+  animation: lvArrivalPulse 1200ms ease-in-out infinite;
+}
+
+.journey-city-label.l-lv.is-arrived::after {
+  animation: lvFireworkBurst 1200ms ease-out infinite;
+}
+
+.journey-end-dot {
+  fill: #4e5a62;
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: opacity 200ms ease;
+}
+
+.journey-end-dot.is-arrived {
+  opacity: 1;
+  animation: lvArrivalPulse 1200ms ease-in-out infinite;
+}
 
 /* ==========================================================
    4. CALENDAR + D-DAY
@@ -985,9 +1169,28 @@ body::before {
   gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 32px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
-.venue-actions .btn { flex: 1 1 auto; min-width: 96px; }
+.venue-actions .btn {
+  flex: 1 1 calc(50% - 3px);
+  min-width: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.venue-schedule-action {
+  width: min(100%, 380px);
+  margin: 0 auto 24px;
+}
+.venue-schedule-action .btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
 
 .directions {
   display: flex;
@@ -1077,7 +1280,7 @@ body::before {
 }
 .venue-info-card p {
   display: grid;
-  grid-template-columns: 78px 1fr;
+  grid-template-columns: minmax(64px, 78px) minmax(0, 1fr);
   gap: 10px;
   align-items: start;
   padding: 10px 4px;
@@ -1093,16 +1296,20 @@ body::before {
   letter-spacing: 0.08em;
   color: var(--color-accent);
   text-transform: uppercase;
+  min-width: 0;
 }
 .venue-info-card span {
   font-family: var(--font-ko-sans);
   font-size: 13px;
   color: var(--color-text);
   line-height: 1.7;
+  min-width: 0;
+  white-space: normal;
   word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 .venue-info-card span.compact-line {
-  white-space: nowrap;
+  white-space: normal;
   font-size: 12.2px;
   letter-spacing: -0.01em;
 }
@@ -1189,7 +1396,7 @@ body::before {
 }
 .afterparty-card p {
   display: grid;
-  grid-template-columns: 78px 1fr;
+  grid-template-columns: minmax(64px, 78px) minmax(0, 1fr);
   gap: 10px;
   align-items: start;
   padding: 10px 4px;
@@ -1205,15 +1412,20 @@ body::before {
   letter-spacing: 0.08em;
   color: var(--color-accent);
   text-transform: uppercase;
+  min-width: 0;
 }
 .afterparty-card span {
   font-family: var(--font-ko-sans);
   font-size: 13px;
   color: var(--color-text);
   line-height: 1.7;
+  min-width: 0;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 .afterparty-card span.single-line {
-  white-space: nowrap;
+  white-space: normal;
   font-size: 12.2px;
   letter-spacing: -0.01em;
 }
@@ -1382,6 +1594,29 @@ body::before {
    ========================================================== */
 .rsvp, .guestbook, .share { background: var(--color-bg); }
 
+.travel-guide {
+  background: linear-gradient(180deg, rgba(251, 247, 243, 0.96), rgba(246, 238, 230, 0.72));
+}
+
+.travel-guide-message {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.9;
+  margin-bottom: 18px;
+}
+
+.travel-guide .btn {
+  width: 100%;
+  max-width: 320px;
+}
+
+.travel-guide-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
 .rsvp-message,
 .guestbook-message,
 .share-message {
@@ -1498,12 +1733,48 @@ body::before {
   width: 100%;
   margin-top: 18px;
 }
+.rsvp-open-btn.needs-rsvp-attention {
+  animation: rsvpAttentionPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes rsvpAttentionPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 90, 90, 0);
+    transform: translateY(0);
+  }
+  35% {
+    box-shadow: 0 0 0 8px rgba(139, 90, 90, 0.18);
+    transform: translateY(-1px);
+  }
+  55% {
+    box-shadow: 0 0 0 2px rgba(139, 90, 90, 0.1);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsvp-open-btn.needs-rsvp-attention {
+    animation: none;
+    box-shadow: 0 0 0 2px rgba(139, 90, 90, 0.24);
+  }
+}
 .rsvp-field {
   display: grid;
   gap: 6px;
   font-family: var(--font-ko-sans);
   font-size: 13px;
   color: var(--color-muted);
+}
+.rsvp-guests-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+[data-rsvp-hide-on-declined][hidden] {
+  display: none !important;
+}
+.rsvp-conditional-fields[hidden] {
+  display: none !important;
 }
 .rsvp-field input,
 .rsvp-field select,
@@ -1773,6 +2044,8 @@ body::before {
 .manager-item-top strong {
   font-size: 14px;
   color: var(--color-text);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .manager-chip {
   display: inline-flex;
@@ -1782,7 +2055,9 @@ body::before {
   background: rgba(201, 162, 162, 0.16);
   color: var(--color-accent);
   font-size: 11px;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 .manager-item-meta {
   display: flex;
@@ -2062,8 +2337,8 @@ body::before {
   top: 16px;
   right: 16px;
   z-index: 50;
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1px solid rgba(201, 162, 162, 0.5);
   background: rgba(251, 247, 243, 0.8);
@@ -2072,7 +2347,12 @@ body::before {
   color: var(--color-secondary);
   display: grid;
   place-items: center;
-  transition: transform var(--dur-fast) var(--ease-standard);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition: opacity 320ms var(--ease-out-cubic),
+              transform 320ms var(--ease-out-cubic),
+              visibility 0s linear 0s;
   overflow: hidden;
 }
 .music-toggle:active { transform: scale(0.94); }
@@ -2117,6 +2397,26 @@ body::before {
 .music-toggle.is-rippling::after {
   animation: ripple 600ms var(--ease-decelerate);
 }
+
+body.top-controls-hidden .language-switch,
+body.top-controls-hidden .music-toggle {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.96);
+  transition-delay: 0s, 0s, 320ms;
+}
+
+@media (max-height: 700px) {
+  .journey-scroll-scene {
+    height: clamp(560px, 96vh, 760px);
+  }
+  .journey-sticky-stage {
+    top: 8px;
+    width: min(96vw, 430px);
+  }
+}
+
 @keyframes ripple {
   0%   { transform: scale(0);   opacity: 0.4; }
   100% { transform: scale(2.5); opacity: 0; }

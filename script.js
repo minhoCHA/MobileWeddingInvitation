@@ -29,6 +29,78 @@
   const haptic = (n) => { try { navigator.vibrate && navigator.vibrate(n); } catch (e) {} };
   let galleryAPI = { count: 0 };
   let activeRsvpFilter = 'all';
+  const pageLang = (document.documentElement.lang || '').toLowerCase();
+  const isEnglishPage = pageLang.startsWith('en');
+
+  const t = (ko, en) => (isEnglishPage ? en : ko);
+
+  function toNonNegativeInt(value, fallback = 0) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return fallback;
+    return Math.max(0, Math.floor(parsed));
+  }
+
+  function mapSideToKorean(value) {
+    const side = String(value || '').trim();
+    if (/^groom$/i.test(side) || side === '신랑') return '신랑';
+    if (/^bride$/i.test(side) || side === '신부') return '신부';
+    return side;
+  }
+
+  function mapAttendanceToKorean(value) {
+    const attendance = String(value || '').trim();
+    if (/불참|미참석|not attending/i.test(attendance)) return '불참';
+    if (/미정|pending|not sure/i.test(attendance)) return '미정';
+    if (/참석|attending/i.test(attendance)) return '참석';
+    return attendance || '미정';
+  }
+
+  function mapAfterpartyToKorean(value) {
+    const afterparty = String(value || '').trim();
+    if (/불참|미참석|not attending/i.test(afterparty)) return '불참';
+    if (/미정|pending|not sure/i.test(afterparty)) return '미정';
+    if (/참석|attending/i.test(afterparty)) return '참석';
+    if (/초대안함|not invited/i.test(afterparty)) return '초대안함';
+    return afterparty || '초대안함';
+  }
+
+  function formatAttendanceForDisplay(value) {
+    const mapped = mapAttendanceToKorean(value);
+    if (!isEnglishPage) return mapped;
+    if (mapped === '참석') return 'Attending';
+    if (mapped === '불참') return 'Not attending';
+    if (mapped === '미정') return 'Not sure yet';
+    return mapped;
+  }
+
+  function formatSideForDisplay(value) {
+    const mapped = mapSideToKorean(value);
+    if (!isEnglishPage) return mapped;
+    if (mapped === '신랑') return 'Groom';
+    if (mapped === '신부') return 'Bride';
+    return mapped;
+  }
+
+  function formatAfterpartyForDisplay(value) {
+    const mapped = mapAfterpartyToKorean(value);
+    if (!isEnglishPage) return mapped;
+    if (mapped === '참석') return 'Attending';
+    if (mapped === '불참') return 'Not attending';
+    if (mapped === '미정') return 'Not sure yet';
+    if (mapped === '초대안함') return 'Not invited';
+    return mapped;
+  }
+
+  function getGuestCountsFromEntry(entry) {
+    const hasSplitFields = entry && (entry.adultGuests !== undefined || entry.childGuests !== undefined);
+    if (hasSplitFields) {
+      const adults = toNonNegativeInt(entry.adultGuests, 0);
+      const kids = toNonNegativeInt(entry.childGuests, 0);
+      return { adults, kids, total: adults + kids };
+    }
+    const total = toNonNegativeInt(entry && entry.guests, 0);
+    return { adults: total, kids: 0, total };
+  }
 
   // ---------------------------------------------------------
   // 1. HERO entrance step-in
@@ -57,6 +129,56 @@
         overlay.hidden = true;
       }, isReduced() ? 0 : 560);
     }, holdMs);
+  }
+
+  function setupTopControlsVisibility() {
+    const languageSwitch = $('.language-switch');
+    const musicToggle = $('#music-toggle');
+    const greeting = $('#greeting');
+    const hero = $('#hero');
+
+    if ((!languageSwitch && !musicToggle) || !greeting || !hero) return;
+
+    let controlsVisible = null;
+
+    const setControlsVisible = (nextVisible) => {
+      if (controlsVisible === nextVisible) return;
+      controlsVisible = nextVisible;
+      document.body.classList.toggle('top-controls-hidden', !nextVisible);
+    };
+
+    const getThresholds = () => {
+      const showAt = Math.max(0, greeting.offsetTop - Math.round(window.innerHeight * 0.22));
+      const hideAt = Math.max(0, greeting.offsetTop - Math.round(window.innerHeight * 0.34));
+      return { showAt, hideAt };
+    };
+
+    const updateByScroll = () => {
+      const y = window.scrollY || window.pageYOffset || 0;
+      const { showAt, hideAt } = getThresholds();
+
+      if (!controlsVisible && y >= showAt) {
+        setControlsVisible(true);
+        return;
+      }
+      if (controlsVisible && y <= hideAt) {
+        setControlsVisible(false);
+      }
+    };
+
+    setControlsVisible(false);
+    updateByScroll();
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        updateByScroll();
+      });
+    }, { passive: true });
+    window.addEventListener('resize', updateByScroll);
   }
 
   // ---------------------------------------------------------
@@ -332,13 +454,86 @@
   function setupJourneyLines() {
     const groomPath = document.querySelector('#groom-path');
     const bridePath = document.querySelector('#bride-path');
-    if (!groomPath || !bridePath) return;
-    const scrollSvgGlobal = window.$_scrollSvg;
-    if (!scrollSvgGlobal || typeof scrollSvgGlobal.default !== 'function') return;
+    const sharedPath = document.querySelector('#shared-path');
+    const laLabel = document.querySelector('.journey-city-label.l-la');
+    const lvLabel = document.querySelector('.journey-city-label.l-lv');
+    const endDot = document.querySelector('.journey-end-dot');
+    const scene = document.querySelector('.journey-scroll-scene');
+    if (!groomPath || !bridePath || !sharedPath || !scene) return;
 
-    const scrollSvg = scrollSvgGlobal.default;
-    scrollSvg(groomPath);
-    scrollSvg(bridePath);
+    const paths = [groomPath, bridePath, sharedPath];
+    const lengths = new Map();
+    paths.forEach((path) => {
+      const len = path.getTotalLength();
+      lengths.set(path, len);
+      path.style.strokeDasharray = `${len}, ${len}`;
+      path.style.strokeDashoffset = `${len}`;
+    });
+
+    // Shared line starts after both routes meet in Los Angeles.
+    const MERGE_START = 0.58;
+    const DRAW_START_VIEWPORT = 0.76;
+
+    const update = () => {
+      const rect = scene.getBoundingClientRect();
+      const total = rect.height + window.innerHeight * 0.25;
+      let progress = clamp((window.innerHeight * DRAW_START_VIEWPORT - rect.top) / Math.max(total, 1), 0, 1);
+
+      // Ensure completion when the scene has almost fully passed the viewport.
+      if (rect.bottom <= window.innerHeight * 0.24) {
+        progress = 1;
+      }
+
+      const branchProgress = clamp(progress / MERGE_START, 0, 1);
+      const sharedProgressRaw = clamp((progress - MERGE_START) / (1 - MERGE_START), 0, 1);
+
+      // Responsive LV timing sync:
+      // accelerate the shared segment as LV label approaches viewport center,
+      // so the line reaches LV around the center line across device sizes.
+      let sharedProgress = sharedProgressRaw;
+      if (lvLabel) {
+        const lvRect = lvLabel.getBoundingClientRect();
+        const lvCenterY = lvRect.top + lvRect.height * 0.5;
+        const viewportCenterY = window.innerHeight * 0.5;
+        const approachRange = Math.max(150, window.innerHeight * 0.3);
+        const centerDriven = clamp((viewportCenterY + approachRange - lvCenterY) / approachRange, 0, 1);
+        sharedProgress = Math.max(sharedProgressRaw, centerDriven);
+      }
+
+      const groomLen = lengths.get(groomPath) || 0;
+      const brideLen = lengths.get(bridePath) || 0;
+      const sharedLen = lengths.get(sharedPath) || 0;
+
+      groomPath.style.strokeDashoffset = `${groomLen * (1 - branchProgress)}`;
+      bridePath.style.strokeDashoffset = `${brideLen * (1 - branchProgress)}`;
+      sharedPath.style.strokeDashoffset = `${sharedLen * (1 - sharedProgress)}`;
+
+      if (laLabel) {
+        laLabel.classList.toggle('is-arrived', branchProgress >= 0.97);
+      }
+
+      if (lvLabel) {
+        lvLabel.classList.toggle('is-arrived', sharedProgress >= 0.985);
+      }
+      if (endDot) {
+        endDot.classList.toggle('is-arrived', sharedProgress >= 0.985);
+      }
+    };
+
+    const onScroll = () => requestAnimationFrame(update);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    let rafId = null;
+    const tick = () => {
+      update();
+      rafId = requestAnimationFrame(tick);
+    };
+    tick();
+
+    window.addEventListener('beforeunload', () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    }, { once: true });
   }
 
   // ---------------------------------------------------------
@@ -669,15 +864,51 @@
     throw new Error('invalid response payload');
   }
 
-  function isManagerView() {
-    const params = new URLSearchParams(location.search);
+  function getManagerPathFromCurrentLocation() {
     const normalizedPath = location.pathname.replace(/\/+$/, '');
-    const isManagerPath = normalizedPath === '/manager' || normalizedPath === '/friends/manager' || normalizedPath === '/en/manager';
-    return isManagerPath || params.get('manager') === '1' || params.get('admin') === '1';
+    if (normalizedPath.startsWith('/friends')) return '/friends/manager';
+    if (normalizedPath.startsWith('/en')) return '/en/manager';
+    return '/manager';
+  }
+
+  function isManagerRoute() {
+    const normalizedPath = location.pathname.replace(/\/+$/, '');
+    return normalizedPath === '/manager' || normalizedPath === '/friends/manager' || normalizedPath === '/en/manager';
+  }
+
+  function redirectLegacyManagerQuery() {
+    const params = new URLSearchParams(location.search);
+    if (params.get('manager') !== '1' && params.get('admin') !== '1') return false;
+    const target = getManagerPathFromCurrentLocation();
+    location.replace(target);
+    return true;
+  }
+
+  function setupManagerOnlyPage() {
+    if (!isManagerRoute()) return;
+    const card = $('#card');
+    const panel = $('#manager-panel');
+    const toast = $('#toast');
+    if (!card || !panel) return;
+
+    const keepInBody = new Set([card, toast].filter(Boolean));
+    Array.from(document.body.children).forEach((child) => {
+      if (!keepInBody.has(child)) child.remove();
+    });
+    Array.from(card.children).forEach((child) => {
+      if (child !== panel) child.remove();
+    });
+
+    document.body.classList.remove('intro-active');
+    panel.classList.remove('is-hidden');
+  }
+
+  function isManagerView() {
+    return isManagerRoute();
   }
 
   function normalizeAttendance(value) {
-    const attendance = String(value || '').trim();
+    const attendance = mapAttendanceToKorean(value);
     if (/불참|미참석|Not attending/i.test(attendance)) return 'declined';
     if (/미정|Pending|Not sure/i.test(attendance)) return 'pending';
     if (/참석|Attending/i.test(attendance)) return 'attending';
@@ -690,10 +921,10 @@
 
   function getMealLabel(value) {
     const normalized = String(value || '').trim();
-    if (normalized === '1' || /^(O|Y|YES)$/i.test(normalized)) return '식사 예정';
-    if (normalized === '-1' || /^(X|N|NO)$/i.test(normalized)) return '식사 안 함';
-    if (normalized === '0' || /^미정|PENDING|NOT SURE/i.test(normalized)) return '미정';
-    return normalized || '미정';
+    if (normalized === '1' || /^(O|Y|YES)$/i.test(normalized)) return t('식사 예정', 'Will have a meal');
+    if (normalized === '-1' || /^(X|N|NO)$/i.test(normalized)) return t('식사 안 함', 'Will not have a meal');
+    if (normalized === '0' || /^미정|PENDING|NOT SURE/i.test(normalized)) return t('미정', 'Not sure yet');
+    return normalized || t('미정', 'Not sure yet');
   }
 
   function getFilteredRsvpEntries(entries) {
@@ -703,7 +934,7 @@
 
   function formatRsvpTime(createdAt) {
     try {
-      return new Date(createdAt).toLocaleString('ko-KR', {
+      return new Date(createdAt).toLocaleString(isEnglishPage ? 'en-US' : 'ko-KR', {
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
@@ -733,8 +964,8 @@
     try {
       storedEntries = await readStoredEntries('wedding_rsvp_entries');
     } catch (e) {
-      container.innerHTML = '<p class="stats-footnote">RSVP 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.</p>';
-      if (list) list.innerHTML = '<li class="manager-empty">데이터를 불러올 수 없습니다.</li>';
+      container.innerHTML = `<p class="stats-footnote">${t('RSVP 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.', 'Unable to load RSVP data. Please check Supabase connection.')}</p>`;
+      if (list) list.innerHTML = `<li class="manager-empty">${t('데이터를 불러올 수 없습니다.', 'Unable to load data.')}</li>`;
       return;
     }
     const entries = storedEntries
@@ -746,39 +977,46 @@
     const pending = entries.filter((entry) => getAttendanceCategory(entry) === 'pending').length;
     const totalGuests = entries.reduce((sum, entry) => {
       if (getAttendanceCategory(entry) !== 'attending') return sum;
-      return sum + 1 + (Number(entry.guests) || 0);
+      const guestCounts = getGuestCountsFromEntry(entry);
+      return sum + 1 + guestCounts.total;
     }, 0);
     const filteredEntries = getFilteredRsvpEntries(entries);
 
     container.innerHTML = `
       <div class="stats-grid">
-        <div class="stat-card"><strong>${entries.length}</strong><span>총 응답</span></div>
-        <div class="stat-card"><strong>${attending}</strong><span>참석</span></div>
-        <div class="stat-card"><strong>${declined}</strong><span>미참석</span></div>
-        <div class="stat-card"><strong>${pending}</strong><span>미정</span></div>
+        <div class="stat-card"><strong>${entries.length}</strong><span>${t('총 응답', 'Total responses')}</span></div>
+        <div class="stat-card"><strong>${attending}</strong><span>${t('참석', 'Attending')}</span></div>
+        <div class="stat-card"><strong>${declined}</strong><span>${t('미참석', 'Declined')}</span></div>
+        <div class="stat-card"><strong>${pending}</strong><span>${t('미정', 'Not sure yet')}</span></div>
       </div>
-      <p class="stats-footnote">예상 참석 인원: ${totalGuests}명</p>
+      <p class="stats-footnote">${t(`예상 참석 인원: ${totalGuests}명`, `Estimated attendees: ${totalGuests}`)}</p>
     `;
 
     if (list) {
       if (!filteredEntries.length) {
-        list.innerHTML = '<li class="manager-empty">아직 표시할 응답이 없어요.</li>';
+        list.innerHTML = `<li class="manager-empty">${t('아직 표시할 응답이 없어요.', 'No responses to display yet.')}</li>`;
       } else {
         list.innerHTML = filteredEntries.map((entry) => {
-          const attendance = String(entry.attendance || '미정').trim() || '미정';
-          const guestCount = Number(entry.guests) || 0;
-          const side = String(entry.side || '미선택').trim() || '미선택';
+          const attendance = formatAttendanceForDisplay(entry.attendance || '미정');
+          const guestCounts = getGuestCountsFromEntry(entry);
+          const side = formatSideForDisplay(String(entry.side || t('미선택', 'Not selected')).trim() || t('미선택', 'Not selected'));
           const meal = getMealLabel(entry.meal);
           const afterparty = String(entry.afterparty || '').trim();
-          const summary = [`구분 ${side}`, `동반 ${guestCount}명`, `식사 ${meal}`];
-          if (afterparty) summary.push(`애프터 ${afterparty}`);
+          const summary = isEnglishPage
+            ? [`Side ${side}`, `Adults ${guestCounts.adults}`, `Kids (10 and under) ${guestCounts.kids}`, `Meal ${meal}`]
+            : [`구분 ${side}`, `어른 ${guestCounts.adults}명`, `아이(10세 이하) ${guestCounts.kids}명`, `식사 ${meal}`];
+          if (afterparty) {
+            summary.push(isEnglishPage
+              ? `After Party ${formatAfterpartyForDisplay(afterparty)}`
+              : `애프터 ${formatAfterpartyForDisplay(afterparty)}`);
+          }
           return `
             <li>
               <div class="manager-item-top">
                 <strong>${escapeHtml(entry.name || '익명')}</strong>
                 <div class="manager-item-actions">
                   <span class="manager-chip">${escapeHtml(attendance)}</span>
-                  <button class="manager-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_rsvp_entries">삭제</button>
+                  <button class="manager-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_rsvp_entries">${t('삭제', 'Delete')}</button>
                 </div>
               </div>
               <div class="manager-item-meta">
@@ -812,13 +1050,13 @@
     try {
       entries = await readStoredEntries('wedding_guestbook_entries');
     } catch (e) {
-      container.innerHTML = '<p class="stats-footnote">방명록 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.</p>';
+      container.innerHTML = `<p class="stats-footnote">${t('방명록 데이터를 불러오지 못했습니다. Supabase 연결을 확인해 주세요.', 'Unable to load guestbook data. Please check Supabase connection.')}</p>`;
       return;
     }
     container.innerHTML = `
       <div class="stats-grid">
-        <div class="stat-card"><strong>${entries.length}</strong><span>총 메시지</span></div>
-        <div class="stat-card"><strong>${entries.slice(0, 3).length}</strong><span>최근 메시지</span></div>
+        <div class="stat-card"><strong>${entries.length}</strong><span>${t('총 메시지', 'Total messages')}</span></div>
+        <div class="stat-card"><strong>${entries.slice(0, 3).length}</strong><span>${t('최근 메시지', 'Recent messages')}</span></div>
       </div>
     `;
   }
@@ -843,8 +1081,73 @@
     const guestbookForm = $('#guestbook-form');
     const guestbookList = $('#guestbook-list');
     const managerList = $('#rsvp-manager-list');
+    const attendanceField = rsvpForm ? rsvpForm.querySelector('select[name="attendance"]') : null;
+    const conditionalHideTargets = rsvpForm ? Array.from(rsvpForm.querySelectorAll('[data-rsvp-hide-on-declined]')) : [];
     const enhancedSelectInstances = [];
     let previousFocusedElement = null;
+
+    const submittedKey = (() => {
+      const normalized = location.pathname.replace(/\/+$/, '') || '/';
+      return `wedding_rsvp_submitted:${normalized}`;
+    })();
+
+    const isRsvpSubmitted = () => {
+      try {
+        return localStorage.getItem(submittedKey) === '1';
+      } catch (e) {
+        return false;
+      }
+    };
+
+    const markRsvpSubmitted = () => {
+      try {
+        localStorage.setItem(submittedKey, '1');
+      } catch (e) {}
+    };
+
+    const syncRsvpAttention = () => {
+      if (!rsvpOpenBtn) return;
+      if (isRsvpSubmitted()) {
+        rsvpOpenBtn.classList.remove('needs-rsvp-attention');
+      } else {
+        rsvpOpenBtn.classList.add('needs-rsvp-attention');
+      }
+    };
+
+    syncRsvpAttention();
+
+    function syncAttendanceConditionalFields() {
+      if (!attendanceField || !conditionalHideTargets.length) return;
+      const attendanceCategory = normalizeAttendance(attendanceField.value);
+      const hideConditional = attendanceCategory === 'declined';
+      conditionalHideTargets.forEach((target) => {
+        target.hidden = hideConditional;
+        const controls = Array.from(target.querySelectorAll('input, select, textarea'));
+        controls.forEach((control) => {
+          if (hideConditional) {
+            if (control.matches('input[type="number"]')) {
+              control.value = '0';
+            }
+            if (control.tagName === 'SELECT') {
+              if (control.getAttribute('name') === 'meal') {
+                const noMealOption = control.querySelector('option[value="-1"]');
+                if (noMealOption) {
+                  control.value = noMealOption.value;
+                }
+              } else {
+                const preferred = control.querySelector('option[value="0"], option[value="미정"], option[value="Pending"], option[value="Not sure yet"]');
+                if (preferred) control.value = preferred.value;
+              }
+            }
+          }
+        });
+      });
+    }
+
+    if (attendanceField) {
+      attendanceField.addEventListener('change', syncAttendanceConditionalFields);
+    }
+    syncAttendanceConditionalFields();
 
     function setupEnhancedSelects() {
       // Keep native select behavior in the modal for consistent mobile UX.
@@ -959,26 +1262,52 @@
         const data = new FormData(rsvpForm);
         const payload = {
           name: String(data.get('name') || '').trim(),
-          side: String(data.get('side') || '').trim(),
-          attendance: String(data.get('attendance') || '').trim(),
-          guests: String(data.get('guests') || '0').trim(),
-          meal: String(data.get('meal') || '').trim(),
-          afterparty: String(data.get('afterparty') || '초대안함').trim() || '초대안함',
+          side: String(data.get('side') || '').trim() || (isEnglishPage ? 'Groom' : '신랑'),
+          attendance: String(data.get('attendance') || '').trim() || (isEnglishPage ? 'Not sure yet' : '미정'),
+          meal: String(data.get('meal') || '').trim() || '0',
+          afterparty: String(data.get('afterparty') || '').trim() || (isEnglishPage ? 'Not sure yet' : '미정'),
           subject: "Minho & Clair's Wedding Data - RSVP",
           _subject: "Minho & Clair's Wedding Data - RSVP"
         };
         if (!payload.name) {
-          showToast('성함을 입력해 주세요');
+          showToast(t('성함을 입력해 주세요', 'Please enter your name'));
           return;
         }
+        const adultGuestsInput = data.get('adultGuests');
+        const childGuestsInput = data.get('childGuests');
+        const fallbackGuests = data.get('guests');
+        const adultGuests = toNonNegativeInt(
+          adultGuestsInput !== null && adultGuestsInput !== undefined && String(adultGuestsInput).trim() !== ''
+            ? adultGuestsInput
+            : fallbackGuests,
+          0
+        );
+        const childGuests = toNonNegativeInt(childGuestsInput, 0);
+        let normalizedAdultGuests = adultGuests;
+        let normalizedChildGuests = childGuests;
+
+        const sideInKorean = mapSideToKorean(payload.side);
+        const attendanceInKorean = mapAttendanceToKorean(payload.attendance);
+        let mealValue = payload.meal;
+        let afterpartyInKorean = mapAfterpartyToKorean(payload.afterparty);
+
+        if (normalizeAttendance(attendanceInKorean) === 'declined') {
+          normalizedAdultGuests = 0;
+          normalizedChildGuests = 0;
+          mealValue = '-1';
+        }
+        const guestTotal = normalizedAdultGuests + normalizedChildGuests;
+
         try {
           await writeStoredEntries('wedding_rsvp_entries', [{
             name: payload.name,
-            side: payload.side,
-            attendance: payload.attendance,
-            guests: payload.guests,
-            meal: payload.meal,
-            afterparty: payload.afterparty,
+            side: sideInKorean,
+            attendance: attendanceInKorean,
+            guests: String(guestTotal),
+            adultGuests: String(normalizedAdultGuests),
+            childGuests: String(normalizedChildGuests),
+            meal: String(mealValue || '0'),
+            afterparty: afterpartyInKorean,
             createdAt: new Date().toISOString()
           }]);
           void renderRsvpStats();
@@ -988,18 +1317,25 @@
             const value = instance.input.value;
             instance.setValue(value, true);
           });
+          markRsvpSubmitted();
+          syncRsvpAttention();
+          syncAttendanceConditionalFields();
           closeRsvpModal();
-          const guestCount = Number(payload.guests) || 0;
-          const attendanceLabel = payload.attendance || '참석';
-          showToast(`${attendanceLabel} · 동반 ${guestCount}명으로 저장되었습니다`);
+          if (isEnglishPage) {
+            const attendanceLabel = formatAttendanceForDisplay(attendanceInKorean || '참석');
+            showToast(`Saved: ${attendanceLabel} · Adults ${normalizedAdultGuests}, Kids (10 and under) ${normalizedChildGuests}`);
+          } else {
+            const attendanceLabel = formatAttendanceForDisplay(attendanceInKorean || '참석');
+            showToast(`${attendanceLabel} · 어른 ${normalizedAdultGuests}명, 아이(10세 이하) ${normalizedChildGuests}명으로 저장되었습니다`);
+          }
         } catch (err) {
           const msg = String(err?.message || '');
           if (msg.includes('RSVP_SCHEMA_MISMATCH')) {
-            showToast('서버 RSVP 테이블 업데이트가 필요합니다. 관리자에게 문의해 주세요');
+            showToast(t('서버 RSVP 테이블 업데이트가 필요합니다. 관리자에게 문의해 주세요', 'RSVP table update is required on the server. Please contact the administrator.'));
           } else if (msg.includes('Supabase is not configured')) {
-            showToast('서버 설정이 아직 완료되지 않았습니다. 잠시 후 다시 시도해 주세요');
+            showToast(t('서버 설정이 아직 완료되지 않았습니다. 잠시 후 다시 시도해 주세요', 'Server setup is not complete yet. Please try again later.'));
           } else {
-            showToast('저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
+            showToast(t('저장에 실패했습니다. 잠시 후 다시 시도해 주세요', 'Failed to save. Please try again in a moment.'));
           }
         }
       });
@@ -1012,11 +1348,11 @@
       try {
         entries = await readStoredEntries('wedding_guestbook_entries');
       } catch (e) {
-        guestbookList.innerHTML = '<li>방명록 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</li>';
+        guestbookList.innerHTML = `<li>${t('방명록 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.', 'Unable to load guestbook data. Please try again later.')}</li>`;
         return;
       }
       if (!entries.length) {
-        guestbookList.innerHTML = '<li>아직 남겨진 마음이 없어요. 첫 번째 마음을 남겨 주세요.</li>';
+        guestbookList.innerHTML = `<li>${t('아직 남겨진 마음이 없어요. 첫 번째 마음을 남겨 주세요.', 'No messages yet. Be the first to leave one.')}</li>`;
         return;
       }
       const sortedEntries = entries
@@ -1024,9 +1360,9 @@
         .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
       guestbookList.innerHTML = sortedEntries.map((entry) => {
-        const time = new Date(entry.createdAt).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const time = new Date(entry.createdAt).toLocaleString(isEnglishPage ? 'en-US' : 'ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
         const deleteButton = managerView
-          ? `<button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">삭제</button>`
+          ? `<button class="guestbook-delete-btn" type="button" data-entry-id="${entry.id}" data-entry-key="wedding_guestbook_entries">${t('삭제', 'Delete')}</button>`
           : '';
         return `<li><div class="guestbook-meta"><strong>${escapeHtml(entry.name || '익명')}</strong><div class="guestbook-meta-actions"><span>${escapeHtml(time)}</span>${deleteButton}</div></div><p>${escapeHtml(entry.message || '')}</p></li>`;
       }).join('');
@@ -1042,9 +1378,9 @@
         try {
           await removeStoredEntry(key, id);
           void renderRsvpStats();
-          showToast('삭제되었습니다');
+          showToast(t('삭제되었습니다', 'Deleted'));
         } catch (err) {
-          showToast('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요');
+          showToast(t('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요', 'Failed to delete. Please try again later.'));
         }
       });
     }
@@ -1061,9 +1397,9 @@
           await removeStoredEntry(key, id);
           await renderGuestbook();
           await renderGuestbookStats();
-          showToast('삭제되었습니다');
+          showToast(t('삭제되었습니다', 'Deleted'));
         } catch (err) {
-          showToast('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요');
+          showToast(t('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요', 'Failed to delete. Please try again later.'));
         }
       });
     }
@@ -1075,7 +1411,7 @@
         const name = String(data.get('name') || '').trim();
         const message = String(data.get('message') || '').trim();
         if (!name || !message) {
-          showToast('이름과 메시지를 모두 입력해 주세요');
+          showToast(t('이름과 메시지를 모두 입력해 주세요', 'Please enter both name and message'));
           return;
         }
         try {
@@ -1083,9 +1419,9 @@
           guestbookForm.reset();
           await renderGuestbook();
           await renderGuestbookStats();
-          showToast('방명록에 마음이 저장되었습니다');
+          showToast(t('방명록에 마음이 저장되었습니다', 'Your guestbook message has been saved'));
         } catch (err) {
-          showToast('저장에 실패했습니다. 잠시 후 다시 시도해 주세요');
+          showToast(t('저장에 실패했습니다. 잠시 후 다시 시도해 주세요', 'Failed to save. Please try again in a moment.'));
         }
       });
     }
@@ -1101,7 +1437,16 @@
   // INIT
   // ---------------------------------------------------------
   function init() {
+    if (redirectLegacyManagerQuery()) return;
+
+    if (isManagerRoute()) {
+      setupManagerOnlyPage();
+      setupRSVPAndGuestbook();
+      return;
+    }
+
     setupIntroOverlay(setupHero);
+    setupTopControlsVisibility();
     setupReveal();
     setupPetals();
     setupCalendar();

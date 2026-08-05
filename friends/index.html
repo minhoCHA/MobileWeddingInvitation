@@ -31,8 +31,7 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <base href="/">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body class="ko-page intro-active">
   <div class="intro-overlay" id="intro-overlay" role="status" aria-live="polite">
@@ -61,7 +60,7 @@
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
   </button>
   <!-- placeholder: audio/bgm.mp3 — 사용자가 직접 음원 파일을 audio/ 폴더에 추가해야 합니다 -->
-  <audio id="bgm" src="audio/bgm.mp3" loop preload="none"></audio>
+  <audio id="bgm" src="/audio/bgm.mp3" loop preload="none"></audio>
 
   <main class="card" id="card">
     <div class="manager-panel is-hidden" id="manager-panel" aria-live="polite">
@@ -79,7 +78,7 @@
     <section class="hero" id="hero" aria-label="청첩장 메인">
       <div class="hero-frame">
         <img class="hero-illustration"
-             src="images/119.jpg"
+             src="/images/119.jpg"
              alt="더스티 로즈 장미와 세이지 유칼립투스 가지의 워터컬러 보태니컬 일러스트"
              fetchpriority="high"
              width="1024" height="1280">
@@ -94,7 +93,7 @@
     <section class="section greeting reveal" id="greeting" aria-labelledby="greeting-heading">
       <p class="section-eyebrow en">INVITATION</p>
       <h2 class="section-title" id="greeting-heading">초대합니다</h2>
-      <p class="hero-eyebrow script" style="margin: 0 0 12px; font-size: 1.2rem;">We&rsquo;re getting married</p>
+      <p class="hero-eyebrow script" style="margin: 0 0 20px; font-size: 2rem;">We&rsquo;re getting married</p>
 
       <p class="hero-info" style="margin: 0 0 24px;">
         2026년 10월 17일 토요일 오후 4시<br>
@@ -122,10 +121,9 @@
 
     <!-- 4. CALENDAR + D-DAY -->
     <section class="section calendar-section reveal" id="calendar" aria-labelledby="calendar-heading">
-      <img class="day-hero" src="images/123.jpg" alt="가을 무드의 웨딩 스냅" loading="lazy" width="1024" height="640">
+      <img class="day-hero" src="/images/123.jpg" alt="가을 무드의 웨딩 스냅" loading="lazy" width="1024" height="640">
       <p class="section-eyebrow en">THE DAY</p>
       <h2 class="section-title" id="calendar-heading">예식일</h2>
-
       <table class="cal" data-target="2026-10-17" aria-label="2026년 10월 캘린더">
         <caption class="cal-caption en">OCTOBER 2026</caption>
         <thead>
@@ -148,114 +146,136 @@
       <p class="section-eyebrow en">AFTER PARTY</p>
       <h2 class="section-title" id="afterparty-heading">애프터 파티</h2>
       <p class="afterparty-message">
-        본식 끝나고 친구들끼리 2차로 신나게 놀아요.<br>
-        애프터파티는 오후 6시부터 자정까지 진행되며, 편한 시간에 합류하거나 먼저 귀가하셔도 괜찮아요.<br>
-        아래 RSVP에서 애프터파티 참석 여부 꼭 체크해 주세요.
+        예식 후 친구들과 함께 편하게 뒤풀이를 이어가려 합니다.<br>
+        오후 6시부터 자정까지 진행되며, 늦게 합류하시거나 먼저 귀가하셔도 괜찮아요.<br>
+        아래 RSVP 폼에서 애프터 파티 참석 여부를 함께 체크해 주세요.
       </p>
-      <p class="afterparty-route">삼청각에서 리커테이션까지 차량 이동 약 20~30분</p>
-      <article class="afterparty-card" aria-label="애프터파티 정보">
-        <p><strong>상호명</strong><span>리커테이션</span></p>
-        <p><strong>주소</strong><span class="single-line">서울 강남구 압구정로10길 13 지하1층 리커테이션</span></p>
-        <p><strong>이동</strong><span>택시 약 8,000~15,000원 예상</span></p>
+      <article class="afterparty-card" aria-label="애프터 파티 안내 정보">
+        <p><strong>장소</strong><span>리커테이션 (Liquortation)</span></p>
+        <p><strong>주소</strong><span class="single-line">서울 강남구 압구정로10길 13 B1</span></p>
+        <p><strong>택시</strong><span>삼청각 출발 기준 2~30분<br>약 8,000원~15,000원</span></p>
       </article>
-      <div class="afterparty-faq" aria-label="교통 및 주차 안내">
+      <div class="afterparty-faq" aria-label="애프터 파티 교통 및 주차 안내">
         <article>
-          <h3>Q. 대중교통으로는 어떻게 가나요?</h3>
-          <p>압구정역(3호선), 신사역(3호선) 하차 후 도보 약 8분입니다.</p>
+          <h3>Q. 지하철로 가려면 어떻게 가면 되나요?</h3>
+          <p>3호선 압구정역 또는 신사역에서 하차 후 도보 약 8분 거리입니다.</p>
         </article>
         <article>
-          <h3>Q. 주차는 어떻게 하나요?</h3>
-          <p>건물 내 주차장 및 유료 발렛파킹 이용 가능하며, 차량이 많을 경우 인근 공영주차장 안내를 도와드립니다.</p>
+          <h3>Q. 주차는 가능한가요?</h3>
+          <p>유료 주차와 발렛이 가능하며, 혼잡 시 인근 공영주차장 안내를 도와드립니다.</p>
         </article>
       </div>
       <div class="afterparty-actions">
         <a class="btn primary" href="https://map.naver.com/p/search/%EB%A6%AC%EC%BB%A4%ED%85%8C%EC%9D%B4%EC%85%98?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608031147%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EB%A6%AC%EC%BB%A4%ED%85%8C%EC%9D%B4%EC%85%98" target="_blank" rel="noopener">네이버 지도 열기</a>
-        <a class="btn" href="https://liquortation.com/" target="_blank" rel="noopener">공식 웹사이트</a>
+        <a class="btn" href="https://liquortation.com/" target="_blank" rel="noopener">공식 홈페이지</a>
       </div>
     </section>
 
+
+    <section class="section journey-section reveal" id="journey" aria-labelledby="journey-heading">
+      <p class="section-eyebrow en">OUR JOURNEY</p>
+      <h2 class="section-title" id="journey-heading">우리의 여정</h2>
+
+      <div class="journey-scroll-scene" aria-label="스크롤 연동 선 그리기">
+        <div class="journey-sticky-stage" role="region" aria-label="도시 경로 애니메이션">
+          <span class="journey-city-label l-seoul">서울</span>
+          <span class="journey-city-label l-sf">샌프란시스코</span>
+          <span class="journey-city-label l-chicago">시카고</span>
+          <span class="journey-city-label l-la">로스 앤젤레스</span>
+          <span class="journey-city-label l-lv">라스 베가스</span>
+
+          <svg class="journey-svg" viewBox="0 0 560 800" role="img" aria-label="남자는 서울과 샌프란시스코를 거쳐 LA로, 여자는 시카고에서 LA로 이동한 뒤 라스 베가스로 함께 향하는 경로">
+            <path id="groom-path" d="M100 110 C130 170, 170 225, 220 275 C250 305, 265 340, 280 390" />
+            <path id="bride-path" d="M460 130 C420 190, 365 260, 320 330 C305 350, 292 370, 280 390" />
+            <path id="shared-path" d="M280 390 C285 460, 288 545, 290 656" />
+            <circle class="journey-end-dot" cx="290" cy="656" r="5" aria-hidden="true" />
+          </svg>
+        </div>
+      </div>
+    </section>
+    
     <!-- 5. GALLERY -->
     <section class="section gallery-section reveal" id="gallery" aria-labelledby="gallery-heading">
       <p class="section-eyebrow en">OUR MOMENTS</p>
       <h2 class="section-title" id="gallery-heading">우리의 순간</h2>
-      <p class="gallery-message">
+      <!-- <p class="gallery-message">
         함께 걸어온 시간들,<br>
         그 안에 담긴 마음을<br>
         나누고 싶습니다.
-      </p>
+      </p> -->
 
       <div class="gallery-stage" role="region" aria-label="사진 갤러리">
         <div class="gallery-grid">
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="0">
-            <img src="images/111.jpg" alt="갤러리 1" loading="eager" width="1024" height="1280">
+            <img src="/images/111.jpg" alt="갤러리 1" loading="eager" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="1">
-            <img src="images/112.jpg" alt="갤러리 2" loading="lazy" width="1024" height="1280">
+            <img src="/images/112.jpg" alt="갤러리 2" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="2">
-            <img src="images/113.jpg" alt="갤러리 3" loading="lazy" width="1024" height="1280">
+            <img src="/images/113.jpg" alt="갤러리 3" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="3">
-            <img src="images/114.jpg" alt="갤러리 4" loading="lazy" width="1024" height="1280">
+            <img src="/images/114.jpg" alt="갤러리 4" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="4">
-            <img src="images/115.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
+            <img src="/images/115.jpg" alt="갤러리 5" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="5">
-            <img src="images/116.jpg" alt="갤러리 6" loading="lazy" width="1024" height="1280">
+            <img src="/images/116.jpg" alt="갤러리 6" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="6">
-            <img src="images/117.jpg" alt="갤러리 7" loading="lazy" width="1024" height="1280">
+            <img src="/images/117.jpg" alt="갤러리 7" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="7">
-            <img src="images/118.jpg" alt="갤러리 8" loading="lazy" width="1024" height="1280">
+            <img src="/images/118.jpg" alt="갤러리 8" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item" role="button" tabindex="0" data-index="8">
-            <img src="images/119.jpg" alt="갤러리 9" loading="lazy" width="1024" height="1280">
+            <img src="/images/119.jpg" alt="갤러리 9" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="9">
-            <img src="images/120.jpg" alt="갤러리 10" loading="lazy" width="1024" height="1280">
+            <img src="/images/120.jpg" alt="갤러리 10" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="10">
-            <img src="images/121.jpg" alt="갤러리 11" loading="lazy" width="1024" height="1280">
+            <img src="/images/121.jpg" alt="갤러리 11" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="11">
-            <img src="images/122.jpg" alt="갤러리 12" loading="lazy" width="1024" height="1280">
+            <img src="/images/122.jpg" alt="갤러리 12" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="12">
-            <img src="images/123.jpg" alt="갤러리 13" loading="lazy" width="1024" height="1280">
+            <img src="/images/123.jpg" alt="갤러리 13" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="13">
-            <img src="images/124.jpg" alt="갤러리 14" loading="lazy" width="1024" height="1280">
+            <img src="/images/124.jpg" alt="갤러리 14" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="14">
-            <img src="images/125.jpg" alt="갤러리 15" loading="lazy" width="1024" height="1280">
+            <img src="/images/125.jpg" alt="갤러리 15" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="15">
-            <img src="images/126.jpg" alt="갤러리 16" loading="lazy" width="1024" height="1280">
+            <img src="/images/126.jpg" alt="갤러리 16" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="16">
-            <img src="images/127.jpg" alt="갤러리 17" loading="lazy" width="1024" height="1280">
+            <img src="/images/127.jpg" alt="갤러리 17" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
           <div class="gallery-grid-item hidden" role="button" tabindex="0" data-index="17">
-            <img src="images/128.jpg" alt="갤러리 18" loading="lazy" width="1024" height="1280">
+            <img src="/images/128.jpg" alt="갤러리 18" loading="lazy" width="1024" height="1280">
             <div class="gallery-overlay"></div>
           </div>
         </div>
@@ -286,23 +306,21 @@
           title="삼청각 일화당 지도"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=Samcheonggak%20Ilhwa-dang%20Seoul&z=16&output=embed">
+          src="https://maps.google.com/maps?q=37.5972872,126.9841513&z=17&t=k&output=embed">
         </iframe>
-        <div class="map-pin">
+        <!-- <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
           <span>삼청각 일화당</span>
-        </div>
-      </div>
-
-      <div class="venue-quick" aria-label="핵심 이동 정보">
-        <span class="venue-chip">지하철 + 셔틀버스 추천</span>
-        <span class="venue-chip">오후 4시 예식 · 3시 20분 이전 도착 권장</span>
-        <span class="venue-chip">예식 기준 3시간 무료주차</span>
+        </div> -->
       </div>
 
       <div class="venue-actions">
         <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">카카오맵</a>
         <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">네이버지도</a>
+      </div>
+
+      <div class="venue-schedule-action">
+        <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">셔틀 운행 시간표</a>
       </div>
 
       <article class="venue-info-card" aria-label="교통 안내">
@@ -314,8 +332,7 @@
       <div class="venue-faq" aria-label="상세 안내">
         <article>
           <h3>Q. 오후 4시 예식이면 언제 도착하면 좋을까요?</h3>
-          <p>셔틀 미운행 구간이 있어 최소 3시 20분 이전 도착을 권장드립니다. 아래 공식 시간표를 꼭 확인해 주세요.</p>
-          <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">운행 시간표</a>
+          <p>셔틀 미운행 구간이 있어 최소 3시 20분 이전 도착을 권장드립니다. 위 지도 버튼 아래의 셔틀 운행 시간표 버튼을 꼭 확인해 주세요.</p>
         </article>
         <article>
           <h3>Q. 주차는 몇 대까지 가능한가요?</h3>
@@ -328,12 +345,12 @@
     <section class="section account reveal" id="account" aria-labelledby="account-heading">
       <p class="section-eyebrow en">WITH HEART</p>
       <h2 class="section-title" id="account-heading">마음 전하실 곳</h2>
-      <p class="account-message">
+      <!-- <p class="account-message">
         참석이 어려우신 분들을 위해<br>
         마음 전하실 곳을 안내드립니다.<br><br>
         따뜻한 축하의 마음,<br>
         저희 두 사람 오래 간직하겠습니다.
-      </p>
+      </p> -->
 
       <details class="acc-group">
         <summary>신랑측 계좌번호</summary>
@@ -390,12 +407,12 @@
     <section class="section guestbook reveal" id="guestbook" aria-labelledby="guestbook-heading">
       <p class="section-eyebrow en">GUEST BOOK</p>
       <h2 class="section-title" id="guestbook-heading">방명록</h2>
-      <p class="guestbook-message">
+      <!-- <p class="guestbook-message">
         두 사람에게 전하고 싶은 한마디를<br>
         남겨 주세요.<br><br>
         오래도록 마음에 담아<br>
         간직하겠습니다.
-      </p>
+      </p> -->
       <div class="stats-panel is-hidden" id="guestbook-stats" aria-live="polite"></div>
       <form class="guestbook-form" id="guestbook-form">
         <label class="rsvp-field">
@@ -414,11 +431,11 @@
     <!-- 10. SHARE -->
     <section class="section share reveal" id="share" aria-labelledby="share-heading">
       <p class="section-eyebrow en">SHARE</p>
-      <h2 class="section-title" id="share-heading">청첩장 공유</h2>
-      <p class="share-message">
+      <h2 class="section-title" id="share-heading">공유하기</h2>
+      <!-- <p class="share-message">
         저희의 소식을<br>
         가까운 분들께도 함께 전해 주세요.
-      </p>
+      </p> -->
       <div class="share-actions">
         <button type="button" class="btn primary" id="share-kakao" aria-label="카카오톡으로 공유하기">카카오톡으로 공유하기</button>
         <button type="button" class="btn" id="share-link" aria-label="청첩장 링크 복사하기">링크 복사하기</button>
@@ -455,33 +472,41 @@
         <label class="rsvp-field">
           <span>참석 여부</span>
           <select name="attendance" required>
-            <option value="참석">참석</option>
-            <option value="불참">불참</option>
-            <option value="미정">미정</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>본인 외 동반인 수</span>
-          <input type="number" name="guests" min="0" max="10" value="0">
-        </label>
-        <label class="rsvp-field">
-          <span>식사 여부</span>
-          <select name="meal" required>
-            <option value="0">미정</option>
-            <option value="1">식사 예정</option>
-            <option value="-1">식사 안 함</option>
-          </select>
-        </label>
-        <label class="rsvp-field">
-          <span>애프터 파티</span>
-          <select name="afterparty" required>
             <option value="미정">미정</option>
             <option value="참석">참석</option>
             <option value="불참">불참</option>
           </select>
-          <small class="rsvp-field-note">리커테이션 · 오후 6시~자정 (늦게 합류/먼저 귀가 가능)</small>
         </label>
-        <button class="btn primary" type="submit">마음 전하기</button>
+        <div class="rsvp-conditional-fields">
+          <div class="rsvp-guests-row" data-rsvp-hide-on-declined>
+            <label class="rsvp-field">
+              <span>어른 동반 인원</span>
+              <input type="number" name="adultGuests" min="0" max="10" value="0">
+            </label>
+            <label class="rsvp-field">
+              <span>아이(10세 이하) 동반 인원</span>
+              <input type="number" name="childGuests" min="0" max="10" value="0">
+            </label>
+          </div>
+          <label class="rsvp-field" data-rsvp-hide-on-declined>
+            <span>식사 여부</span>
+            <select name="meal" required>
+              <option value="0">미정</option>
+              <option value="1">식사 예정</option>
+              <option value="-1">식사 안 함</option>
+            </select>
+          </label>
+          <label class="rsvp-field">
+            <span>애프터파티</span>
+            <select name="afterparty" required>
+              <option value="미정">미정</option>
+              <option value="참석">참석</option>
+              <option value="불참">불참</option>
+            </select>
+            <small class="rsvp-field-note">리커테이션 · 오후 6시부터 자정까지 (늦참·중도 귀가 자유)</small>
+          </label>
+        </div>
+        <button class="btn primary" type="submit">참석 정보 전달하기</button>
       </form>
     </div>
   </div>
@@ -508,6 +533,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
-  <script src="script.js?v=20260805-2"></script>
+  <script src="https://www.unpkg.com/scroll-svg@1.5.2/dist/index.js" crossorigin="anonymous"></script>
+  <script src="/script.js?v=20260805-3"></script>
 </body>
 </html>

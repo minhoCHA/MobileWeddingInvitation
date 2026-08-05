@@ -52,12 +52,22 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == "/api/rsvp":
             payload = self._read_json_body()
             entries = load_entries(RSVP_PATH, [])
+            adult_guests = payload.get("adultGuests", payload.get("guests", "0"))
+            child_guests = payload.get("childGuests", "0")
+            try:
+                total_guests = str(max(0, int(adult_guests)) + max(0, int(child_guests)))
+            except Exception:
+                total_guests = str(payload.get("guests", "0"))
             entry = {
                 "id": payload.get("id") or f"rsvp-{len(entries)+1}",
                 "name": payload.get("name", "익명"),
+                "side": payload.get("side", ""),
                 "attendance": payload.get("attendance", "미정"),
-                "guests": payload.get("guests", "1"),
-                "message": payload.get("message", ""),
+                "guests": total_guests,
+                "adultGuests": str(adult_guests),
+                "childGuests": str(child_guests),
+                "meal": payload.get("meal", ""),
+                "afterparty": payload.get("afterparty", "초대안함"),
                 "createdAt": payload.get("createdAt") or self._now_iso(),
             }
             entries.insert(0, entry)
@@ -122,11 +132,11 @@ class Handler(BaseHTTPRequestHandler):
         if path in ("", "/"):
             return os.path.join(BASE_DIR, "index.html")
         if path in ("/manager", "/manager/"):
-            return os.path.join(BASE_DIR, "index.html")
+            return os.path.join(BASE_DIR, "manager", "index.html")
         if path in ("/friends/manager", "/friends/manager/"):
-            return os.path.join(BASE_DIR, "friends", "index.html")
+            return os.path.join(BASE_DIR, "friends", "manager", "index.html")
         if path in ("/en/manager", "/en/manager/"):
-            return os.path.join(BASE_DIR, "en", "index.html")
+            return os.path.join(BASE_DIR, "en", "manager", "index.html")
         normalized = path.lstrip("/")
         if normalized.startswith("api/"):
             return None
