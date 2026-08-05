@@ -17,7 +17,7 @@
 - [x] 로컬 API 검증 결과: POST/GET가 정상 동작하며 Supabase에 데이터가 저장되는 것을 확인함
 - [x] 배포용 GitHub 저장소 기준 최신 커밋 반영 완료
 - [x] GitHub에 푸시해 Vercel 자동 재배포가 시작되도록 준비 완료
-- [ ] 새 RSVP 필드(`side`, `meal`, `afterparty`)는 Supabase `rsvp` 테이블 컬럼 추가 SQL 적용 후 저장 검증 필요
+- [x] 새 RSVP 필드(`side`, `meal`, `afterparty`)는 Supabase `rsvp` 테이블 컬럼 추가 SQL 적용 및 저장 검증 완료
 - [x] Friends/EN 전용 AFTER PARTY 섹션 구성 및 실제 장소 정보 반영 완료
 - [x] RSVP 모달 전환 및 셀렉트 UI(Choices.js) 리디자인 완료
 
@@ -28,14 +28,30 @@
 - [x] 방명록 관리자 뷰도 동일하게 정리 가능
 
 ## 다음에 바로 이어서 할 수 있는 작업
-- Supabase SQL Editor에서 `rsvp` 테이블 컬럼(`side`, `meal`, `afterparty`) 추가
-- 배포 완료 후 공개 페이지에서 실제 RSVP/방명록 제출 테스트
-- [x] 페이지 맨 아래 "Copyright © Minho Cha. All rights reserved." 추가 한 것 진짜 페이지 완전 맨 아래로 (살짝 여백 아래만 주고)
+- [x] Supabase SQL Editor에서 `rsvp` 테이블 컬럼(`side`, `meal`, `afterparty`) 추가
+- [x] 배포 완료 전 로컬에서 RSVP/방명록 제출 테스트 완료
+- [x] 페이지 맨 아래 Copyright 문구 위치 고정
 - [x] select dropdown 스타일 리디자인 완료
 - [x] 라이트박스 오픈 후 추가 확대(핀치/더블탭) 비활성화 완료
-- [x] hero section 이미지 확대/축소 느낌(ken burns) 제거 완료
-- [x] 첫 진입 인트로("Minho & Claire / 결혼식에 초대합니다") 후 hero 노출 애니메이션 추가 완료
-- raffle 할 지 말 지?
-- [x] rsvp modal 안에 에프터 파티 참석 미정 선택하는거 (거기 간략하게 에프터파티 장소 및 시간 (미리가도되는것도))
+- [x] hero section ken burns 제거 및 인트로-히어로 전환 연출 완료
+- [x] raffle: 이번 버전에서는 미적용으로 결정
+- [x] RSVP 모달 애프터파티 선택 필드 반영 (friends/en)
+- [x] `images/floral-divider.png` 사용 제거 완료
+- [x] `images/floral-corner.png` 사용 제거 완료
+- [x] 애프터파티 주소 한 줄 표시 스타일 적용
+- [x] 셔틀 안내 문구 줄바꿈 2줄 기준으로 정리
+- [x] THE COUPLE 섹션 스타일 재디자인 완료
+- [x] 방명록 섹션 내 스크롤형 목록으로 전환 완료
+- [x] THE DAY 섹션 상단 `123.jpg` 삽입 완료
+- [x] 카카오맵/네이버지도/애프터파티 네이버지도/공식사이트 링크 점검 완료
+- [x] T map 링크 비정상(404) 확인 후 제거 완료
+- [x] 지하철 안내 줄바꿈 정리 완료
+- [x] LOCATION 지도 뷰 표시 개선 완료
+- [x] 기본/친구 페이지는 네이버 지도, `/en` 페이지는 구글 지도로 반영 완료
+- [x] 공유 버튼(카카오/링크 복사) 동작 테스트 및 복사 폴백 로직 보강 완료
+- [x] 최종 테스트를 위해 RSVP/방명록 데이터 전체 초기화 완료
 
 
+- OUR MOMENTS
+
+우리의 순간 이거 섹션 사진 9개 디폴트 , 그리고 더보기하면 9개씩 나오게

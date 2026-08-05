@@ -147,7 +147,7 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     host = "0.0.0.0"
-    port = 8000
+    port = int(os.environ.get("PORT", "8080"))
     server = ThreadingHTTPServer((host, port), Handler)
     print(f"Serving on http://{host}:{port}")
     server.serve_forever()

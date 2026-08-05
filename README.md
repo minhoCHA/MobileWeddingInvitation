@@ -30,8 +30,8 @@
 ### 2. 로컬 미리보기
 
 ```bash
-python3 -m http.server 8000
-# → http://localhost:8000
+python3 -m http.server 8080
+# → http://localhost:8080
 ```
 
 ### 3. 배포

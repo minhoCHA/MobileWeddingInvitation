@@ -48,12 +48,16 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
         'attendance': payload.get('attendance', '미정'),
         'guests': payload.get('guests', '0'),
         'meal': payload.get('meal', ''),
-        'afterparty': payload.get('afterparty', ''),
-        'message': payload.get('message', ''),
+        'afterparty': payload.get('afterparty', '초대안함'),
         'createdAt': payload.get('createdAt') or now_iso(),
     }
     if table == 'guestbook':
-        entry = {'id': entry['id'], 'name': entry['name'], 'message': entry['message'], 'createdAt': entry['createdAt']}
+        entry = {
+            'id': payload.get('id') or f"{table}-{int(datetime.now(timezone.utc).timestamp()*1000)}",
+            'name': payload.get('name', '익명'),
+            'message': payload.get('message', ''),
+            'createdAt': payload.get('createdAt') or now_iso(),
+        }
     try:
         response = supabase.table(table).insert(entry).execute()
         if hasattr(response, 'data'):
@@ -63,7 +67,21 @@ def add_entry(key: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
         message = str(exc)
         schema_mismatch = ('column' in message and 'does not exist' in message) or ('schema cache' in message.lower())
         if table == 'rsvp' and schema_mismatch:
-            raise RuntimeError('RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.') from exc
+            # Legacy fallback: some existing rsvp tables do not have side/meal/afterparty yet.
+            legacy_entry = {
+                'id': entry['id'],
+                'name': entry['name'],
+                'attendance': entry['attendance'],
+                'guests': entry['guests'],
+                'createdAt': entry['createdAt'],
+            }
+            try:
+                fallback_response = supabase.table(table).insert(legacy_entry).execute()
+                if hasattr(fallback_response, 'data'):
+                    return fallback_response.data or []
+                return []
+            except Exception as fallback_exc:
+                raise RuntimeError('RSVP schema is outdated. Add side, meal, afterparty columns to public.rsvp.') from fallback_exc
         raise
 
 

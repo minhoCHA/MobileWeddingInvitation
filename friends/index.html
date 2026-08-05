@@ -100,7 +100,6 @@
         2026년 10월 17일 토요일 오후 4시<br>
         삼청각 일화당
       </p>
-      <img class="divider" src="images/floral-divider.png" alt="" loading="lazy" width="1536" height="512">
       <div class="greeting-body">
         <p class="reveal-line">가을의 햇살이 길어지는 날,</p>
         <p class="reveal-line">저희 두 사람이</p>
@@ -134,12 +133,11 @@
           <!-- <p class="couple-bio">곁에 머물수록 따뜻해지는 사람.</p> -->
         </article>
       </div>
-      <img class="divider divider-narrow" src="images/floral-divider.png" alt="" loading="lazy" width="1536" height="512">
     </section>
 
     <!-- 4. CALENDAR + D-DAY -->
     <section class="section calendar-section reveal" id="calendar" aria-labelledby="calendar-heading">
-      <img class="corner-deco" src="images/floral-corner.png" alt="" loading="lazy" width="1024" height="1024" aria-hidden="true">
+      <img class="day-hero" src="images/123.jpg" alt="가을 무드의 웨딩 스냅" loading="lazy" width="1024" height="640">
       <p class="section-eyebrow en">THE DAY</p>
       <h2 class="section-title" id="calendar-heading">예식일</h2>
       <p class="date-headline">
@@ -176,7 +174,7 @@
       <p class="afterparty-route">삼청각에서 리커테이션까지 차량 이동 약 20~30분</p>
       <article class="afterparty-card" aria-label="애프터파티 정보">
         <p><strong>상호명</strong><span>리커테이션</span></p>
-        <p><strong>주소</strong><span>서울 강남구 압구정로10길 13 지하1층 리커테이션</span></p>
+        <p><strong>주소</strong><span class="single-line">서울 강남구 압구정로10길 13 지하1층 리커테이션</span></p>
         <p><strong>이동</strong><span>택시 약 8,000~15,000원 예상</span></p>
       </article>
       <div class="afterparty-faq" aria-label="교통 및 주차 안내">
@@ -302,6 +300,13 @@
       <p class="venue-addr">서울특별시 성북구 대사관로 3</p>
 
       <div id="map" class="map-static" aria-label="예식장 위치 지도">
+        <iframe
+          class="map-embed"
+          title="삼청각 일화당 지도"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://map.naver.com/p/search/%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9">
+        </iframe>
         <div class="map-pin">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z" fill="currentColor"/><circle cx="12" cy="10" r="2.4" fill="#FBF7F3"/></svg>
           <span>삼청각 일화당</span>
@@ -310,37 +315,36 @@
 
       <div class="venue-quick" aria-label="핵심 이동 정보">
         <span class="venue-chip">지하철 + 셔틀버스 추천</span>
+        <span class="venue-chip">오후 4시 예식 · 3시 20분 이전 도착 권장</span>
         <span class="venue-chip">예식 기준 3시간 무료주차</span>
       </div>
 
       <div class="venue-actions">
         <a class="btn" href="https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">카카오맵</a>
         <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EC%82%BC%EC%B2%AD%EA%B0%81%20%EC%9D%BC%ED%99%94%EB%8B%B9" target="_blank" rel="noopener">네이버지도</a>
-        <a class="btn" href="https://tmap.life/02fcf830" target="_blank" rel="noopener">T map</a>
       </div>
 
       <article class="venue-info-card" aria-label="교통 안내">
-        <p><strong>지하철</strong><span>4호선 한성대입구역 6번 출구 · 3호선 안국역 5번 출구</span></p>
-        <p><strong>셔틀</strong><span>한성대입구역/안국역 탑승 가능 (미운행 시간대 유의)</span></p>
+        <p><strong>지하철</strong><span class="compact-line">4호선 한성대입구역 6번 출구<br>3호선 안국역 5번 출구</span></p>
+        <p><strong>셔틀</strong><span>2개 노선 운행 (한성대입구역 6번 · 안국역 5번)<br>15:40~16:50, 15:55~16:25 미운행 시간대 유의</span></p>
         <p><strong>네비</strong><span>"삼청각" 또는 "대사관로 3" 입력</span></p>
       </article>
 
       <div class="venue-faq" aria-label="상세 안내">
         <article>
-          <h3>Q. 셔틀버스 시간은 어디서 확인하나요?</h3>
-          <p>아래 버튼으로 삼청각 공식 운행 시간표를 확인할 수 있습니다.</p>
+          <h3>Q. 오후 4시 예식이면 언제 도착하면 좋을까요?</h3>
+          <p>셔틀 미운행 구간이 있어 최소 3시 20분 이전 도착을 권장드립니다. 아래 공식 시간표를 꼭 확인해 주세요.</p>
           <a class="btn" href="https://www.samcheonggak.or.kr/location/%EC%82%BC%EC%B2%AD%EA%B0%81_%EC%85%94%ED%8B%80%EB%B2%84%EC%8A%A4_%EC%8B%9C%EA%B0%84%ED%91%9C.pdf?v=2026-08-03%20%EC%98%A4%EC%A0%84%206:21:02" target="_blank" rel="noopener">운행 시간표</a>
         </article>
         <article>
-          <h3>Q. 자가용 주차는 가능한가요?</h3>
-          <p>예식 시간 기준 3시간 무료 주차가 지원됩니다.</p>
+          <h3>Q. 주차는 몇 대까지 가능한가요?</h3>
+          <p>삼청각 공식 안내에는 총 주차 대수는 별도 고지되어 있지 않습니다. 예식 기준 3시간 무료 주차가 제공되며, 혼잡 시간에는 대중교통/셔틀 이용을 권장드립니다.</p>
         </article>
       </div>
     </section>
 
     <!-- 7. ACCOUNT -->
     <section class="section account reveal" id="account" aria-labelledby="account-heading">
-      <img class="corner-deco corner-deco-flip" src="images/floral-corner.png" alt="" loading="lazy" width="1024" height="1024" aria-hidden="true">
       <p class="section-eyebrow en">WITH HEART</p>
       <h2 class="section-title" id="account-heading">마음 전하실 곳</h2>
       <p class="account-message">
@@ -523,6 +527,6 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/js/tom-select.complete.min.js"></script>
-  <script src="script.js?v=20260803-1"></script>
+  <script src="script.js?v=20260805-2"></script>
 </body>
 </html>

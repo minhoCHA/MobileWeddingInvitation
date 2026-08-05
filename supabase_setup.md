@@ -12,8 +12,7 @@ create table if not exists public.rsvp (
   attendance text not null default '미정',
   guests text not null default '0',
   meal text default '',
-  afterparty text default '',
-  message text default '',
+  afterparty text not null default '초대안함',
   "createdAt" text not null
 );
 
@@ -37,10 +36,13 @@ create policy "Allow public delete on guestbook" on public.guestbook for delete 
 
 alter table public.rsvp add column if not exists side text default '';
 alter table public.rsvp add column if not exists meal text default '';
-alter table public.rsvp add column if not exists afterparty text default '';
+alter table public.rsvp add column if not exists afterparty text not null default '초대안함';
+alter table public.rsvp drop column if exists message;
+
+update public.rsvp set afterparty = '초대안함' where afterparty is null or afterparty = '';
 ```
 
-4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` 구문까지 꼭 실행해야 새 RSVP 필드가 정상 저장됩니다.
+4. 이미 기존 `rsvp` 테이블을 만들어 둔 경우에도 위 `alter table` + `update` 구문까지 꼭 실행해야 6개 RSVP 필드가 정상 저장됩니다.
 5. 빠르게 패치만 적용하려면 [data/rsvp_schema_patch.sql](data/rsvp_schema_patch.sql) 파일 내용을 SQL Editor에서 실행하세요.
 6. 현재 서버는 RSVP 스키마가 구버전이면 `RSVP_SCHEMA_MISMATCH` 에러를 반환하도록 설정되어 있습니다. (조용한 필드 누락 방지)
 7. 실행 후 서버를 재시작합니다.
