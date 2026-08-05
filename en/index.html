@@ -4,21 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
   <meta name="theme-color" content="#FBF7F3">
-  <title>Minho ♡ Seongkyung — October 17, 2026</title>
+  <title>Minho ♡ Claire — October 17, 2026</title>
 
-  <meta name="description" content="You are cordially invited to the wedding of Minho and Seongkyung. Saturday, October 17, 2026 at 4 PM, Samcheonggak Ilhwa-dang.">
+  <meta name="description" content="You are cordially invited to the wedding of Minho and Claire. Saturday, October 17, 2026 at 4 PM, Samcheonggak Ilhwa-dang.">
 
   <!-- Open Graph / Kakao share preview -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Minho ♡ Seongkyung are getting married">
+  <meta property="og:title" content="Minho ♡ Claire are getting married">
   <meta property="og:description" content="Saturday, October 17, 2026 · Samcheonggak Ilhwa-dang">
   <meta property="og:image" content="/images/og-thumbnail.png">
   <meta property="og:image:width" content="1536">
   <meta property="og:image:height" content="800">
   <meta property="og:url" content="">
-  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Minho ♡ Seongkyung are getting married">
+  <meta name="twitter:title" content="Minho ♡ Claire are getting married">
   <meta name="twitter:description" content="Saturday, October 17, 2026 · Samcheonggak Ilhwa-dang">
   <meta name="twitter:image" content="/images/og-thumbnail.png">
 
@@ -37,11 +37,11 @@
       <p class="intro-sub">You are invited to our wedding</p>
     </div>
   </div>
-  <div class="language-switch"><a href="/friends/" aria-label="Switch to Korean version">한국어</a></div>
-  <!-- 배경 모션: 꽃잎 파티클 캔Bus (prefers-reduced-motion에서는 숨김) -->
+  <div class="language-switch"><a href="/friends/" aria-label="Switch to Korean version">Korean</a></div>
+  <!-- Background motion: petal particles canvas (hidden in prefers-reduced-motion) -->
   <canvas class="bg-petals" aria-hidden="true"></canvas>
 
-  <!-- prefers-reduced-motion 정적 SVG 꽃잎 4개 -->
+  <!-- Static SVG petals for prefers-reduced-motion -->
   <div class="bg-petals-static" aria-hidden="true">
     <svg viewBox="0 0 60 60" class="static-petal sp-1"><ellipse cx="30" cy="30" rx="10" ry="22" fill="#C9A2A2" opacity="0.4" transform="rotate(35 30 30)"/></svg>
     <svg viewBox="0 0 60 60" class="static-petal sp-2"><ellipse cx="30" cy="30" rx="10" ry="22" fill="#A8B59C" opacity="0.4" transform="rotate(-25 30 30)"/></svg>
@@ -49,17 +49,27 @@
     <svg viewBox="0 0 60 60" class="static-petal sp-4"><ellipse cx="30" cy="30" rx="10" ry="22" fill="#C9A2A2" opacity="0.4" transform="rotate(-50 30 30)"/></svg>
   </div>
 
-  <!-- 음악 토글 (BGM placeholder) -->
+  <!-- Music toggle (BGM placeholder) -->
   <button class="music-toggle" id="music-toggle" type="button" aria-label="Play or pause background music" aria-pressed="false">
     <span class="ico-note" aria-hidden="true">
       <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="16" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
     </span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
   </button>
-  <!-- placeholder: audio/bgm.mp3 — 사용자가 직접 음원 파일을 audio/ 폴더에 추가해야 합니다 -->
+  <!-- placeholder: add audio/bgm.mp3 manually in the audio folder -->
   <audio id="bgm" src="/audio/bgm.mp3" loop preload="none"></audio>
 
   <main class="card" id="card">
+    <div class="manager-panel is-hidden" id="manager-panel" aria-live="polite">
+      <div class="stats-panel is-hidden" id="rsvp-stats"></div>
+      <div class="manager-tabs" role="tablist" aria-label="RSVP response filter">
+        <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All list</button>
+        <button class="manager-tab" type="button" data-filter="Attending" role="tab" aria-selected="false">Attending</button>
+        <button class="manager-tab" type="button" data-filter="Not attending" role="tab" aria-selected="false">Not attending</button>
+        <button class="manager-tab" type="button" data-filter="Pending" role="tab" aria-selected="false">Pending</button>
+      </div>
+      <ul class="manager-list" id="rsvp-manager-list"></ul>
+    </div>
 
     <!-- 1. HERO -->
     <section class="hero" id="hero" aria-label="Invitation main">
@@ -83,14 +93,9 @@
       <p class="section-eyebrow en">INVITATION</p>
       <h2 class="section-title" id="greeting-heading">You are invited</h2>
       <p class="hero-eyebrow script" style="margin: 0 0 12px; font-size: 1.2rem;">We&rsquo;re getting married</p>
-      <h1 class="hero-names" style="margin: 0 0 16px; justify-content: center;">
-        <span class="hero-name-ko">Minho Cha</span>
-        <span class="hero-amp script">&amp;</span>
-        <span class="hero-name-ko">Claire Cho</span>
-      </h1>
       <p class="hero-info" style="margin: 0 0 24px;">
         Saturday, October 17, 2026 4 PM<br>
-        Samcheonggak, Ilhwa-dang
+        Seoul, South Korea
       </p>
       <div class="greeting-body">
         <p class="reveal-line">On a day when autumn light stretches long,</p>
@@ -105,35 +110,11 @@
       <!-- <p class="greeting-en script">A quiet promise, in autumn light.</p> -->
     </section>
 
-    <!-- 3. COUPLE INTRO -->
-    <!-- <section class="section couple reveal" id="couple" aria-labelledby="couple-heading">
-      <p class="section-eyebrow en">THE COUPLE</p>
-      <h2 class="section-title" id="couple-heading">Bride & Groom</h2>
-
-      <div class="couple-grid">
-        <article class="couple-card couple-groom">
-          <p class="couple-name">차민호 <span class="en">Minho Cha</span></p>
-          <p class="couple-bio">A person who grows more sincere with every step.</p>
-        </article>
-
-        <span class="couple-amp script" aria-hidden="true">&amp;</span>
-
-        <article class="couple-card couple-bride">
-          <p class="couple-name">조성경 <span class="en">Claire Cho</span></p>
-          <p class="couple-bio">A person who grows warmer the closer you are.</p>
-        </article>
-      </div>
-    </section> -->
-
     <!-- 4. CALENDAR + D-DAY -->
     <section class="section calendar-section reveal" id="calendar" aria-labelledby="calendar-heading">
       <img class="day-hero" src="/images/123.jpg" alt="Autumn mood wedding photo" loading="lazy" width="1024" height="640">
       <p class="section-eyebrow en">THE DAY</p>
       <h2 class="section-title" id="calendar-heading">Wedding Date</h2>
-      <p class="date-headline">
-        Saturday, October 17, 2026<br>
-        4 PM
-      </p>
 
       <table class="cal" data-target="2026-10-17" aria-label="October 2026 calendar">
         <caption class="cal-caption en">OCTOBER 2026</caption>
@@ -146,7 +127,7 @@
       </table>
 
       <div class="dday-wrap" aria-live="polite">
-        <p class="dday-label">Until Minho & Seongkyung wedding</p>
+        <p class="dday-label">Until Minho and Claire's wedding</p>
         <p class="dday">D - <span id="dday-num" data-target="0">0</span></p>
         <p class="dday-sub">Saturday, October 17, 2026 4 PM<br>Samcheonggak Ilhwa-dang</p>
       </div>
@@ -163,7 +144,7 @@
       </p>
       <p class="afterparty-route">From Samcheonggak to Liquortation: about 20-30 minutes by car</p>
       <article class="afterparty-card" aria-label="After-party details">
-        <p><strong>Venue</strong><span>Liquortation (리커테이션)</span></p>
+        <p><strong>Venue</strong><span>Liquortation</span></p>
         <p><strong>Address</strong><span class="single-line">B1, 13 Apgujeong-ro 10-gil, Gangnam-gu, Seoul</span></p>
         <p><strong>Taxi</strong><span>Approx. KRW 8,000-15,000 from Samcheonggak</span></p>
       </article>
@@ -338,7 +319,7 @@
       <h2 class="section-title" id="account-heading">Gift Account</h2>
       <p class="account-message">
         For guests who cannot attend,<br>
-        Here is where you may share your thoughts.<br><br>
+        here is where you may share your support.<br><br>
         We will treasure your warm congratulations<br>
         for a long time to come.
       </p>
@@ -346,19 +327,19 @@
       <details class="acc-group">
         <summary>Groom Side Account</summary>
         <ul class="acc-list">
-          <!-- placeholder: 실제 은행/계좌번호로 교체 필요 -->
+          <!-- placeholder: replace with real bank/account details -->
           <li>
-            <p class="acc-name">신랑 아버지 Jae-dong Cha</p>
-            <p class="acc-num">○○은행 ○○○-○○○○-○○○○</p>
-            <button type="button" class="copy-btn" data-copy="○○은행 ○○○-○○○○-○○○○ Jae-dong Cha" aria-label="Jae-dong Cha 계좌번호 Copy">
+            <p class="acc-name">Groom's Father Jae-dong Cha</p>
+            <p class="acc-num">Bank XXX-XXXX-XXXX</p>
+            <button type="button" class="copy-btn" data-copy="Bank XXX-XXXX-XXXX Jae-dong Cha" aria-label="Copy Jae-dong Cha account number">
               <span class="copy-default"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Copy</span>
               <span class="copy-done" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12l4 4 10-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
             </button>
           </li>
           <li>
-            <p class="acc-name">신랑 어머니 Mi-sook Ji</p>
-            <p class="acc-num">○○은행 ○○○-○○○○-○○○○</p>
-            <button type="button" class="copy-btn" data-copy="○○은행 ○○○-○○○○-○○○○ Mi-sook Ji" aria-label="Mi-sook Ji 계좌번호 Copy">
+            <p class="acc-name">Groom's Mother Mi-sook Ji</p>
+            <p class="acc-num">Bank XXX-XXXX-XXXX</p>
+            <button type="button" class="copy-btn" data-copy="Bank XXX-XXXX-XXXX Mi-sook Ji" aria-label="Copy Mi-sook Ji account number">
               <span class="copy-default"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Copy</span>
               <span class="copy-done" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12l4 4 10-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
             </button>
@@ -370,9 +351,9 @@
         <summary>Bride Side Account</summary>
         <ul class="acc-list">
           <li>
-            <p class="acc-name">신부 어머니 Geum-hee Wang</p>
-            <p class="acc-num">○○은행 ○○○-○○○○-○○○○</p>
-            <button type="button" class="copy-btn" data-copy="○○은행 ○○○-○○○○-○○○○ Geum-hee Wang" aria-label="Geum-hee Wang 계좌번호 Copy">
+            <p class="acc-name">Bride's Mother Geum-hee Wang</p>
+            <p class="acc-num">Bank XXX-XXXX-XXXX</p>
+            <button type="button" class="copy-btn" data-copy="Bank XXX-XXXX-XXXX Geum-hee Wang" aria-label="Copy Geum-hee Wang account number">
               <span class="copy-default"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Copy</span>
               <span class="copy-done" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 12l4 4 10-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
             </button>
@@ -391,16 +372,6 @@
         Thank you in advance to everyone<br>
         for your warm support.
       </p>
-      <div class="manager-panel is-hidden" id="manager-panel" aria-live="polite">
-        <div class="stats-panel is-hidden" id="rsvp-stats"></div>
-        <div class="manager-tabs" role="tablist" aria-label="RSVP response filter">
-          <button class="manager-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All list</button>
-          <button class="manager-tab" type="button" data-filter="참석" role="tab" aria-selected="false">Attending</button>
-          <button class="manager-tab" type="button" data-filter="불참" role="tab" aria-selected="false">Not attending</button>
-          <button class="manager-tab" type="button" data-filter="미정" role="tab" aria-selected="false">Pending</button>
-        </div>
-        <ul class="manager-list" id="rsvp-manager-list"></ul>
-      </div>
       <button class="btn primary rsvp-open-btn" id="rsvp-open" type="button" aria-haspopup="dialog" aria-controls="rsvp-modal">Open RSVP form</button>
     </section>
 
@@ -430,21 +401,21 @@
     <!-- 10. SHARE -->
     <section class="section share reveal" id="share" aria-labelledby="share-heading">
       <p class="section-eyebrow en">SHARE</p>
-      <h2 class="section-title" id="share-heading">청첩장 공유</h2>
+      <h2 class="section-title" id="share-heading">Share Invitation</h2>
       <p class="share-message">
-        저희의 소식을<br>
-        가까운 분들께도 함께 전해 주세요.
+        Share our wedding news<br>
+        with your loved ones.
       </p>
       <div class="share-actions">
         <button type="button" class="btn primary" id="share-kakao" aria-label="Share on KakaoTalk">Share on KakaoTalk</button>
-        <button type="button" class="btn" id="share-link" aria-label="청첩장 Copy link">Copy link</button>
+        <button type="button" class="btn" id="share-link" aria-label="Copy invitation link">Copy link</button>
       </div>
     </section>
 
     <footer class="card-footer">
       <p class="script">Thank you</p>
       <p class="footer-line">2026 . 10 . 17</p>
-      <p class="footer-line en">민호 &amp; 성경</p>
+      <p class="footer-line en">Minho &amp; Claire</p>
     </footer>
   </main>
 
@@ -464,16 +435,16 @@
         <label class="rsvp-field">
           <span>Side</span>
           <select name="side" required>
-            <option value="신랑">Groom</option>
-            <option value="신부">Bride</option>
+            <option value="Groom">Groom</option>
+            <option value="Bride">Bride</option>
           </select>
         </label>
         <label class="rsvp-field">
           <span>Attendance</span>
           <select name="attendance" required>
-            <option value="참석">Attending</option>
-            <option value="불참">Not attending</option>
-            <option value="미정">Pending</option>
+            <option value="Attending">Attending</option>
+            <option value="Not attending">Not attending</option>
+            <option value="Pending">Pending</option>
           </select>
         </label>
         <label class="rsvp-field">
@@ -491,9 +462,9 @@
         <label class="rsvp-field">
           <span>After Party</span>
           <select name="afterparty" required>
-            <option value="미정">Pending</option>
-            <option value="참석">Attending</option>
-            <option value="불참">Not attending</option>
+            <option value="Pending">Pending</option>
+            <option value="Attending">Attending</option>
+            <option value="Not attending">Not attending</option>
           </select>
           <small class="rsvp-field-note">Liquortation · 6 PM to 12 AM (late join and early leave welcome)</small>
         </label>
@@ -502,7 +473,7 @@
     </div>
   </div>
 
-  <!-- 라이트박스 모달 -->
+  <!-- Lightbox modal -->
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="View enlarged photo">
     <button class="lightbox-nav lightbox-nav-prev" id="lightbox-prev" type="button" aria-label="Previous photo">
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -516,10 +487,10 @@
     <img class="lightbox-img" id="lightbox-img" alt="">
   </div>
 
-  <!-- 토스트 -->
+  <!-- Toast -->
   <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 
-  <!-- placeholder: 카카오 SDK (KAKAO_JS_KEY 발급 후 활성화) -->
+  <!-- placeholder: Kakao SDK (enable after issuing KAKAO_JS_KEY) -->
   <!-- <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script> -->
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.4.1/dist/css/tom-select.css">

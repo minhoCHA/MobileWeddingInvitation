@@ -290,37 +290,55 @@
     // Attach handlers to all items (visible and hidden)
     attachClickHandlers(items);
 
-    // Load More button: reveal in batches, then hide when fully shown
+    // Load More / Collapse button: reveal in batches of 9, then allow reset
     const loadMoreBtn = $('#gallery-load-more');
     if (loadMoreBtn) {
       const isEnglish = (document.documentElement.lang || '').toLowerCase().startsWith('en');
       const loadMoreLabel = isEnglish ? 'View More' : '더 보기';
+      const collapseLabel = isEnglish ? 'Collapse' : '접기';
 
       const renderGallery = () => {
         items.forEach((item, index) => {
           item.classList.toggle('hidden', index >= visibleCount);
         });
 
-        if (N <= batchSize || visibleCount >= N) {
+        if (N <= batchSize) {
           loadMoreBtn.style.display = 'none';
           return;
         }
 
+        const isExpanded = visibleCount >= N;
         loadMoreBtn.style.display = '';
-        loadMoreBtn.textContent = loadMoreLabel;
-        loadMoreBtn.setAttribute('aria-expanded', 'false');
+        loadMoreBtn.textContent = isExpanded ? collapseLabel : loadMoreLabel;
+        loadMoreBtn.setAttribute('aria-expanded', String(isExpanded));
       };
 
       renderGallery();
 
       loadMoreBtn.addEventListener('click', () => {
-        visibleCount = Math.min(N, visibleCount + batchSize);
+        if (visibleCount >= N) {
+          visibleCount = batchSize;
+        } else {
+          visibleCount = Math.min(N, visibleCount + batchSize);
+        }
         haptic(8);
         renderGallery();
       });
     }
 
     galleryAPI = { count: N };
+  }
+
+  function setupJourneyLines() {
+    const groomPath = document.querySelector('#groom-path');
+    const bridePath = document.querySelector('#bride-path');
+    if (!groomPath || !bridePath) return;
+    const scrollSvgGlobal = window.$_scrollSvg;
+    if (!scrollSvgGlobal || typeof scrollSvgGlobal.default !== 'function') return;
+
+    const scrollSvg = scrollSvgGlobal.default;
+    scrollSvg(groomPath);
+    scrollSvg(bridePath);
   }
 
   // ---------------------------------------------------------
@@ -653,15 +671,21 @@
 
   function isManagerView() {
     const params = new URLSearchParams(location.search);
-    return params.get('manager') === '1' || params.get('admin') === '1';
+    const normalizedPath = location.pathname.replace(/\/+$/, '');
+    const isManagerPath = normalizedPath === '/manager' || normalizedPath === '/friends/manager' || normalizedPath === '/en/manager';
+    return isManagerPath || params.get('manager') === '1' || params.get('admin') === '1';
+  }
+
+  function normalizeAttendance(value) {
+    const attendance = String(value || '').trim();
+    if (/불참|미참석|Not attending/i.test(attendance)) return 'declined';
+    if (/미정|Pending|Not sure/i.test(attendance)) return 'pending';
+    if (/참석|Attending/i.test(attendance)) return 'attending';
+    return 'pending';
   }
 
   function getAttendanceCategory(entry) {
-    const attendance = String(entry.attendance || '').trim();
-    if (/불참|미참석|Not attending/i.test(attendance)) return '불참';
-    if (/미정|Pending/i.test(attendance)) return '미정';
-    if (/참석|Attending/i.test(attendance)) return '참석';
-    return '미정';
+    return normalizeAttendance(entry && entry.attendance);
   }
 
   function getMealLabel(value) {
@@ -674,7 +698,7 @@
 
   function getFilteredRsvpEntries(entries) {
     if (!activeRsvpFilter || activeRsvpFilter === 'all') return entries;
-    return entries.filter((entry) => getAttendanceCategory(entry) === activeRsvpFilter);
+    return entries.filter((entry) => getAttendanceCategory(entry) === normalizeAttendance(activeRsvpFilter));
   }
 
   function formatRsvpTime(createdAt) {
@@ -717,11 +741,11 @@
       .slice()
       .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
-    const attending = entries.filter((entry) => getAttendanceCategory(entry) === '참석').length;
-    const declined = entries.filter((entry) => getAttendanceCategory(entry) === '불참').length;
-    const pending = entries.filter((entry) => getAttendanceCategory(entry) === '미정').length;
+    const attending = entries.filter((entry) => getAttendanceCategory(entry) === 'attending').length;
+    const declined = entries.filter((entry) => getAttendanceCategory(entry) === 'declined').length;
+    const pending = entries.filter((entry) => getAttendanceCategory(entry) === 'pending').length;
     const totalGuests = entries.reduce((sum, entry) => {
-      if (getAttendanceCategory(entry) !== '참석') return sum;
+      if (getAttendanceCategory(entry) !== 'attending') return sum;
       return sum + 1 + (Number(entry.guests) || 0);
     }, 0);
     const filteredEntries = getFilteredRsvpEntries(entries);
@@ -1083,6 +1107,7 @@
     setupCalendar();
     setupLightbox();
     setupGallery();
+    setupJourneyLines();
     setupCopy();
     setupMusic();
     setupShare();

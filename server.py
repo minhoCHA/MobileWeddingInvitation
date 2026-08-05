@@ -121,6 +121,12 @@ class Handler(BaseHTTPRequestHandler):
     def _resolve_static_path(self, path):
         if path in ("", "/"):
             return os.path.join(BASE_DIR, "index.html")
+        if path in ("/manager", "/manager/"):
+            return os.path.join(BASE_DIR, "index.html")
+        if path in ("/friends/manager", "/friends/manager/"):
+            return os.path.join(BASE_DIR, "friends", "index.html")
+        if path in ("/en/manager", "/en/manager/"):
+            return os.path.join(BASE_DIR, "en", "index.html")
         normalized = path.lstrip("/")
         if normalized.startswith("api/"):
             return None

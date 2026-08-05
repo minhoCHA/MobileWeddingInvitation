@@ -53,4 +53,9 @@
 
 
 - [x] OUR MOMENTS 섹션 사진 9개 기본 노출 + 더 보기 시 9개씩 추가 노출
-- manage=1? 뭐 이런섹션은 
+- [x] 관리자 접근 파라미터(`?manager=1`) 외에 `/manager` 경로 진입 지원
+- [x] scroll-svg 테스트용 데모 파일 생성 완료 (`scroll-svg-demo.html`)
+- [x] 메인 청첩장에 OUR JOURNEY 스크롤 연동 선 그리기 섹션 반영 완료
+- [x] OUR MOMENTS 더 보기 이후 접기 버튼 복구
+- [x] 오시는 길 지도 임베드 미노출 문제 수정 (기본/친구 페이지 임베드 교체)
+- [x] THE COUPLE 카드 타이포/여백/비주얼 스타일 재정비
