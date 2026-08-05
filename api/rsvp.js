@@ -33,11 +33,23 @@ module.exports = async function handler(req, res) {
         const message = String(err?.message || '');
         const schemaMismatch = /column .* does not exist|schema cache/i.test(message);
         if (schemaMismatch) {
-          return res.status(500).json({
-            ok: false,
-            code: 'RSVP_SCHEMA_MISMATCH',
-            error: 'RSVP schema is outdated. Add side, meal, afterparty, adultGuests, childGuests columns to public.rsvp.'
-          });
+          const legacyEntry = {
+            id: entry.id,
+            name: entry.name,
+            attendance: entry.attendance,
+            guests: entry.guests,
+            createdAt: entry.createdAt
+          };
+          try {
+            const entries = await createEntry(table, legacyEntry);
+            return res.status(200).json({ ok: true, entries, legacySchema: true });
+          } catch (fallbackErr) {
+            return res.status(500).json({
+              ok: false,
+              code: 'RSVP_SCHEMA_MISMATCH',
+              error: 'RSVP schema is outdated. Add side, meal, afterparty, adultGuests, childGuests columns to public.rsvp.'
+            });
+          }
         }
         throw err;
       }
